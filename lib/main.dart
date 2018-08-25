@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
+final _biggerFont = const TextStyle(fontSize: 18.0);
 void main() => runApp(new GymBook());
 
 class GymBook extends StatelessWidget {
@@ -27,8 +27,8 @@ class GymBook extends StatelessWidget {
           appBar: AppBar(
             bottom: TabBar(
               tabs: [
-                Tab(text: "Routines "+String.fromCharCodes(_work1)),
                 Tab(text: "Workouts "+String.fromCharCodes(_work)),
+                Tab(text: "Routines "+String.fromCharCodes(_work1)),
                 Tab(text: "Exercises "+String.fromCharCodes(_work2)),
               ],
             ),
@@ -42,8 +42,8 @@ class GymBook extends StatelessWidget {
           ),
           body: TabBarView(
             children: [
-              RoutineList(),
               HomeList(),
+              RoutineList(),
               ExercisesList(),
             ],
           ),
@@ -145,13 +145,13 @@ class HomeList extends StatefulWidget{
 /// This is used to describe the state of the homeList StatefulWidget. It uses
 /// _workouts() as its body.
 class HomeListState extends State<HomeList> {
-  final _biggerFont = const TextStyle(fontSize: 18.0);
+  var _num = 10;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: _workouts(),
       floatingActionButton: new FloatingActionButton(
-        onPressed: null,
+        onPressed: _addWorkout,
         child: Icon(Icons.add),
       ),
     );
@@ -160,8 +160,8 @@ class HomeListState extends State<HomeList> {
   /// This builds a list using _workout() which is shown by homeList
   Widget _workouts() {
     return ListView.builder(
-        padding: const EdgeInsets.all(16.0),
-        itemCount: 10,
+        padding: const EdgeInsets.all(8.0),
+        itemCount: _num,
         itemBuilder: (context, i) {
           if(i.isOdd){
             return new Divider();
@@ -174,7 +174,7 @@ class HomeListState extends State<HomeList> {
   /// Returns a single ListTile Widget
   Widget _workout() {
     var time = DateTime.now();
-    var formatter = new DateFormat('dd-MM-yyyy');
+    var formatter = new DateFormat('dd/MM/yyyy');
     var formatter1 = new DateFormat('jm');
     String formatted = formatter.format(time);
     String formatted1 = formatter1.format(time);
@@ -190,6 +190,14 @@ class HomeListState extends State<HomeList> {
       },
     );
   }
+
+  void _addWorkout() {
+    /// This will use a route to go to a new page. On this page a new workout can
+    /// be created.
+    setState(() {
+      _num+=2;
+    });
+  }
 }
 
 class RoutineList extends StatefulWidget{
@@ -198,18 +206,97 @@ class RoutineList extends StatefulWidget{
 }
 
 class RoutineListState extends State<RoutineList>{
+  List _routineArr = [
+    {
+      'name':'Routine 1',
+      'exercises':11
+
+    },
+    {
+      'name':'Routine 2',
+      'exercises':16
+
+    },
+    {
+      'name':'Routine 3',
+      'exercises':5
+
+    },
+    {
+      'name':'Routine 4',
+      'exercises':6
+
+    },
+    {
+      'name':'Routine 5',
+      'exercises':4
+
+    },
+    {
+      'name':'Routine 6',
+      'exercises':8
+
+    },
+  ];
   @override
   Widget build(BuildContext context){
     return Scaffold(
       body: Center(
-          child: Icon(Icons.list),
+//          child: Icon(Icons.list),
+        child: _routines(),
       ),
         floatingActionButton: new FloatingActionButton(
-          onPressed: null,
+          onPressed: _addRoutine,
           child: Icon(Icons.add),
         )
     );
   }
+
+  Widget _routines(){
+    var _length = _routineArr.length*2;
+    return ListView.builder(
+        padding: const EdgeInsets.all(8.0),
+        itemCount: _length,
+        itemBuilder: (context, i) {
+          if(i.isOdd){
+            return new Divider();
+          }
+          final index = i ~/ 2;
+          return _routine(_routineArr[index]);
+        }
+    );
+  }
+
+  Widget _routine(Map h){
+    var e = h['exercises'];
+    return ListTile(
+      title: Text(
+        h['name'],
+        style: _biggerFont,
+      ),
+      subtitle: Text(
+        "Predicted Time: $e mins",
+      ),
+      onTap: () {
+        setState(() {
+          print("Hello");
+        });
+      },
+    );
+  }
+
+  void _addRoutine() {
+    /// This will use a route to go to a new page. On this page a new routine can
+    /// be created.
+    /// print("Hello");
+    setState(() {
+      _routineArr.add({
+        'name': 'Another Routine',
+        'exercises':10,
+      });
+    });
+  }
+
 }
 
 class ExercisesList extends StatefulWidget{
@@ -218,16 +305,83 @@ class ExercisesList extends StatefulWidget{
 }
 
 class ExercisesListState extends State<ExercisesList>{
+  List _exerciseArr = [
+    {
+      'name':'Back Squat',
+
+    },
+    {
+      'name':'Bench Press',
+
+    },
+    {
+      'name':'Front Squat',
+
+    },
+    {
+      'name':'Deadlift',
+
+    },
+    {
+      'name':'Dumbell Press',
+
+    },
+    {
+      'name':'5 Mile Run',
+
+    },
+  ];
   @override
   Widget build(BuildContext context){
     return Scaffold(
-      body: Center(
-          child: Icon(Icons.list)
-      ),
-      floatingActionButton: new FloatingActionButton(
-        onPressed: null,
-        child: Icon(Icons.add),
-      )
+        body: Center(
+//          child: Icon(Icons.list),
+          child: _exercises(),
+        ),
+        floatingActionButton: new FloatingActionButton(
+          onPressed: _addExericse,
+          child: Icon(Icons.add),
+        )
     );
+  }
+
+  Widget _exercises(){
+    var _length = _exerciseArr.length*2;
+    return ListView.builder(
+        padding: const EdgeInsets.all(8.0),
+        itemCount: _length,
+        itemBuilder: (context, i) {
+          if(i.isOdd){
+            return new Divider();
+          }
+          final index = i ~/ 2;
+          return _exercise(_exerciseArr[index]);
+        }
+    );
+  }
+
+  Widget _exercise(Map h){
+    return ListTile(
+      title: Text(
+        h['name'],
+        style: _biggerFont,
+      ),
+      onTap: () {
+        setState(() {
+          print("Hello");
+        });
+      },
+    );
+  }
+
+  void _addExericse() {
+    /// This will use a route to go to a new page. On this page a new routine can
+    /// be created.
+    setState(() {
+      print("Hello");
+      _exerciseArr.add({
+        'name': 'Another Exercise',
+      });
+    });
   }
 }
