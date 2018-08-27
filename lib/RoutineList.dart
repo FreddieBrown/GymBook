@@ -52,10 +52,10 @@ class RoutineListState extends State<RoutineList>{
   Widget build(BuildContext context){
     return Scaffold(
         body: Center(
-//          child: Icon(Icons.list),
           child: _routines(),
         ),
         floatingActionButton: new FloatingActionButton(
+          heroTag: "Routine1",
           onPressed: _addRoutine,
           child: Icon(Icons.add),
         )

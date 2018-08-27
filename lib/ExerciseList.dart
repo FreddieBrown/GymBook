@@ -46,10 +46,10 @@ class ExercisesListState extends State<ExercisesList>{
   Widget build(BuildContext context){
     return Scaffold(
         body: Center(
-//          child: Icon(Icons.list),
           child: _exercises(),
         ),
         floatingActionButton: new FloatingActionButton(
+          heroTag: "Exercise1",
           onPressed: _addExericse,
           child: Icon(Icons.add),
         )

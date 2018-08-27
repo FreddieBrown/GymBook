@@ -11,6 +11,7 @@ class newRoutine extends StatelessWidget {
         title: Text("Add Routine"),
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: "Routine1",
           onPressed: () {
             // Navigate back to the first screen by popping the current route
             // off the stack

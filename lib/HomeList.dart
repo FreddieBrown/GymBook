@@ -25,6 +25,7 @@ class HomeListState extends State<HomeList> {
     return Scaffold(
       body: _workouts(),
       floatingActionButton: new FloatingActionButton(
+        heroTag: "Workout1",
         onPressed: _addWorkout,
         child: Icon(Icons.add),
       ),

@@ -11,6 +11,7 @@ class newExercise extends StatelessWidget {
         title: Text("Add Exercise"),
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: "Exercise1",
           onPressed: () {
             // Navigate back to the first screen by popping the current route
             // off the stack
