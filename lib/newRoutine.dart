@@ -10,6 +10,7 @@ class newRoutine extends StatefulWidget {
 }
 
 class newRoutineState extends State<newRoutine> {
+  final _formKey = GlobalKey<FormState>();
   final controller1 = TextEditingController();
   var form = FormMaker();
 

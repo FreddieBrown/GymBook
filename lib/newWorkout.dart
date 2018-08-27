@@ -10,6 +10,7 @@ class newWorkout extends StatefulWidget {
 }
 
 class newWorkoutState extends State<newWorkout> {
+  final _formKey = GlobalKey<FormState>();
   final controller1 = TextEditingController();
   var form = FormMaker();
 
