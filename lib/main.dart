@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'database/database.dart';
-import 'HomeList.dart';
+import 'WorkoutList.dart';
 import 'RoutineList.dart';
 import 'ExerciseList.dart';
 import 'package:sqflite/sqflite.dart';
@@ -24,9 +24,9 @@ class GymBook extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Gym Book',
       theme: new ThemeData(
-        primarySwatch: Colors.blue,// Add the 3 lines from here...
-//        primaryColor: Colors.red,
-        accentColor: Colors.blue,
+//        primarySwatch: Colors.white,// Add the 3 lines from here...
+        primaryColor: Colors.white,
+        accentColor: Colors.blueGrey,
 //        dividerColor: Colors.red,
       ),
 //      home: new MyHomePage(title: 'GymBook'),
@@ -52,7 +52,7 @@ class GymBook extends StatelessWidget {
           ),
           body: TabBarView(
             children: [
-              HomeList(),
+              WorkoutList(),
               RoutineList(),
               ExercisesList(),
             ],

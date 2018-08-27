@@ -84,6 +84,7 @@ class ExercisesListState extends State<ExercisesList>{
         h['name'],
         style: _biggerFont,
       ),
+      trailing: new Icon(Icons.keyboard_arrow_right),
       onTap: () {
         setState(() {
           print("Hello");

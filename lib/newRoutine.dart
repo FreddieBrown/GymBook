@@ -20,25 +20,45 @@ class newRoutineState extends State<newRoutine> {
       appBar: AppBar(
         title: Text("Add Routine"),
       ),
-      body: form.form([
-        "Routine Name",
-      ], [
-        controller1,
-      ], [
-        1,
-      ], [
-        30,
-      ]),
+      body: Form(
+        key: _formKey,
+        child: form.form(
+            [
+              "Routine Name",
+            ],
+            [
+              controller1,
+            ],
+            [
+              1,
+            ],
+            [
+              30,
+            ],
+            [
+              _valid,
+            ]
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
         heroTag: "Routine1",
           onPressed: () {
             // Navigate back to the first screen by popping the current route
             // off the stack
-            print("Saved");
-            Navigator.pop(context, controller1.text);
+            if (_formKey.currentState.validate()) {
+              print("Saved");
+              Navigator.pop(context, controller1.text);
+            }
           },
           child: Icon(Icons.save),
         ),
     );
+  }
+}
+
+String _valid(value){
+  print(value);
+  if (value.isEmpty) {
+    return 'Please enter some text';
   }
 }

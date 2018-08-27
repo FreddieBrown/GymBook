@@ -7,18 +7,18 @@ import 'WorkoutDetail.dart';
 
 final _biggerFont = const TextStyle(fontSize: 18.0);
 
-class HomeList extends StatefulWidget{
+class WorkoutList extends StatefulWidget{
   Database _db;
   HomeList({Database db = null}){
     db = _db;
   }
 
   @override
-  HomeListState createState() => new HomeListState();
+  WorkoutListState createState() => new WorkoutListState();
 }
 /// This is used to describe the state of the homeList StatefulWidget. It uses
 /// _workouts() as its body.
-class HomeListState extends State<HomeList> {
+class WorkoutListState extends State<WorkoutList> {
   var _num = 10;
   @override
   Widget build(BuildContext context) {
@@ -59,6 +59,7 @@ class HomeListState extends State<HomeList> {
         text,
         style: _biggerFont,
       ),
+      trailing: new Icon(Icons.keyboard_arrow_right),
       onTap: () {
         setState(() {
           print("Hello");

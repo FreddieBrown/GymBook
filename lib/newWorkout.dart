@@ -20,25 +20,44 @@ class newWorkoutState extends State<newWorkout> {
       appBar: AppBar(
         title: Text("New Workout"),
       ),
-      body: form.form([
-        "Workout Name",
-      ], [
-        controller1,
-      ], [
-        1,
-      ], [
-        30,
-      ]),
+      body: Form(
+        key: _formKey,
+        child: form.form(
+            [
+              "Workout Name",
+            ],
+            [
+              controller1,
+            ],
+            [
+              1,
+            ],
+            [
+              30,
+            ],
+            [
+              _valid,
+            ]
+        ),
+      ),
       floatingActionButton:FloatingActionButton(
         heroTag: "Workout1",
           onPressed: () {
             // Navigate back to the first screen by popping the current route
             // off the stack
-            print("Saved");
-            Navigator.pop(context, controller1.text);
+            if (_formKey.currentState.validate()) {
+              print("Saved");
+              Navigator.pop(context, controller1.text);
+            }
           },
           child: Icon(Icons.save),
         ),
     );
+  }
+}
+
+String _valid(value){
+  if (value.isEmpty) {
+    return 'Please enter some text';
   }
 }

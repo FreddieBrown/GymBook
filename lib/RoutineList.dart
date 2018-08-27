@@ -88,6 +88,7 @@ class RoutineListState extends State<RoutineList>{
       subtitle: Text(
         "Predicted Time: $e mins",
       ),
+      trailing: new Icon(Icons.keyboard_arrow_right),
       onTap: () {
         setState(() {
           print("Hello");
