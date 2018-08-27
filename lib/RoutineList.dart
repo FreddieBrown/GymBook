@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'database/database.dart';
 import 'package:sqflite/sqflite.dart';
 import 'newRoutine.dart';
+import 'RoutineDetail.dart';
 
 final _biggerFont = const TextStyle(fontSize: 18.0);
 
@@ -90,6 +91,13 @@ class RoutineListState extends State<RoutineList>{
       onTap: () {
         setState(() {
           print("Hello");
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => RoutineDetail(routine: h),
+            ),
+          );
         });
       },
     );
@@ -114,9 +122,9 @@ class RoutineListState extends State<RoutineList>{
     );
 
     // After the Selection Screen returns a result, show it in a Snackbar!
-    Scaffold.of(context).showSnackBar(SnackBar(content: Text("$result")));
+//    Scaffold.of(context).showSnackBar(SnackBar(content: Text("$result")));
     _routineArr.add({
-        'name': 'Another Routine',
+        'name': '$result',
         'exercises':10,
       });
   }

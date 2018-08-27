@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'database/database.dart';
 import 'package:sqflite/sqflite.dart';
 import 'newExercise.dart';
+import 'ExerciseDetail.dart';
 
 final _biggerFont = const TextStyle(fontSize: 18.0);
 
@@ -19,26 +20,32 @@ class ExercisesListState extends State<ExercisesList>{
   List _exerciseArr = [
     {
       'name':'Back Squat',
+      'notes': 'Notes'
 
     },
     {
       'name':'Bench Press',
+      'notes': 'Notes'
 
     },
     {
       'name':'Front Squat',
+      'notes': 'Notes'
 
     },
     {
       'name':'Deadlift',
+      'notes': 'Notes'
 
     },
     {
       'name':'Dumbell Press',
+      'notes': 'Notes'
 
     },
     {
       'name':'5 Mile Run',
+      'notes': 'Notes'
 
     },
   ];
@@ -80,6 +87,13 @@ class ExercisesListState extends State<ExercisesList>{
       onTap: () {
         setState(() {
           print("Hello");
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ExerciseDetail(exercise: h),
+            ),
+          );
         });
       },
     );
@@ -103,10 +117,12 @@ class ExercisesListState extends State<ExercisesList>{
     );
 
     // After the Selection Screen returns a result, show it in a Snackbar!
-    Scaffold.of(context).showSnackBar(SnackBar(content: Text("$result")));
+//    Scaffold.of(context).showSnackBar(SnackBar(content: Text("$result")));
     _exerciseArr.add({
-      'name': 'Another Exercise',
+      'name': '${result["name"]}',
+      'notes' : '${result["notes"]}'
     });
+    /// Here I should add this to the DB or whatever storage this uses
   }
 }
 

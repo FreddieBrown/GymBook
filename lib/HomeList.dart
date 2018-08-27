@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'database/database.dart';
 import 'package:sqflite/sqflite.dart';
 import 'newWorkout.dart';
-import 'workoutDetail.dart';
+import 'WorkoutDetail.dart';
 
 final _biggerFont = const TextStyle(fontSize: 18.0);
 
@@ -67,7 +67,7 @@ class HomeListState extends State<HomeList> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => workoutDetail(name: text),
+              builder: (context) => WorkoutDetail(name: text),
             ),
           );
         });
@@ -93,7 +93,8 @@ class HomeListState extends State<HomeList> {
     );
 
     // After the Selection Screen returns a result, show it in a Snackbar!
-    Scaffold.of(context).showSnackBar(SnackBar(content: Text("$result")));
+//    Scaffold.of(context).showSnackBar(SnackBar(content: Text("$result")));
+    print('$result');
     _num+=2;
   }
 }
