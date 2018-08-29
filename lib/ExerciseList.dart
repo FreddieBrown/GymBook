@@ -1,53 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'database/database.dart';
-import 'package:sqflite/sqflite.dart';
 import 'newExercise.dart';
 import 'ExerciseDetail.dart';
+import 'Models/Exercise.dart';
 
 final _biggerFont = const TextStyle(fontSize: 18.0);
 
 class ExercisesList extends StatefulWidget{
-  Database _db;
-  ExercisesList({Database db = null}){
-    db = _db;
-  }
   @override
   ExercisesListState createState() => new ExercisesListState();
 }
 
 class ExercisesListState extends State<ExercisesList>{
   List _exerciseArr = [
-    {
-      'name':'Back Squat',
-      'notes': 'Notes'
-
-    },
-    {
-      'name':'Bench Press',
-      'notes': 'Notes'
-
-    },
-    {
-      'name':'Front Squat',
-      'notes': 'Notes'
-
-    },
-    {
-      'name':'Deadlift',
-      'notes': 'Notes'
-
-    },
-    {
-      'name':'Dumbell Press',
-      'notes': 'Notes'
-
-    },
-    {
-      'name':'5 Mile Run',
-      'notes': 'Notes'
-
-    },
+    new Exercise(name: "Bench Press", id: 1, notes: "Hold bar above chest and bring down until arms are at right angles before pushing bar back up until arms are straight"),
+    new Exercise(name: "Squat", id: 2, notes: "Crouch down keeping back straight until knees and thigh are at a right angle with the floor"),
+    new Exercise(name: "Barbell Curl", id: 3, notes: "Bring bar up to chest"),
+    new Exercise(name: "Running", id: 4, notes: "Just Run"),
   ];
   @override
   Widget build(BuildContext context){
@@ -78,10 +47,10 @@ class ExercisesListState extends State<ExercisesList>{
     );
   }
 
-  Widget _exercise(Map h){
+  Widget _exercise(Exercise e){
     return ListTile(
       title: Text(
-        h['name'],
+        e.name,
         style: _biggerFont,
       ),
       trailing: new Icon(Icons.keyboard_arrow_right),
@@ -92,7 +61,7 @@ class ExercisesListState extends State<ExercisesList>{
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ExerciseDetail(exercise: h),
+              builder: (context) => ExerciseDetail(exercise: e),
             ),
           );
         });
@@ -119,10 +88,8 @@ class ExercisesListState extends State<ExercisesList>{
 
     // After the Selection Screen returns a result, show it in a Snackbar!
 //    Scaffold.of(context).showSnackBar(SnackBar(content: Text("$result")));
-    _exerciseArr.add({
-      'name': '${result["name"]}',
-      'notes' : '${result["notes"]}'
-    });
+    _exerciseArr.add(
+    new Exercise(name: result["name"], id: _exerciseArr.length+2, notes: result["notes"]));
     /// Here I should add this to the DB or whatever storage this uses
   }
 }

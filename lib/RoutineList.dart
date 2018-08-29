@@ -1,53 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'database/database.dart';
-import 'package:sqflite/sqflite.dart';
 import 'newRoutine.dart';
 import 'RoutineDetail.dart';
+import 'Models/Routine.dart';
+import 'Models/RoutineExercise.dart';
 
 final _biggerFont = const TextStyle(fontSize: 18.0);
 
 class RoutineList extends StatefulWidget{
-  Database _db;
-  RoutineList({Database db = null}){
-    db = _db;
-  }
   @override
   RoutineListState createState() => new RoutineListState();
 }
 
 class RoutineListState extends State<RoutineList>{
+  /// Use SQL to get Routines
   List _routineArr = [
-    {
-      'name':'Routine 1',
-      'exercises':11
+    new Routine(name: "Routine1", id: 1),
+    new Routine(name: "Routine2", id: 2)
+  ];
 
-    },
-    {
-      'name':'Routine 2',
-      'exercises':16
-
-    },
-    {
-      'name':'Routine 3',
-      'exercises':5
-
-    },
-    {
-      'name':'Routine 4',
-      'exercises':6
-
-    },
-    {
-      'name':'Routine 5',
-      'exercises':4
-
-    },
-    {
-      'name':'Routine 6',
-      'exercises':8
-
-    },
+  ///Use SQL to get the correct RoutineExercises
+  List _REArr = [
+      new RoutineExercise(id: 1, routine: 1, exercise: 1, reps: 5, sets: 5, weight: 80.0),
+      new RoutineExercise(id: 2, routine: 1, exercise: 4, time: 12.0, distance: 5.0),
+      new RoutineExercise(id: 3, routine: 2, exercise: 2, reps: 5, sets: 5, weight: 130.0),
+      new RoutineExercise(id: 4, routine: 2, exercise: 3, reps: 8, sets: 3, weight: 30.5),
+      new RoutineExercise(id: 5, routine: 2, exercise: 4, time: 18.0, distance: 6.0)
   ];
   @override
   Widget build(BuildContext context){
@@ -78,15 +56,20 @@ class RoutineListState extends State<RoutineList>{
     );
   }
 
-  Widget _routine(Map h){
-    var e = h['exercises'];
+  Widget _routine(Routine r){
+    var re = [];
+    _REArr.forEach((element) {
+      if(element.routine == r.id){
+        re.add(element);
+      }
+    });
     return ListTile(
       title: Text(
-        h['name'],
+        r.name,
         style: _biggerFont,
       ),
       subtitle: Text(
-        "Predicted Time: $e mins",
+        "ID: ${r.id}",
       ),
       trailing: new Icon(Icons.keyboard_arrow_right),
       onTap: () {
@@ -96,7 +79,7 @@ class RoutineListState extends State<RoutineList>{
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => RoutineDetail(routine: h),
+              builder: (context) => RoutineDetail(routine: r, routineEx: re),
             ),
           );
         });
@@ -124,10 +107,8 @@ class RoutineListState extends State<RoutineList>{
 
     // After the Selection Screen returns a result, show it in a Snackbar!
 //    Scaffold.of(context).showSnackBar(SnackBar(content: Text("$result")));
-    _routineArr.add({
-        'name': '$result',
-        'exercises':10,
-      });
+    _routineArr.add(
+      new Routine(name: result, id: _routineArr.length+2));
   }
 
 }

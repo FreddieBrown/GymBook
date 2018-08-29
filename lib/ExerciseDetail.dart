@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'database/database.dart';
-import 'package:sqflite/sqflite.dart';
+import 'Models/Exercise.dart';
+
 class ExerciseDetail extends StatelessWidget {
-  final Map exercise;
+  final Exercise exercise;
 
   ExerciseDetail({Key key, @required this.exercise}) : super(key: key);
 
@@ -12,17 +12,17 @@ class ExerciseDetail extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Routine"),
+        title: Text("Exercise"),
       ),
       body: ListView(
         padding: EdgeInsets.all(8.0),
         children: <Widget>[
           Text(
-            '${exercise['name']}',
+            '${exercise.name}',
             style: const TextStyle(fontSize: 26.0),
           ),
           Text(
-            '${exercise['notes']}',
+            '${exercise.notes}',
             style: const TextStyle(fontSize: 18.0),
           ),
         ],
