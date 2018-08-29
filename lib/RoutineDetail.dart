@@ -4,18 +4,20 @@ import 'Models/Routine.dart';
 import 'Models/RoutineExercise.dart';
 import 'Models/Exercise.dart';
 import 'ExerciseDetail.dart';
+import 'database/db.dart';
 
 class RoutineDetail extends StatelessWidget {
   final Routine routine;
   final List routineEx;
 
-  List exercises = [
+  static List exercises = [
     new Exercise(name: "Bench Press", id: 1, notes: "Hold bar above chest and bring down until arms are at right angles before pushing bar back up until arms are straight"),
     new Exercise(name: "Squat", id: 2, notes: "Crouch down keeping back straight until knees and thigh are at a right angle with the floor"),
     new Exercise(name: "Barbell Curl", id: 3, notes: "Bring bar up to chest"),
     new Exercise(name: "Running", id: 4, notes: "Just Run"),
   ];
 
+  List exe = exercises;
   RoutineDetail({Key key, @required this.routine, this.routineEx}) : super(key: key);
 
   @override
@@ -91,5 +93,14 @@ class RoutineDetail extends StatelessWidget {
       }
     );
 
+  }
+
+  data() async{
+    List ids;
+    routineEx.forEach((element){
+      ids.add('${element.exercise}');
+    });
+     exe = await db.get().getExercises(ids);
+     return exe;
   }
 }

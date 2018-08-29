@@ -5,11 +5,16 @@ import 'WorkoutList.dart';
 import 'RoutineList.dart';
 import 'ExerciseList.dart';
 import 'Settings.dart';
+import 'Models/Workout.dart';
+import 'Models/Routine.dart';
+import 'Models/RoutineExercise.dart';
+import 'Models/Exercise.dart';
 
 class Home extends StatelessWidget{
   final _work = Runes(' \u{1F3CB} ');
   final _work1 = Runes('\u{1F501}');
   final _work2 = Runes('\u{1F938}');
+
   @override
   Widget build(BuildContext context){
     return Scaffold(

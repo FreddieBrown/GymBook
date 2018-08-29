@@ -7,10 +7,10 @@ class Workout {
 
   int id;
   String name;
-  DateTime date;
+  String date;
 
   Workout({
-    @required this.id,
+    this.id = null,
     @required this.name,
     @required this.date,
   });

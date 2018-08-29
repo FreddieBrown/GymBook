@@ -45,34 +45,128 @@ class db {
           await db.execute(
               "CREATE TABLE $tableNameE ("
                   "${Exercise.db_id} INTEGER PRIMARY KEY AUTOINCREMENT,"
-                  "${Exercise.db_name} VARCHAR(30),"
-                  "${Exercise.db_notes} TEXT"
+                  "${Exercise.db_name} VARCHAR(30) NOT NULL,"
+                  "${Exercise.db_notes} TEXT NOT NULL"
                   ")");
           await db.execute(
               "CREATE TABLE $tableNameW ("
                   "${Workout.db_id} INTEGER PRIMARY KEY AUTOINCREMENT,"
-                  "${Workout.db_name} VARCHAR(30),"
-                  "${Workout.db_date} DATETIME"
+                  "${Workout.db_name} VARCHAR(30) NOT NULL,"
+                  "${Workout.db_date} TEXT NOT NULL"
                   ")");
           await db.execute(
               "CREATE TABLE $tableNameR ("
                   "${Routine.db_id} INTEGER PRIMARY KEY AUTOINCREMENT,"
-                  "${Routine.db_name} VARCHAR(30),"
+                  "${Routine.db_name} VARCHAR(30) NOT NULL"
                   ")");
           await db.execute(
               "CREATE TABLE $tableNameRE ("
                   "${RoutineExercise.db_id} INTEGER PRIMARY KEY AUTOINCREMENT,"
-                  "${RoutineExercise.db_reps} INTEGER,"
-                  "${RoutineExercise.db_sets} INTEGER,"
-                  "${RoutineExercise.db_weight} FLOAT,"
-                  "${RoutineExercise.db_distance} FLOAT,"
-                  "${RoutineExercise.db_time} FLOAT,"
-                  "${RoutineExercise.db_exercise} INTEGER,"
+                  "${RoutineExercise.db_reps} INTEGER NOT NULL,"
+                  "${RoutineExercise.db_sets} INTEGER NOT NULL,"
+                  "${RoutineExercise.db_weight} FLOAT NOT NULL,"
+                  "${RoutineExercise.db_distance} FLOAT NOT NULL,"
+                  "${RoutineExercise.db_time} FLOAT NOT NULL,"
+                  "${RoutineExercise.db_exercise} INTEGER NOT NULL"
                   ")");
           /// This is where all DB creation happens.
         });
     didInit = true;
   }
+
+
+  Future<List<Exercise>> getExercises([List<String> ids = null]) async{
+    var db = await _getDb();
+    // Building SELECT * FROM TABLE WHERE ID IN (id1, id2, ..., idn)
+    List<Exercise> exercises = [];
+    if(ids == null) {
+      var result = await db.rawQuery(
+          'SELECT * FROM $tableNameE');
+      for (Map<String, dynamic> item in result) {
+        exercises.add(new Exercise.fromMap(item));
+      }
+      return exercises;
+    }
+    else{
+      var idsString = ids.map((it) => '"$it"').join(',');
+      var result = await db.rawQuery(
+          'SELECT * FROM $tableNameE WHERE ${Exercise.db_id} IN ($idsString)');
+      for (Map<String, dynamic> item in result) {
+        exercises.add(new Exercise.fromMap(item));
+      }
+      return exercises;
+    }
+  }
+
+  Future<List<Workout>> getWorkouts([List<String> ids = null]) async{
+    var db = await _getDb();
+    // Building SELECT * FROM TABLE WHERE ID IN (id1, id2, ..., idn)
+    List<Workout> workouts = [];
+    if(ids == null){
+      var result = await db.rawQuery(
+          'SELECT * FROM $tableNameW');
+      for (Map<String, dynamic> item in result) {
+        workouts.add(new Workout.fromMap(item));
+      }
+      return workouts;
+    }
+    else {
+      var idsString = ids.map((it) => '"$it"').join(',');
+      var result = await db.rawQuery(
+          'SELECT * FROM $tableNameW WHERE ${Workout.db_id} IN ($idsString)');
+      for (Map<String, dynamic> item in result) {
+        workouts.add(new Workout.fromMap(item));
+      }
+      return workouts;
+    }
+  }
+
+  Future<List<Routine>> getRoutines([List<String> ids = null]) async{
+    var db = await _getDb();
+    // Building SELECT * FROM TABLE WHERE ID IN (id1, id2, ..., idn)
+    List<Routine> routines = [];
+    if(ids == null){
+      var result = await db.rawQuery(
+          'SELECT * FROM $tableNameR');
+      for (Map<String, dynamic> item in result) {
+        routines.add(new Routine.fromMap(item));
+      }
+      return routines;
+    }
+    else {
+      var idsString = ids.map((it) => '"$it"').join(',');
+      var result = await db.rawQuery(
+          'SELECT * FROM $tableNameR WHERE ${Routine.db_id} IN ($idsString)');
+      for (Map<String, dynamic> item in result) {
+        routines.add(new Routine.fromMap(item));
+      }
+      return routines;
+    }
+  }
+
+  Future<List<RoutineExercise>> getRoutineExercises([List<String> ids = null]) async{
+    var db = await _getDb();
+    // Building SELECT * FROM TABLE WHERE ID IN (id1, id2, ..., idn)
+    List<RoutineExercise> exercises = [];
+    if(ids == null){
+      var result = await db.rawQuery(
+          'SELECT * FROM $tableNameRE');
+      for (Map<String, dynamic> item in result) {
+        exercises.add(new RoutineExercise.fromMap(item));
+      }
+      return exercises;
+    }
+    else {
+      var idsString = ids.map((it) => '"$it"').join(',');
+      var result = await db.rawQuery(
+          'SELECT * FROM $tableNameRE WHERE ${RoutineExercise.db_id} IN ($idsString)');
+      for (Map<String, dynamic> item in result) {
+        exercises.add(new RoutineExercise.fromMap(item));
+      }
+      return exercises;
+    }
+  }
+
 
   Future<Exercise> getExercise(String id) async{
     var result = await data.rawQuery('SELECT * FROM $tableNameE WHERE ${Exercise.db_id} = "$id"');
@@ -98,6 +192,7 @@ class db {
     return new Routine.fromMap(result[0]);
   }
 
+
   Future updateExercise(Exercise exercise) async {
     var db = await _getDb();
     await db.rawInsert(
@@ -112,7 +207,7 @@ class db {
     await db.rawInsert(
         'INSERT OR REPLACE INTO '
             '$tableNameW(${Workout.db_id}, ${Workout.db_name}, ${Workout.db_date})'
-            ' VALUES(?, ?, ?, ?)',
+            ' VALUES(?, ?, ?)',
         [work.id, work.name, work.date]);
   }
 
@@ -133,6 +228,7 @@ class db {
             ' VALUES(?, ?)',
         [routine.id, routine.name]);
   }
+
 
   Future close() async {
     var db = await _getDb();

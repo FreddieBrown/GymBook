@@ -9,7 +9,7 @@ class Exercise {
   int id;
   Exercise({
     @required this.name,
-    @required this.id,
+    this.id = null,
     this.notes = "",
   });
 

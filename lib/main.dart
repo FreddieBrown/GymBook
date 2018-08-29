@@ -5,9 +5,38 @@ import 'RoutineList.dart';
 import 'ExerciseList.dart';
 import 'Settings.dart';
 import 'Home.dart';
+import 'database/db.dart';
+import 'Models/Workout.dart';
 
 final _biggerFont = const TextStyle(fontSize: 18.0);
-void main(){
+void main() async{
+  var work = [
+    new Workout(id: 1, name: "Workout1", date: '${DateTime.now()}'),
+    new Workout(id: 2, name: "Workout2", date: '${DateTime.now()}'),
+    new Workout(id: 3, name: "Workout3", date: '${DateTime.now()}'),
+    new Workout(id: 4, name: "Workout4", date: '${DateTime.now()}'),
+  ];
+  List workouts = [];
+  db data = db.get();
+  try {
+    await data.init();
+//    db.get().data.delete("Workouts");
+//    db.get().data.delete("Routines");
+//    db.get().data.delete("Exercises");
+//    db.get().data.delete("RoutineExercises");
+//    await data.init();
+  }
+  catch(e){
+    print(e.toString());
+  }
+
+  work.forEach((element){
+    db.get().updateWorkout(element);
+  });
+  workouts = await db.get().getWorkouts();
+  List routines = await db.get().getRoutines();
+  List exercises = await db.get().getExercises();
+  print(workouts[0].date);
   runApp(new GymBook());
 }
 

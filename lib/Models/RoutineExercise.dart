@@ -13,7 +13,7 @@ class RoutineExercise {
   int id, routine, reps, sets, exercise;
   var weight, distance, time;
   RoutineExercise({
-    @required this.id,
+    this.id = null,
     @required this.routine,
     @required this.exercise,
     this.reps = 0,

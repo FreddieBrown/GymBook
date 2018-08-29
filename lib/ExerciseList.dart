@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'newExercise.dart';
 import 'ExerciseDetail.dart';
 import 'Models/Exercise.dart';
+import 'database/db.dart';
 
 final _biggerFont = const TextStyle(fontSize: 18.0);
 
@@ -12,7 +13,9 @@ class ExercisesList extends StatefulWidget{
 }
 
 class ExercisesListState extends State<ExercisesList>{
-  List _exerciseArr = [
+  /// Need to make changes so that Exercises are pulled straight from the DB and not only after
+  /// newExercise is pressed.
+  static List exe= [
     new Exercise(name: "Bench Press", id: 1, notes: "Hold bar above chest and bring down until arms are at right angles before pushing bar back up until arms are straight"),
     new Exercise(name: "Squat", id: 2, notes: "Crouch down keeping back straight until knees and thigh are at a right angle with the floor"),
     new Exercise(name: "Barbell Curl", id: 3, notes: "Bring bar up to chest"),
@@ -20,6 +23,7 @@ class ExercisesListState extends State<ExercisesList>{
   ];
   @override
   Widget build(BuildContext context){
+    data();
     return Scaffold(
         body: Center(
           child: _exercises(),
@@ -33,16 +37,17 @@ class ExercisesListState extends State<ExercisesList>{
   }
 
   Widget _exercises(){
-    var _length = _exerciseArr.length*2;
+    var _length = exe.length*2;
     return ListView.builder(
         padding: const EdgeInsets.all(8.0),
+        shrinkWrap: true,
         itemCount: _length,
         itemBuilder: (context, i) {
           if(i.isOdd){
             return new Divider();
           }
           final index = i ~/ 2;
-          return _exercise(_exerciseArr[index]);
+          return _exercise(exe[index]);
         }
     );
   }
@@ -56,7 +61,6 @@ class ExercisesListState extends State<ExercisesList>{
       trailing: new Icon(Icons.keyboard_arrow_right),
       onTap: () {
         setState(() {
-          print("Hello");
 
           Navigator.push(
             context,
@@ -85,12 +89,20 @@ class ExercisesListState extends State<ExercisesList>{
       context,
       MaterialPageRoute(builder: (context) => newExercise()),
     );
-
     // After the Selection Screen returns a result, show it in a Snackbar!
 //    Scaffold.of(context).showSnackBar(SnackBar(content: Text("$result")));
-    _exerciseArr.add(
-    new Exercise(name: result["name"], id: _exerciseArr.length+2, notes: result["notes"]));
+//    _exerciseArr.add(
+//    new Exercise(name: result["name"], id: _exerciseArr.length+2, notes: result["notes"]));
+    db.get().updateExercise(new Exercise(name: result["name"], notes: result["notes"]));
     /// Here I should add this to the DB or whatever storage this uses
+  }
+
+  data() async{
+    exe.forEach((element){
+      db.get().updateExercise(element);
+    });
+    exe = await db.get().getExercises();
+    return exe;
   }
 }
 

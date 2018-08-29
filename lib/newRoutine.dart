@@ -44,7 +44,6 @@ class newRoutineState extends State<newRoutine> {
             // Navigate back to the first screen by popping the current route
             // off the stack
             if (_formKey.currentState.validate()) {
-              print("Saved");
               Navigator.pop(context, controller1.text);
             }
           },

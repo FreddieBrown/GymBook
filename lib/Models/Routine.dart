@@ -8,7 +8,7 @@ class Routine {
   int id;
   Routine({
     @required this.name,
-    @required this.id,
+    this.id = null,
   });
 
   Routine.fromMap(Map<String, dynamic> map): this(

@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'newWorkout.dart';
 import 'WorkoutDetail.dart';
 import 'Models/Workout.dart';
+import 'database/db.dart';
 
 final _biggerFont = const TextStyle(fontSize: 18.0);
 
@@ -13,13 +14,19 @@ class WorkoutList extends StatefulWidget{
 /// This is used to describe the state of the homeList StatefulWidget. It uses
 /// _workouts() as its body.
 class WorkoutListState extends State<WorkoutList> {
-  /// TODO: This is where SQL will be used to get Workout details
-  var work = [
-    new Workout(id: 1, name: "Workout1", date: new DateTime.now()),
-    new Workout(id: 2, name: "Workout2", date: new DateTime.now()),
-    new Workout(id: 3, name: "Workout3", date: new DateTime.now()),
-    new Workout(id: 4, name: "Workout4", date: new DateTime.now()),
+  /// Need to work out how to get workout information from the start and not after 1 refresh
+  static var workouts = [
+    new Workout(id: 1, name: "Workout1", date: '${DateTime.now()}'),
+    new Workout(id: 2, name: "Workout2", date: '${DateTime.now()}'),
+    new Workout(id: 3, name: "Workout3", date: '${DateTime.now()}'),
+    new Workout(id: 4, name: "Workout4", date: '${DateTime.now()}'),
   ];
+  WorkoutListState(){
+    db.get().getWorkouts().then((work){workouts = work;});
+  }
+  /// TODO: This is where SQL will be used to get Workout details
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,13 +43,14 @@ class WorkoutListState extends State<WorkoutList> {
   Widget _workouts() {
     return ListView.builder(
         padding: const EdgeInsets.all(8.0),
-        itemCount: work.length*2,
+        shrinkWrap: true,
+        itemCount: workouts.length*2,
         itemBuilder: (context, i) {
           if(i.isOdd){
             return new Divider();
           }
           final index = i ~/ 2;
-          return _workout(work[index]);
+          return _workout(workouts[index]);
         }
     );
   }
@@ -51,8 +59,8 @@ class WorkoutListState extends State<WorkoutList> {
   Widget _workout(Workout workout) {
     var formatter = new DateFormat('dd/MM/yyyy');
     var formatter1 = new DateFormat('jm');
-    String formatted = formatter.format(workout.date);
-    String formatted1 = formatter1.format(workout.date);
+    String formatted = formatter.format(DateTime.parse(workout.date));
+    String formatted1 = formatter1.format(DateTime.parse(workout.date));
     String text = "${workout.name}";
     String date = "$formatted at $formatted1";
     return ListTile(
@@ -64,8 +72,6 @@ class WorkoutListState extends State<WorkoutList> {
       trailing: new Icon(Icons.keyboard_arrow_right),
       onTap: () {
         setState(() {
-          print("Hello");
-
           /// This is an example of how to push data to another screen
           Navigator.push(
             context,
@@ -97,7 +103,31 @@ class WorkoutListState extends State<WorkoutList> {
 
     // After the Selection Screen returns a result, show it in a Snackbar!
 //    Scaffold.of(context).showSnackBar(SnackBar(content: Text("$result")));
-    print('$result');
-    work.add(new Workout(id: work.length+2, name: "$result", date: new DateTime.now()));
+//    work.add(new Workout(id: work.length+2, name: "$result", date: '${DateTime.now()}'));
+    if('$result' != 'null') {
+      print('$result');
+      try {
+        db.get().updateWorkout(
+            Workout(name: result, date: '${DateTime.now()}'));
+      }
+      catch(e){
+        print(e.toString());
+      }
+    }
+  }
+
+   data() async{
+    try {
+      workouts.forEach((element) {
+        db.get().updateWorkout(element);
+      });
+      workouts = await db.get().getWorkouts();
+    }
+    catch(e){
+      print(e.toString());
+    }
+    finally {
+      return workouts;
+    }
   }
 }
