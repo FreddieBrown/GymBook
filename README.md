@@ -6,3 +6,5 @@ App which can be used to record workouts.
 
 For help getting started with Flutter, view our online
 [documentation](https://flutter.io/).
+change
+By Freddie Brown
