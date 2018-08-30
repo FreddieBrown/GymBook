@@ -40,7 +40,7 @@ class db {
   Future _init() async {
     // Get a location using path_provider
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, "gym.db");
+    String path = join(documentsDirectory.path, "book.db");
     data = await openDatabase(path, version: 1,
         onCreate: (Database db, int version) async {
           // When creating the db, create the table
