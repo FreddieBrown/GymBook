@@ -16,10 +16,10 @@ class WorkoutList extends StatefulWidget{
 class WorkoutListState extends State<WorkoutList> {
   /// Need to work out how to get workout information from the start and not after 1 refresh
   static var workouts = [
-    new Workout(id: 1, name: "Workout1", date: '${DateTime.now()}'),
-    new Workout(id: 2, name: "Workout2", date: '${DateTime.now()}'),
-    new Workout(id: 3, name: "Workout3", date: '${DateTime.now()}'),
-    new Workout(id: 4, name: "Workout4", date: '${DateTime.now()}'),
+    new Workout(id: 1, routine: 1, name: "Workout1", date: '${DateTime.now()}'),
+    new Workout(id: 2, routine: 2, name: "Workout2", date: '${DateTime.now()}'),
+    new Workout(id: 3, routine: 1, name: "Workout3", date: '${DateTime.now()}'),
+    new Workout(id: 4, routine: 2, name: "Workout4", date: '${DateTime.now()}'),
   ];
   WorkoutListState(){
     db.get().getWorkouts().then((work){workouts = work;});
@@ -61,14 +61,12 @@ class WorkoutListState extends State<WorkoutList> {
     var formatter1 = new DateFormat('jm');
     String formatted = formatter.format(DateTime.parse(workout.date));
     String formatted1 = formatter1.format(DateTime.parse(workout.date));
-    String text = "${workout.name}";
-    String date = "$formatted at $formatted1";
     return ListTile(
       title: Text(
-        text,
+        "${workout.name}",
         style: _biggerFont,
       ),
-      subtitle: Text(date),
+      subtitle: Text("$formatted at $formatted1"),
       trailing: new Icon(Icons.keyboard_arrow_right),
       onTap: () {
         setState(() {
@@ -76,7 +74,7 @@ class WorkoutListState extends State<WorkoutList> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => WorkoutDetail(name: text, date: date),
+              builder: (context) => WorkoutDetail(workout: workout),
             ),
           );
         });
@@ -108,7 +106,7 @@ class WorkoutListState extends State<WorkoutList> {
       print('$result');
       try {
         db.get().updateWorkout(
-            Workout(name: result, date: '${DateTime.now()}'));
+            Workout(name: result, routine: 1, date: '${DateTime.now()}'));
       }
       catch(e){
         print(e.toString());

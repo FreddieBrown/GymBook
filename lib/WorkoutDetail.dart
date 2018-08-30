@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'Models/Workout.dart';
 class WorkoutDetail extends StatelessWidget {
-  final String name;
-  final String date;
-  WorkoutDetail({Key key, @required this.name, @required this.date}) : super(key: key);
-
+  final Workout workout;
+  String formatted;
+  String formatted1;
+  var formatter = new DateFormat('dd/MM/yyyy');
+  var formatter1 = new DateFormat('jm');
+  WorkoutDetail({@required this.workout}){
+    formatted= formatter.format(DateTime.parse(workout.date));
+    formatted1 = formatter1.format(DateTime.parse(workout.date));
+  }
   @override
   Widget build(BuildContext context) {
 
@@ -16,11 +22,11 @@ class WorkoutDetail extends StatelessWidget {
         padding: EdgeInsets.all(8.0),
         child: ListView(
           children: <Widget>[
-            Text('$name',
+            Text('${workout.name}',
               style: const TextStyle(fontSize: 18.0)
               ),
             Text(
-              '$date',
+              '$formatted at $formatted1\n${workout.routine}',
               style: const TextStyle(fontSize: 11.0),
             ),
           ],

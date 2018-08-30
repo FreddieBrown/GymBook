@@ -81,7 +81,6 @@ class RoutineDetail extends StatelessWidget {
     });
     return ListTile(
       title: Text(ex.name),
-      subtitle: re.reps == 0? Text('Distance: ${re.distance}km Time: ${re.time}mins') : Text('Reps: ${re.reps} Sets: ${re.sets} Weight: ${re.weight}kg'),
       trailing: new Icon(Icons.keyboard_arrow_right),
       onTap: () {
         Navigator.push(

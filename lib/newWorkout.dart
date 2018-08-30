@@ -7,6 +7,8 @@ class newWorkout extends StatefulWidget {
   newWorkoutState createState() => newWorkoutState();
 }
 
+/// In this need to add in attaching a routine to a workout.
+
 class newWorkoutState extends State<newWorkout> {
   final _formKey = GlobalKey<FormState>();
   final controller1 = TextEditingController();

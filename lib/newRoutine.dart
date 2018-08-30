@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'FormMaker.dart';
+import 'RoutineBuilder.dart';
 
 class newRoutine extends StatefulWidget {
   @override
@@ -44,10 +45,18 @@ class newRoutineState extends State<newRoutine> {
             // Navigate back to the first screen by popping the current route
             // off the stack
             if (_formKey.currentState.validate()) {
-              Navigator.pop(context, controller1.text);
+//              Navigator.pop(context, '${controller1.text}');
+              setState(() {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => RoutineBuilder('${controller1.text}'),
+                  ),
+                );
+              });
             }
           },
-          child: Icon(Icons.save),
+          child: Text("Next"),
         ),
     );
   }

@@ -22,11 +22,11 @@ class RoutineListState extends State<RoutineList>{
 
   ///Use SQL to get the correct RoutineExercises
   static List rea = [
-      new RoutineExercise(routine: 1, exercise: 1, reps: 5, sets: 5, weight: 80.0),
-      new RoutineExercise(routine: 1, exercise: 4, time: 12.0, distance: 5.0),
-      new RoutineExercise(routine: 2, exercise: 2, reps: 5, sets: 5, weight: 130.0),
-      new RoutineExercise(routine: 2, exercise: 3, reps: 8, sets: 3, weight: 30.5),
-      new RoutineExercise(routine: 2, exercise: 4, time: 18.0, distance: 6.0)
+      new RoutineExercise(routine: 1, exercise: 1),
+      new RoutineExercise(routine: 1, exercise: 4),
+      new RoutineExercise(routine: 2, exercise: 2),
+      new RoutineExercise(routine: 2, exercise: 3),
+      new RoutineExercise(routine: 2, exercise: 4)
   ];
 
   @override

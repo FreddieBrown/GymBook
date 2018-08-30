@@ -7,6 +7,7 @@ import '../Models/Exercise.dart';
 import '../Models/Workout.dart';
 import '../Models/Routine.dart';
 import '../Models/RoutineExercise.dart';
+import '../Models/ExerciseData.dart';
 class db {
   static final db _db = new db._internal();
 
@@ -14,6 +15,7 @@ class db {
   final String tableNameW = "Workouts";
   final String tableNameR = "Routines";
   final String tableNameRE = "RoutineExercises";
+  final String tableNameED = "ExerciseData";
 
   Database data;
 
@@ -38,7 +40,7 @@ class db {
   Future _init() async {
     // Get a location using path_provider
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, "demo.db");
+    String path = join(documentsDirectory.path, "gym.db");
     data = await openDatabase(path, version: 1,
         onCreate: (Database db, int version) async {
           // When creating the db, create the table
@@ -46,12 +48,14 @@ class db {
               "CREATE TABLE $tableNameE ("
                   "${Exercise.db_id} INTEGER PRIMARY KEY AUTOINCREMENT,"
                   "${Exercise.db_name} VARCHAR(30) NOT NULL,"
-                  "${Exercise.db_notes} TEXT NOT NULL"
+                  "${Exercise.db_notes} TEXT NOT NULL,"
+                  "${Exercise.db_flag} INTEGER NOT NULL"
                   ")");
           await db.execute(
               "CREATE TABLE $tableNameW ("
                   "${Workout.db_id} INTEGER PRIMARY KEY AUTOINCREMENT,"
                   "${Workout.db_name} VARCHAR(30) NOT NULL,"
+                  "${Workout.db_routine} INTEGER NOT NULL,"
                   "${Workout.db_date} TEXT NOT NULL"
                   ")");
           await db.execute(
@@ -62,12 +66,19 @@ class db {
           await db.execute(
               "CREATE TABLE $tableNameRE ("
                   "${RoutineExercise.db_id} INTEGER PRIMARY KEY AUTOINCREMENT,"
-                  "${RoutineExercise.db_reps} INTEGER NOT NULL,"
-                  "${RoutineExercise.db_sets} INTEGER NOT NULL,"
-                  "${RoutineExercise.db_weight} FLOAT NOT NULL,"
-                  "${RoutineExercise.db_distance} FLOAT NOT NULL,"
-                  "${RoutineExercise.db_time} FLOAT NOT NULL,"
-                  "${RoutineExercise.db_exercise} INTEGER NOT NULL"
+                  "${RoutineExercise.db_exercise} INTEGER NOT NULL,"
+                  "${RoutineExercise.db_routine} INTEGER NOT NULL"
+                  ")");
+          await db.execute(
+              "CREATE TABLE $tableNameED ("
+                  "${ExerciseData.db_id} INTEGER PRIMARY KEY AUTOINCREMENT,"
+                  "${ExerciseData.db_reps} INTEGER NOT NULL,"
+                  "${ExerciseData.db_sets} INTEGER NOT NULL,"
+                  "${ExerciseData.db_weight} FLOAT NOT NULL,"
+                  "${ExerciseData.db_distance} FLOAT NOT NULL,"
+                  "${ExerciseData.db_time} FLOAT NOT NULL,"
+                  "${ExerciseData.db_workout} INTEGER NOT NULL,"
+                  "${ExerciseData.db_exercise} INTEGER NOT NULL"
                   ")");
           /// This is where all DB creation happens.
         });
@@ -192,32 +203,38 @@ class db {
     return new Routine.fromMap(result[0]);
   }
 
+  Future<ExerciseData> getExerciseData(String id) async{
+    var result = await data.rawQuery('SELECT * FROM $tableNameED WHERE ${ExerciseData.db_id} = "$id"');
+    if(result.length == 0)return null;
+    return new ExerciseData.fromMap(result[0]);
+  }
+
 
   Future updateExercise(Exercise exercise) async {
     var db = await _getDb();
     await db.rawInsert(
         'INSERT OR REPLACE INTO '
-            '$tableNameE(${Exercise.db_id}, ${Exercise.db_name}, ${Exercise.db_notes})'
-            ' VALUES(?, ?, ?)',
-        [exercise.id, exercise.name, exercise.notes]);
+            '$tableNameE(${Exercise.db_id}, ${Exercise.db_name}, ${Exercise.db_notes}, ${Exercise.db_flag})'
+            ' VALUES(?, ?, ?, ?)',
+        [exercise.id, exercise.name, exercise.notes, exercise.flag]);
   }
 
   Future updateWorkout(Workout work) async {
     var db = await _getDb();
     await db.rawInsert(
         'INSERT OR REPLACE INTO '
-            '$tableNameW(${Workout.db_id}, ${Workout.db_name}, ${Workout.db_date})'
-            ' VALUES(?, ?, ?)',
-        [work.id, work.name, work.date]);
+            '$tableNameW(${Workout.db_id}, ${Workout.db_name}, ${Workout.db_date}, ${Workout.db_routine})'
+            ' VALUES(?, ?, ?, ?)',
+        [work.id, work.name, work.date, work.routine]);
   }
 
   Future updateRoutineExercise(RoutineExercise exercise) async {
     var db = await _getDb();
     await db.rawInsert(
         'INSERT OR REPLACE INTO '
-            '$tableNameRE(${RoutineExercise.db_id}, ${RoutineExercise.db_reps}, ${RoutineExercise.db_sets}, ${RoutineExercise.db_weight}, ${RoutineExercise.db_distance}, ${RoutineExercise.db_time}, ${RoutineExercise.db_exercise})'
-            ' VALUES(?, ?, ?, ?, ?, ?, ?)',
-        [exercise.id, exercise.reps, exercise.sets, exercise.weight, exercise.distance, exercise.time, exercise.exercise]);
+            '$tableNameRE(${RoutineExercise.db_id}, ${RoutineExercise.db_exercise}, ${RoutineExercise.db_routine})'
+            ' VALUES(?, ?, ?)',
+        [exercise.id, exercise.exercise, exercise.routine]);
   }
 
   Future updateRoutine(Routine routine) async {
@@ -227,6 +244,15 @@ class db {
             '$tableNameR(${Routine.db_id}, ${Routine.db_name})'
             ' VALUES(?, ?)',
         [routine.id, routine.name]);
+  }
+
+  Future updateExerciseData(ExerciseData ed) async {
+    var db = await _getDb();
+    await db.rawInsert(
+        'INSERT OR REPLACE INTO '
+            '$tableNameED(${ExerciseData.db_id}, ${ExerciseData.db_exercise}, ${ExerciseData.db_workout}, ${ExerciseData.db_time}, ${ExerciseData.db_distance}, ${ExerciseData.db_weight}, ${ExerciseData.db_reps}, ${ExerciseData.db_sets})'
+            ' VALUES(?, ?, ?, ?, ?, ?, ?, ?)',
+        [ed.id, ed.exercise, ed.workout, ed.time, ed.distance, ed.weight, ed.reps, ed.sets]);
   }
 
 
