@@ -63,7 +63,6 @@ class newRoutineState extends State<newRoutine> {
 }
 
 String _valid(value){
-  print(value);
   if (value.isEmpty) {
     return 'Please enter some text';
   }

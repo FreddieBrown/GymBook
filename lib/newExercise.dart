@@ -70,7 +70,6 @@ class newExerciseState extends State<newExercise> {
 }
 
 String _valid(value){
-  print(value);
   if (value.isEmpty) {
     return 'Please enter some text';
   }

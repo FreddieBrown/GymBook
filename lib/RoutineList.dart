@@ -72,7 +72,6 @@ class RoutineListState extends State<RoutineList>{
   }
 
   Widget _routine(Routine r){
-    print('${r.name} and ${r.id}');
     return ListTile(
       title: Text(
         r.name,

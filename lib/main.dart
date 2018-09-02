@@ -45,12 +45,12 @@ void main() async{
   db data = db.get();
   try {
     await data.init();
-//    db.get().data.delete("Workouts");
-//    db.get().data.delete("Routines");
-//    db.get().data.delete("Exercises");
-//    db.get().data.delete("RoutineExercises");
-//    db.get().data.delete("ExerciseData");
-//    await data.init();
+    db.get().data.delete("Workouts");
+    db.get().data.delete("Routines");
+    db.get().data.delete("Exercises");
+    db.get().data.delete("RoutineExercises");
+    db.get().data.delete("ExerciseData");
+    await data.init();
   }
   catch(e){
     print(e.toString());
@@ -72,7 +72,6 @@ void main() async{
   workouts = await db.get().getWorkouts();
   List routines = await db.get().getRoutines();
   List exercises = await db.get().getExercises();
-  print(workouts[0].date);
   runApp(new GymBook());
 }
 

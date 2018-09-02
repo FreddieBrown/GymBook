@@ -30,11 +30,12 @@ class RoutineExercise {
     };
   }
 
-  static getRoutine(int i) async{
-    return await db.get().getRoutine('$i');
+  static getRoutine(String i) async{
+    return await db.get().getRoutine(i);
   }
 
-  static getExercise(int i) async{
-    return await db.get().getExercise('$i');
+  static getExercise(String i) async{
+    var a = await db.get().getExercise(i);
+    return a;
   }
 }

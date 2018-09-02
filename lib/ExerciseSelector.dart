@@ -46,7 +46,6 @@ class ExerciseSelectorState extends State<ExerciseSelector>{
             return new Divider();
           }
           final index = i ~/ 2;
-          print(exe[index].name);
           return exercise(exe[index]);
         }
     );

@@ -8,6 +8,7 @@ import 'database/db.dart';
 
 class RoutineDetail extends StatelessWidget {
   final Routine routine;
+  var exercises;
 
   RoutineDetail({Key key, @required this.routine}) : super(key: key);
 
@@ -59,7 +60,8 @@ class RoutineDetail extends StatelessWidget {
 
   Widget _routineD(BuildContext context, AsyncSnapshot snapshot){
     /// There is a problem with the length bit here
-    var re = snapshot.data;
+    var re = snapshot.data[0];
+    exercises = snapshot.data[1];
     return ListView.builder(
         padding: const EdgeInsets.all(8.0),
         shrinkWrap: true,
@@ -69,14 +71,13 @@ class RoutineDetail extends StatelessWidget {
             return new Divider();
           }
           final index = i ~/ 2;
-          return _exercise(re[index], context);
+          return _exercise(re[index], exercises[index], context);
         }
     );
 
   }
 
-  Widget _exercise(RoutineExercise re, context){
-    var ex = RoutineExercise.getExercise(re.exercise);
+  Widget _exercise(RoutineExercise re, Exercise ex, BuildContext context){
     return ListTile(
       title: Text(ex.name),
       trailing: new Icon(Icons.keyboard_arrow_right),
@@ -93,7 +94,15 @@ class RoutineDetail extends StatelessWidget {
   }
 
   data() async{
-    var list;
-    list = await db.get().getREByRoutine('$routine.id');
+    var list = [];
+    var list1 = await db.get().getREByRoutine('${routine.id}');
+    list.add(list1);
+    var list2 = [];
+    list1.forEach((re) async{
+      var a = await db.get().getExercise('${re.exercise}');
+      list2.add(a);
+    });
+    list.add(list2);
+    return list;
   }
 }

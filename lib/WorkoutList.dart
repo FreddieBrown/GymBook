@@ -119,7 +119,6 @@ class WorkoutListState extends State<WorkoutList> {
 //    Scaffold.of(context).showSnackBar(SnackBar(content: Text("$result")));
 //    work.add(new Workout(id: work.length+2, name: "$result", date: '${DateTime.now()}'));
     if('$result' != 'null') {
-      print('$result');
       try {
         db.get().updateWorkout(
             Workout(name: result, routine: 1, date: '${DateTime.now()}'));
@@ -131,7 +130,6 @@ class WorkoutListState extends State<WorkoutList> {
   }
 
    data() async{
-    print("This is an update");
     var list;
     try {
       list = await db.get().getWorkouts();

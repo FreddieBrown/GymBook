@@ -180,26 +180,30 @@ class db {
 
 
   Future<Exercise> getExercise(String id) async{
-    var result = await data.rawQuery('SELECT * FROM $tableNameE WHERE ${Exercise.db_id} = "$id"');
+    var db = await _getDb();
+    var result = await db.rawQuery('SELECT * FROM $tableNameE WHERE ${Exercise.db_id} = "$id"');
     if(result.length == 0)return null;
     return new Exercise.fromMap(result[0]);
   }
 
   Future<Workout> getWorkout(String id) async{
-    var result = await data.rawQuery('SELECT * FROM $tableNameW WHERE ${Workout.db_id} = "$id"');
+    var db = await _getDb();
+    var result = await db.rawQuery('SELECT * FROM $tableNameW WHERE ${Workout.db_id} = "$id"');
     if(result.length == 0)return null;
     return new Workout.fromMap(result[0]);
   }
 
   Future<RoutineExercise> getRoutineExercise(String id) async{
-    var result = await data.rawQuery('SELECT * FROM $tableNameRE WHERE ${RoutineExercise.db_id} = "$id"');
+    var db = await _getDb();
+    var result = await db.rawQuery('SELECT * FROM $tableNameRE WHERE ${RoutineExercise.db_id} = "$id"');
     if(result.length == 0)return null;
     return new RoutineExercise.fromMap(result[0]);
   }
 
-  Future<List<RoutineExercise>> getREByRoutine(String id) async{
+  Future<List> getREByRoutine(String id) async{
+    var db = await _getDb();
     var exercises =[];
-    var result = await data.rawQuery('SELECT * FROM $tableNameRE WHERE ${RoutineExercise.db_routine} = "$id"');
+    var result = await db.rawQuery('SELECT * FROM $tableNameRE WHERE ${RoutineExercise.db_routine} = "$id"');
     if(result.length == 0)return null;
     for (Map<String, dynamic> item in result) {
       exercises.add(new RoutineExercise.fromMap(item));
@@ -208,13 +212,15 @@ class db {
   }
 
   Future<Routine> getRoutine(String id) async{
-    var result = await data.rawQuery('SELECT * FROM $tableNameR WHERE ${Routine.db_id} = "$id"');
+    var db = await _getDb();
+    var result = await db.rawQuery('SELECT * FROM $tableNameR WHERE ${Routine.db_id} = "$id"');
     if(result.length == 0)return null;
     return new Routine.fromMap(result[0]);
   }
 
   Future<ExerciseData> getExerciseData(String id) async{
-    var result = await data.rawQuery('SELECT * FROM $tableNameED WHERE ${ExerciseData.db_id} = "$id"');
+    var db = await _getDb();
+    var result = await db.rawQuery('SELECT * FROM $tableNameED WHERE ${ExerciseData.db_id} = "$id"');
     if(result.length == 0)return null;
     return new ExerciseData.fromMap(result[0]);
   }
