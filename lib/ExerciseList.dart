@@ -15,18 +15,37 @@ class ExercisesList extends StatefulWidget{
 class ExercisesListState extends State<ExercisesList>{
   /// Need to make changes so that Exercises are pulled straight from the DB and not only after
   /// newExercise is pressed.
-  static List exe= [
-    new Exercise(name: "Bench Press", id: 1, notes: "Hold bar above chest and bring down until arms are at right angles before pushing bar back up until arms are straight"),
-    new Exercise(name: "Squat", id: 2, notes: "Crouch down keeping back straight until knees and thigh are at a right angle with the floor"),
-    new Exercise(name: "Barbell Curl", id: 3, notes: "Bring bar up to chest"),
-    new Exercise(name: "Running", id: 4, notes: "Just Run"),
-  ];
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context){
-    data();
+
+    var fut = FutureBuilder(
+      future: data(),
+      builder: (BuildContext context, AsyncSnapshot snapshot){
+        switch (snapshot.connectionState) {
+          case ConnectionState.none:
+            return new Text('Press button to start.');
+          case ConnectionState.active:
+            return new Text('Active');
+          case ConnectionState.waiting:
+            return new Text('Awaiting result...');
+          case ConnectionState.done:
+            if (snapshot.hasError)
+              return new Text('Error: ${snapshot.error}');
+            else
+              return _exercises(context, snapshot);
+        }
+      },
+    );
+
     return Scaffold(
         body: Center(
-          child: _exercises(),
+          child: fut,
         ),
         floatingActionButton: new FloatingActionButton(
           heroTag: "Exercise1",
@@ -36,7 +55,8 @@ class ExercisesListState extends State<ExercisesList>{
     );
   }
 
-  Widget _exercises(){
+  Widget _exercises(BuildContext context, AsyncSnapshot snapshot){
+    var exe = snapshot.data;
     var _length = exe.length*2;
     return ListView.builder(
         padding: const EdgeInsets.all(8.0),
@@ -98,11 +118,14 @@ class ExercisesListState extends State<ExercisesList>{
   }
 
   data() async{
-    exe.forEach((element){
-      db.get().updateExercise(element);
-    });
-    exe = await db.get().getExercises();
-    return exe;
+    var list;
+    try {
+      list = await db.get().getExercises();
+    }
+    catch(e){
+      print(e.toString());
+    }
+    return list;
   }
 }
 

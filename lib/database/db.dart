@@ -197,6 +197,16 @@ class db {
     return new RoutineExercise.fromMap(result[0]);
   }
 
+  Future<List<RoutineExercise>> getREByRoutine(String id) async{
+    var exercises =[];
+    var result = await data.rawQuery('SELECT * FROM $tableNameRE WHERE ${RoutineExercise.db_routine} = "$id"');
+    if(result.length == 0)return null;
+    for (Map<String, dynamic> item in result) {
+      exercises.add(new RoutineExercise.fromMap(item));
+    }
+    return exercises;
+  }
+
   Future<Routine> getRoutine(String id) async{
     var result = await data.rawQuery('SELECT * FROM $tableNameR WHERE ${Routine.db_id} = "$id"');
     if(result.length == 0)return null;

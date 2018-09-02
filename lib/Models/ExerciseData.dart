@@ -1,4 +1,6 @@
 import 'package:meta/meta.dart';
+import 'dart:async';
+import 'package:gym_book/database/db.dart';
 
 class ExerciseData {
   static final db_exercise = "exercise_id";
@@ -34,7 +36,7 @@ class ExerciseData {
     workout: map[db_workout],
   );
 
-  // Currently not used
+
   Map<String, dynamic> toMap() {
     return {
       db_reps: reps,
@@ -46,5 +48,13 @@ class ExerciseData {
       db_exercise: exercise,
       db_workout: workout,
     };
+  }
+
+  static getExercise(int i) async{
+    return await db.get().getExercise('$i');
+  }
+
+  static getWorkout(int i) async{
+    return await db.get().getWorkout('$i');
   }
 }

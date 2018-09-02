@@ -16,7 +16,7 @@ class Routine {
     id: map[db_id],
   );
 
-  // Currently not used
+
   Map<String, dynamic> toMap() {
     return {
       db_name: name,

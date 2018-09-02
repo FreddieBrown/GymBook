@@ -22,7 +22,7 @@ class Exercise {
     flag: map[db_flag],
   );
 
-  // Currently not used
+
   Map<String, dynamic> toMap() {
     return {
       db_name: name,

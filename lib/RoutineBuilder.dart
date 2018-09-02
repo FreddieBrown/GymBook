@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'ExerciseSelector.dart';
+import 'Models/Exercise.dart';
 
 class RoutineBuilder extends StatefulWidget {
   String name;
@@ -11,21 +12,19 @@ class RoutineBuilder extends StatefulWidget {
 
 class RoutineBuilderState extends State<RoutineBuilder> {
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
-  ListModel<int> _list;
-  int _selectedItem;
-  int _nextItem; // The next item inserted when the user presses the '+' button.
+  ListModel _list;
+  var _selectedItem;
   final String name;
   RoutineBuilderState(this.name);
 
   @override
   void initState() {
     super.initState();
-    _list = ListModel<int>(
+    _list = ListModel(
       listKey: _listKey,
-      initialItems: <int>[0, 1, 2],
+      initialItems: [],
       removedItemBuilder: _buildRemovedItem,
     );
-    _nextItem = 3;
   }
 
   // Used to build list items that haven't been removed.
@@ -49,7 +48,7 @@ class RoutineBuilderState extends State<RoutineBuilder> {
   // The widget will be used by the [AnimatedListState.removeItem] method's
   // [AnimatedListRemovedItemBuilder] parameter.
   Widget _buildRemovedItem(
-      int item, BuildContext context, Animation<double> animation) {
+      Exercise item, BuildContext context, Animation<double> animation) {
     return CardItem(
       animation: animation,
       item: item,
@@ -61,17 +60,18 @@ class RoutineBuilderState extends State<RoutineBuilder> {
   /// This is where the exercise selector page will be called from
   // Insert the "next item" into the list model.
   void _insert() {
-//    final int index =
-//    _selectedItem == null ? _list.length : _list.indexOf(_selectedItem);
+    final int index =
+    _selectedItem == null ? _list.length : _list.indexOf(_selectedItem);
 //    _list.insert(index, _nextItem++);
+  var result;
     setState(() {
-      Navigator.push(
-        context,
+      result = Navigator.push(context,
         MaterialPageRoute(
           builder: (context) => ExerciseSelector(),
         ),
       );
     });
+    _list.insert(index, result);
   }
 
   // Remove the selected item from the list model.
@@ -123,28 +123,28 @@ class RoutineBuilderState extends State<RoutineBuilder> {
 /// sample app. More list methods are easily added, however methods that mutate the
 /// list must make the same changes to the animated list in terms of
 /// [AnimatedListState.insertItem] and [AnimatedList.removeItem].
-class ListModel<E> {
+class ListModel {
   ListModel({
     @required this.listKey,
     @required this.removedItemBuilder,
-    Iterable<E> initialItems,
+    Iterable initialItems,
   })  : assert(listKey != null),
         assert(removedItemBuilder != null),
-        _items = List<E>.from(initialItems ?? <E>[]);
+        _items = List.from(initialItems ?? []);
 
   final GlobalKey<AnimatedListState> listKey;
   final dynamic removedItemBuilder;
-  final List<E> _items;
+  final List _items;
 
   AnimatedListState get _animatedList => listKey.currentState;
 
-  void insert(int index, E item) {
+  void insert(int index, item) {
     _items.insert(index, item);
     _animatedList.insertItem(index);
   }
 
-  E removeAt(int index) {
-    final E removedItem = _items.removeAt(index);
+  removeAt(int index) {
+    final removedItem = _items.removeAt(index);
     if (removedItem != null) {
       _animatedList.removeItem(index,
               (BuildContext context, Animation<double> animation) {
@@ -156,9 +156,9 @@ class ListModel<E> {
 
   int get length => _items.length;
 
-  E operator [](int index) => _items[index];
+  operator [](int index) => _items[index];
 
-  int indexOf(E item) => _items.indexOf(item);
+  int indexOf(item) => _items.indexOf(item);
 }
 
 /// Displays its integer item as 'item N' on a Card whose color is based on
@@ -173,13 +173,13 @@ class CardItem extends StatelessWidget {
         @required this.item,
         this.selected: false})
       : assert(animation != null),
-        assert(item != null && item >= 0),
+        assert(item != null),
         assert(selected != null),
         super(key: key);
 
   final Animation<double> animation;
   final VoidCallback onTap;
-  final int item;
+  final item;
   final bool selected;
 
   @override
@@ -198,9 +198,9 @@ class CardItem extends StatelessWidget {
           child: SizedBox(
             height: 128.0,
             child: Card(
-              color: Colors.primaries[item % Colors.primaries.length],
+              color: Colors.primaries[10 % Colors.primaries.length],
               child: Center(
-                child: Text('Item $item', style: textStyle),
+                child: Text('${item.name}', style: textStyle),
               ),
             ),
           ),

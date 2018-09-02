@@ -15,22 +15,37 @@ class WorkoutList extends StatefulWidget{
 /// _workouts() as its body.
 class WorkoutListState extends State<WorkoutList> {
   /// Need to work out how to get workout information from the start and not after 1 refresh
-  static var workouts = [
-    new Workout(id: 1, routine: 1, name: "Workout1", date: '${DateTime.now()}'),
-    new Workout(id: 2, routine: 2, name: "Workout2", date: '${DateTime.now()}'),
-    new Workout(id: 3, routine: 1, name: "Workout3", date: '${DateTime.now()}'),
-    new Workout(id: 4, routine: 2, name: "Workout4", date: '${DateTime.now()}'),
-  ];
-  WorkoutListState(){
-    db.get().getWorkouts().then((work){workouts = work;});
-  }
   /// TODO: This is where SQL will be used to get Workout details
 
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+
+    var fut = FutureBuilder(
+      future: data(),
+      builder: (BuildContext context, AsyncSnapshot snapshot){
+        switch (snapshot.connectionState) {
+          case ConnectionState.none:
+            return new Text('Press button to start.');
+          case ConnectionState.active:
+            return new Text('Active');
+          case ConnectionState.waiting:
+            return new Text('Awaiting result...');
+          case ConnectionState.done:
+            if (snapshot.hasError)
+              return new Text('Error: ${snapshot.error}');
+            else
+              return _workouts(context, snapshot);
+        }
+      },
+    );
+
     return Scaffold(
-      body: _workouts(),
+      body: fut,
       floatingActionButton: new FloatingActionButton(
         heroTag: "Workout1",
         onPressed: _addWorkout,
@@ -40,7 +55,8 @@ class WorkoutListState extends State<WorkoutList> {
   }
 
   /// This builds a list using _workout() which is shown by homeList
-  Widget _workouts() {
+  Widget _workouts(BuildContext context, AsyncSnapshot snapshot) {
+    var workouts = snapshot.data;
     return ListView.builder(
         padding: const EdgeInsets.all(8.0),
         shrinkWrap: true,
@@ -115,17 +131,14 @@ class WorkoutListState extends State<WorkoutList> {
   }
 
    data() async{
+    print("This is an update");
+    var list;
     try {
-      workouts.forEach((element) {
-        db.get().updateWorkout(element);
-      });
-      workouts = await db.get().getWorkouts();
+      list = await db.get().getWorkouts();
     }
     catch(e){
       print(e.toString());
     }
-    finally {
-      return workouts;
-    }
+    return list;
   }
 }

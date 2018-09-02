@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'newRoutine.dart';
 import 'RoutineDetail.dart';
 import 'Models/Routine.dart';
 import 'Models/RoutineExercise.dart';
 import 'database/db.dart';
+import 'dart:async';
 
 final _biggerFont = const TextStyle(fontSize: 18.0);
 
@@ -14,27 +14,37 @@ class RoutineList extends StatefulWidget{
 }
 
 class RoutineListState extends State<RoutineList>{
-  /// Use SQL to get Routines
-  static List ra = [
-    new Routine(name: "Routine1", id: 1),
-    new Routine(name: "Routine2", id: 2)
-  ];
 
-  ///Use SQL to get the correct RoutineExercises
-  static List rea = [
-      new RoutineExercise(routine: 1, exercise: 1),
-      new RoutineExercise(routine: 1, exercise: 4),
-      new RoutineExercise(routine: 2, exercise: 2),
-      new RoutineExercise(routine: 2, exercise: 3),
-      new RoutineExercise(routine: 2, exercise: 4)
-  ];
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context){
-    data();
+
+    var fut = FutureBuilder(
+      future: data(),
+      builder: (BuildContext context, AsyncSnapshot snapshot){
+        switch (snapshot.connectionState) {
+          case ConnectionState.none:
+            return new Text('Press button to start.');
+          case ConnectionState.active:
+            return new Text('Active');
+          case ConnectionState.waiting:
+            return new Text('Awaiting result...');
+          case ConnectionState.done:
+            if (snapshot.hasError)
+              return new Text('Error: ${snapshot.error}');
+            else
+              return _routines(context, snapshot);
+        }
+      },
+    );
+
     return Scaffold(
         body: Center(
-          child: _routines(),
+          child: fut,
         ),
         floatingActionButton: new FloatingActionButton(
           heroTag: "Routine1",
@@ -44,7 +54,8 @@ class RoutineListState extends State<RoutineList>{
     );
   }
 
-  Widget _routines(){
+  Widget _routines(BuildContext context, AsyncSnapshot snapshot){
+    var ra = snapshot.data;
     var _length = ra.length*2;
     return ListView.builder(
         padding: const EdgeInsets.all(8.0),
@@ -61,12 +72,6 @@ class RoutineListState extends State<RoutineList>{
   }
 
   Widget _routine(Routine r){
-    var re = [];
-    rea.forEach((element) {
-      if(element.routine == r.id){
-        re.add(element);
-      }
-    });
     print('${r.name} and ${r.id}');
     return ListTile(
       title: Text(
@@ -82,7 +87,7 @@ class RoutineListState extends State<RoutineList>{
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => RoutineDetail(routine: r, routineEx: re),
+              builder: (context) => RoutineDetail(routine: r),
             ),
           );
         });
@@ -116,33 +121,28 @@ class RoutineListState extends State<RoutineList>{
     }
   }
 
-  data() async{
+
+  Future<List<RoutineExercise>> _reData() async{
+    var list;
     try {
-      ra.forEach((element) {
-        db.get().updateRoutine(element);
-      });
-      ra = await db.get().getRoutines();
+
+       list = await db.get().getRoutineExercises();
+
     }
     catch(e){
       print(e.toString());
     }
-    finally {
-      return ra;
-    }
+    return list;
   }
 
-  reData() async{
+  Future<List<Routine>> data() async{
+    var list;
     try {
-      rea.forEach((element) {
-        db.get().updateRoutineExercise(element);
-      });
-      rea = await db.get().getRoutineExercises();
+      list = await db.get().getRoutines();
     }
     catch(e){
       print(e.toString());
     }
-    finally {
-      return rea;
-    }
+    return list;
   }
 }
