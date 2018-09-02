@@ -12,7 +12,6 @@ import 'Models/Routine.dart';
 import 'Models/RoutineExercise.dart';
 import 'Models/ExerciseData.dart';
 
-final _biggerFont = const TextStyle(fontSize: 18.0);
 void main() async{
   var work = [
     new Workout(id: 1, routine: 1, name: "Workout1", date: '${DateTime.now()}'),
@@ -41,7 +40,6 @@ void main() async{
     new Routine(name: "Routine2", id: 2)
   ];
 
-  List workouts = [];
   db data = db.get();
   try {
     await data.init();
@@ -56,22 +54,23 @@ void main() async{
     print(e.toString());
   }
 
-  work.forEach((element){
-    db.get().updateWorkout(element);
+  exe.forEach((element) async{
+    await db.get().updateExercise(element);
   });
-  exe.forEach((element){
-    db.get().updateExercise(element);
+  ra.forEach((element) async{
+    await db.get().updateRoutine(element);
   });
-  rea.forEach((element){
-    db.get().updateRoutineExercise(element);
+  work.forEach((element) async{
+    await db.get().updateWorkout(element);
   });
-  ra.forEach((element){
-    db.get().updateRoutine(element);
+  rea.forEach((element) async{
+    try {
+      await db.get().updateRoutineExercise(element);
+    }
+    catch(e){
+      print(e.toString());
+    }
   });
-
-  workouts = await db.get().getWorkouts();
-  List routines = await db.get().getRoutines();
-  List exercises = await db.get().getExercises();
   runApp(new GymBook());
 }
 

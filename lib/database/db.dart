@@ -52,22 +52,25 @@ class db {
                   "${Exercise.db_flag} INTEGER NOT NULL"
                   ")");
           await db.execute(
-              "CREATE TABLE $tableNameW ("
-                  "${Workout.db_id} INTEGER PRIMARY KEY AUTOINCREMENT,"
-                  "${Workout.db_name} VARCHAR(30) NOT NULL,"
-                  "${Workout.db_routine} INTEGER NOT NULL,"
-                  "${Workout.db_date} TEXT NOT NULL"
-                  ")");
-          await db.execute(
               "CREATE TABLE $tableNameR ("
                   "${Routine.db_id} INTEGER PRIMARY KEY AUTOINCREMENT,"
                   "${Routine.db_name} VARCHAR(30) NOT NULL"
                   ")");
           await db.execute(
+              "CREATE TABLE $tableNameW ("
+                  "${Workout.db_id} INTEGER PRIMARY KEY AUTOINCREMENT,"
+                  "${Workout.db_name} VARCHAR(30) NOT NULL,"
+                  "${Workout.db_routine} INTEGER NOT NULL,"
+                  "${Workout.db_date} TEXT NOT NULL,"
+                  "FOREIGN KEY (${Workout.db_routine}) REFERENCES ${tableNameR}(${Routine.db_id})"
+                  ")");
+          await db.execute(
               "CREATE TABLE $tableNameRE ("
                   "${RoutineExercise.db_id} INTEGER PRIMARY KEY AUTOINCREMENT,"
                   "${RoutineExercise.db_exercise} INTEGER NOT NULL,"
-                  "${RoutineExercise.db_routine} INTEGER NOT NULL"
+                  "${RoutineExercise.db_routine} INTEGER NOT NULL,"
+                  "FOREIGN KEY (${RoutineExercise.db_routine}) REFERENCES ${tableNameR}(${Routine.db_id}),"
+                  "FOREIGN KEY (${RoutineExercise.db_exercise}) REFERENCES ${tableNameE}(${Exercise.db_id})"
                   ")");
           await db.execute(
               "CREATE TABLE $tableNameED ("
@@ -78,7 +81,9 @@ class db {
                   "${ExerciseData.db_distance} FLOAT NOT NULL,"
                   "${ExerciseData.db_time} FLOAT NOT NULL,"
                   "${ExerciseData.db_workout} INTEGER NOT NULL,"
-                  "${ExerciseData.db_exercise} INTEGER NOT NULL"
+                  "${ExerciseData.db_exercise} INTEGER NOT NULL,"
+                  "FOREIGN KEY (${ExerciseData.db_workout}) REFERENCES ${tableNameW}(${Workout.db_id}),"
+                  "FOREIGN KEY (${ExerciseData.db_exercise}) REFERENCES ${tableNameE}(${Exercise.db_id})"
                   ")");
           /// This is where all DB creation happens.
         });
@@ -275,5 +280,30 @@ class db {
   Future close() async {
     var db = await _getDb();
     return db.close();
+  }
+
+  void removeRoutineExercise(int id) async{
+    var db = await _getDb();
+    await db.rawQuery('DELETE FROM $tableNameRE WHERE ${RoutineExercise.db_id} = "$id"');
+  }
+
+  void removeExercise(int id) async{
+    var db = await _getDb();
+    await db.rawQuery('DELETE FROM $tableNameE WHERE ${Exercise.db_id} = "$id"');
+  }
+
+  void removeRoutine(int id) async{
+    var db = await _getDb();
+    await db.rawQuery('DELETE FROM $tableNameR WHERE ${Routine.db_id} = "$id"');
+  }
+
+  void removeExerciseData(int id) async{
+    var db = await _getDb();
+    await db.rawQuery('DELETE FROM $tableNameED WHERE ${ExerciseData.db_id} = "$id"');
+  }
+
+  void removeWorkout(int id) async{
+    var db = await _getDb();
+    await db.rawQuery('DELETE FROM $tableNameW WHERE ${Workout.db_id} = "$id"');
   }
 }

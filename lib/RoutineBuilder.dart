@@ -2,67 +2,30 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'ExerciseSelector.dart';
 import 'Models/Exercise.dart';
+import 'database/db.dart';
+import 'Models/RoutineExercise.dart';
+import 'Models/Routine.dart';
 
+final _biggerFont = const TextStyle(fontSize: 18.0);
 class RoutineBuilder extends StatefulWidget {
-  String name;
-  RoutineBuilder(this.name);
+  Routine routine;
+  RoutineBuilder(this.routine);
   @override
-  RoutineBuilderState createState() => RoutineBuilderState(name);
+  RoutineBuilderState createState() => RoutineBuilderState(routine);
 }
 
 class RoutineBuilderState extends State<RoutineBuilder> {
-  final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
-  ListModel _list;
-  var _selectedItem;
-  final String name;
-  RoutineBuilderState(this.name);
+  final Routine routine;
+  RoutineBuilderState(this.routine);
 
   @override
   void initState() {
     super.initState();
-    _list = ListModel(
-      listKey: _listKey,
-      initialItems: [],
-      removedItemBuilder: _buildRemovedItem,
-    );
-  }
-
-  // Used to build list items that haven't been removed.
-  Widget _buildItem(
-      BuildContext context, int index, Animation<double> animation) {
-    return CardItem(
-      animation: animation,
-      item: _list[index],
-      selected: _selectedItem == _list[index],
-      onTap: () {
-        setState(() {
-          _selectedItem = _selectedItem == _list[index] ? null : _list[index];
-        });
-      },
-    );
-  }
-
-  // Used to build an item after it has been removed from the list. This method is
-  // needed because a removed item remains  visible until its animation has
-  // completed (even though it's gone as far this ListModel is concerned).
-  // The widget will be used by the [AnimatedListState.removeItem] method's
-  // [AnimatedListRemovedItemBuilder] parameter.
-  Widget _buildRemovedItem(
-      Exercise item, BuildContext context, Animation<double> animation) {
-    return CardItem(
-      animation: animation,
-      item: item,
-      selected: false,
-      // No gesture detector here: we don't want removed items to be interactive.
-    );
   }
 
   /// This is where the exercise selector page will be called from
   // Insert the "next item" into the list model.
-  void _insert() {
-    final int index =
-    _selectedItem == null ? _list.length : _list.indexOf(_selectedItem);
-//    _list.insert(index, _nextItem++);
+  void _insert() async{
   var result;
     setState(() {
       result = Navigator.push(context,
@@ -71,141 +34,91 @@ class RoutineBuilderState extends State<RoutineBuilder> {
         ),
       );
     });
-    _list.insert(index, result);
+    await add(result);
   }
 
-  // Remove the selected item from the list model.
+  // Remove the selected item from the list.
   void _remove() {
-    if (_selectedItem != null) {
-      _list.removeAt(_list.indexOf(_selectedItem));
-      setState(() {
-        _selectedItem = null;
-      });
-    }
+    print("Hello");
   }
 
   @override
   Widget build(BuildContext context) {
+
+    var fut = FutureBuilder(
+      future: data(),
+      builder: (BuildContext context, AsyncSnapshot snapshot){
+        switch (snapshot.connectionState) {
+          case ConnectionState.none:
+            return new Text('Press button to start.');
+          case ConnectionState.active:
+            return new Text('Active');
+          case ConnectionState.waiting:
+            return new Text('Awaiting result...');
+          case ConnectionState.done:
+            if (snapshot.hasError)
+              return new Text('Error: ${snapshot.error}');
+            else
+              return exercises(context, snapshot);
+        }
+      },
+    );
+
     return Scaffold(
         appBar: AppBar(
-          title: Text('$name'),
+          title: Text('${routine.name}'),
           actions: <Widget>[
             IconButton(
               icon: const Icon(Icons.add_circle),
               onPressed: _insert,
               tooltip: 'insert a new item',
             ),
-            IconButton(
-              icon: const Icon(Icons.remove_circle),
-              onPressed: _remove,
-              tooltip: 'remove the selected item',
-            ),
           ],
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: AnimatedList(
-            key: _listKey,
-            initialItemCount: _list.length,
-            itemBuilder: _buildItem,
+          child: null,
           ),
-        ),
       );
   }
-}
 
-/// Keeps a Dart List in sync with an AnimatedList.
-///
-/// The [insert] and [removeAt] methods apply to both the internal list and the
-/// animated list that belongs to [listKey].
-///
-/// This class only exposes as much of the Dart List API as is needed by the
-/// sample app. More list methods are easily added, however methods that mutate the
-/// list must make the same changes to the animated list in terms of
-/// [AnimatedListState.insertItem] and [AnimatedList.removeItem].
-class ListModel {
-  ListModel({
-    @required this.listKey,
-    @required this.removedItemBuilder,
-    Iterable initialItems,
-  })  : assert(listKey != null),
-        assert(removedItemBuilder != null),
-        _items = List.from(initialItems ?? []);
-
-  final GlobalKey<AnimatedListState> listKey;
-  final dynamic removedItemBuilder;
-  final List _items;
-
-  AnimatedListState get _animatedList => listKey.currentState;
-
-  void insert(int index, item) {
-    _items.insert(index, item);
-    _animatedList.insertItem(index);
+  add(result) async{
+    var routineE = RoutineExercise(id: null, exercise: result.id, routine: routine.id);
+    await db.get().updateRoutineExercise(result);
   }
 
-  removeAt(int index) {
-    final removedItem = _items.removeAt(index);
-    if (removedItem != null) {
-      _animatedList.removeItem(index,
-              (BuildContext context, Animation<double> animation) {
-            return removedItemBuilder(removedItem, context, animation);
-          });
-    }
-    return removedItem;
-  }
-
-  int get length => _items.length;
-
-  operator [](int index) => _items[index];
-
-  int indexOf(item) => _items.indexOf(item);
-}
-
-/// Displays its integer item as 'item N' on a Card whose color is based on
-/// the item's value. The text is displayed in bright green if selected is true.
-/// This widget's height is based on the animation parameter, it varies
-/// from 0 to 128 as the animation varies from 0.0 to 1.0.
-class CardItem extends StatelessWidget {
-  const CardItem(
-      {Key key,
-        @required this.animation,
-        this.onTap,
-        @required this.item,
-        this.selected: false})
-      : assert(animation != null),
-        assert(item != null),
-        assert(selected != null),
-        super(key: key);
-
-  final Animation<double> animation;
-  final VoidCallback onTap;
-  final item;
-  final bool selected;
-
-  @override
-  Widget build(BuildContext context) {
-    TextStyle textStyle = Theme.of(context).textTheme.display1;
-    if (selected)
-      textStyle = textStyle.copyWith(color: Colors.lightGreenAccent[400]);
-    return Padding(
-      padding: const EdgeInsets.all(2.0),
-      child: SizeTransition(
-        axis: Axis.vertical,
-        sizeFactor: animation,
-        child: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: onTap,
-          child: SizedBox(
-            height: 128.0,
-            child: Card(
-              color: Colors.primaries[10 % Colors.primaries.length],
-              child: Center(
-                child: Text('${item.name}', style: textStyle),
-              ),
-            ),
-          ),
-        ),
-      ),
+  Widget exercises(BuildContext context, AsyncSnapshot snapshot) {
+    var ex = snapshot.data;
+    var _length = ex.length*2;
+    return ListView.builder(
+        padding: const EdgeInsets.all(8.0),
+        itemCount: _length,
+        itemBuilder: (context, i) {
+          if(i.isOdd){
+            return new Divider();
+          }
+          final index = i ~/ 2;
+          return exercise(ex[index]);
+        }
     );
   }
+
+  Widget exercise(Exercise ex) {
+    return ListTile(
+      title: Text(
+        ex.name,
+        style: _biggerFont,
+      ),
+      trailing: new Icon(Icons.keyboard_arrow_right),
+      onTap: _remove,
+    );
+
+  }
+
+  data() async{
+
+  }
+
 }
+
+

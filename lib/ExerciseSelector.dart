@@ -9,24 +9,34 @@ class ExerciseSelector extends StatefulWidget{
 }
 
 class ExerciseSelectorState extends State<ExerciseSelector>{
-  List exe = [
-    new Exercise(name: "Bench Press", id: 1, notes: "Hold bar above chest and bring down until arms are at right angles before pushing bar back up until arms are straight"),
-    new Exercise(name: "Squat", id: 2, notes: "Crouch down keeping back straight until knees and thigh are at a right angle with the floor"),
-    new Exercise(name: "Barbell Curl", id: 3, notes: "Bring bar up to chest"),
-    new Exercise(name: "Running", id: 4, notes: "Just Run"),
-  ];
 
-  ExerciseSelectorState(){
-    data();
-  }
   @override
   Widget build(BuildContext context){
-    data();
+
+    var fut = FutureBuilder(
+      future: data(),
+      builder: (BuildContext context, AsyncSnapshot snapshot){
+        switch (snapshot.connectionState) {
+          case ConnectionState.none:
+            return new Text('Press button to start.');
+          case ConnectionState.active:
+            return new Text('Active');
+          case ConnectionState.waiting:
+            return new Text('Awaiting result...');
+          case ConnectionState.done:
+            if (snapshot.hasError)
+              return new Text('Error: ${snapshot.error}');
+            else
+              return exercises(context, snapshot);
+        }
+      },
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Select an Exercise"),
       ),
-      body: exercises(),
+      body: fut,
     );
   }
 
@@ -35,8 +45,8 @@ class ExerciseSelectorState extends State<ExerciseSelector>{
   /// Pass that exercise back to the RoutineBuilder with a list which includes
   /// the new exercise.
 
-  Widget exercises(){
-    data();
+  Widget exercises(BuildContext context, AsyncSnapshot snapshot){
+    var exe = snapshot.data;
     return ListView.builder(
         padding: const EdgeInsets.all(8.0),
         shrinkWrap: true,
@@ -62,15 +72,13 @@ class ExerciseSelectorState extends State<ExerciseSelector>{
   }
 
   data() async{
+    var exe;
     try {
-      exe.forEach((element) {
-        db.get().updateExercise(element);
-      });
       exe = await db.get().getExercises();
     }
     catch(e){
       print(e.toString());
     }
-
+    return exe;
   }
 }

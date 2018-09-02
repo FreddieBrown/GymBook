@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'FormMaker.dart';
 import 'RoutineBuilder.dart';
+import 'Models/Routine.dart';
+import 'database/db.dart';
 
 class newRoutine extends StatefulWidget {
   @override
@@ -46,13 +48,16 @@ class newRoutineState extends State<newRoutine> {
             // off the stack
             if (_formKey.currentState.validate()) {
 //              Navigator.pop(context, '${controller1.text}');
+              var routine = Routine(id: null, name: controller1.text);
+              db.get().updateRoutine(routine);
               setState(() {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => RoutineBuilder('${controller1.text}'),
-                  ),
-                );
+//                Navigator.push(
+//                  context,
+//                  MaterialPageRoute(
+//                    builder: (context) => RoutineBuilder(),
+//                  ),
+//                );
+              Navigator.pop(context);
               });
             }
           },

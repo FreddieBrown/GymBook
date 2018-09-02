@@ -59,7 +59,6 @@ class RoutineListState extends State<RoutineList>{
     var _length = ra.length*2;
     return ListView.builder(
         padding: const EdgeInsets.all(8.0),
-        shrinkWrap: true,
         itemCount: _length,
         itemBuilder: (context, i) {
           if(i.isOdd){

@@ -54,6 +54,10 @@ class RoutineDetail extends StatelessWidget {
           ),
         ],
       ),
+      floatingActionButton: new FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: null,
+      ),
     );
   }
 
@@ -61,6 +65,9 @@ class RoutineDetail extends StatelessWidget {
   Widget _routineD(BuildContext context, AsyncSnapshot snapshot){
     /// There is a problem with the length bit here
     var re = snapshot.data[0];
+    if(re.length == 0){
+      return Text('Empty');
+    }
     exercises = snapshot.data[1];
     return ListView.builder(
         padding: const EdgeInsets.all(8.0),
@@ -80,6 +87,7 @@ class RoutineDetail extends StatelessWidget {
   Widget _exercise(RoutineExercise re, Exercise ex, BuildContext context){
     return ListTile(
       title: Text(ex.name),
+      subtitle: Text('${ex.id}'),
       trailing: new Icon(Icons.keyboard_arrow_right),
       onTap: () {
         Navigator.push(
