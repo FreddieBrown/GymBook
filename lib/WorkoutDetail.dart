@@ -23,6 +23,13 @@ class WorkoutDetail extends StatelessWidget {
         padding: EdgeInsets.all(8.0),
         child: ListView(
           children: <Widget>[
+            RaisedButton(
+              child: Text("Delete Workout"),
+              onPressed: () {
+                db.get().removeWorkout(workout.id);
+                Navigator.popUntil(context, ModalRoute.withName('/'));
+              },
+            ),
             Text('${workout.name}',
               style: const TextStyle(fontSize: 18.0)
               ),

@@ -14,10 +14,10 @@ import 'Models/ExerciseData.dart';
 
 void main() async{
   var work = [
-    new Workout(id: 1, routine: 1, name: "Workout1", date: '${DateTime.now()}'),
-    new Workout(id: 2, routine: 2, name: "Workout2", date: '${DateTime.now()}'),
-    new Workout(id: 3, routine: 1, name: "Workout3", date: '${DateTime.now()}'),
-    new Workout(id: 4, routine: 2, name: "Workout4", date: '${DateTime.now()}'),
+    new Workout(id: 1, routine: 1, name: "Test Workout 1", date: '${DateTime.now()}'),
+    new Workout(id: 2, routine: 2, name: "Test Workout 2", date: '${DateTime.now()}'),
+    new Workout(id: 3, routine: 1, name: "Test Workout 3", date: '${DateTime.now()}'),
+    new Workout(id: 4, routine: 2, name: "Test Workout 4", date: '${DateTime.now()}'),
   ];
 
   List exe= [
@@ -28,27 +28,27 @@ void main() async{
   ];
 
   List rea = [
-    new RoutineExercise(routine: 1, exercise: 1),
-    new RoutineExercise(routine: 1, exercise: 4),
-    new RoutineExercise(routine: 2, exercise: 2),
-    new RoutineExercise(routine: 2, exercise: 3),
-    new RoutineExercise(routine: 2, exercise: 4)
+    new RoutineExercise(id: 1, routine: 1, exercise: 1),
+    new RoutineExercise(id: 2, routine: 1, exercise: 4),
+    new RoutineExercise(id: 3, routine: 2, exercise: 2),
+    new RoutineExercise(id: 4,routine: 2, exercise: 3),
+    new RoutineExercise(id: 5, routine: 2, exercise: 4)
   ];
 
   List ra = [
-    new Routine(name: "Routine1", id: 1),
-    new Routine(name: "Routine2", id: 2)
+    new Routine(name: "Test Routine 1", id: 1),
+    new Routine(name: "Test Routine 2", id: 2)
   ];
 
   db data = db.get();
   try {
     await data.init();
-    db.get().data.delete("Workouts");
-    db.get().data.delete("Routines");
-    db.get().data.delete("Exercises");
-    db.get().data.delete("RoutineExercises");
-    db.get().data.delete("ExerciseData");
-    await data.init();
+//    db.get().data.delete("Workouts");
+//    db.get().data.delete("Routines");
+//    db.get().data.delete("Exercises");
+//    db.get().data.delete("RoutineExercises");
+//    db.get().data.delete("ExerciseData");
+//    await data.init();
   }
   catch(e){
     print(e.toString());
@@ -79,6 +79,7 @@ class GymBook extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
+      initialRoute: '/',
       debugShowCheckedModeBanner: false,
       title: 'Gym Book',
       theme: new ThemeData(

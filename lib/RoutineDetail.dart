@@ -40,10 +40,27 @@ class RoutineDetailState extends State<RoutineDetail> {
               strokeWidth: 7.0,
             ));
           case ConnectionState.done:
-            if (snapshot.hasError)
-              return new Center(child: Text('Add some Exercises to this Routine!', style: _biggerFont,));
-            else
+            if (snapshot.hasError) {
+              return new Center(child: Text(
+                'Add some Exercises to this Routine!', style: _biggerFont,));
+            }
+            else {
+              if (snapshot.data[1].length == 0) {
+                return Column(
+                  children: <Widget>[
+                    Text(
+                        "Error getting data, try again!",
+                        style: _biggerFont,
+                    ),
+                    CircularProgressIndicator(
+                      value: null,
+                      strokeWidth: 7.0,
+                    ),
+                  ],
+                );
+              }
               return _routineD(context, snapshot);
+            }
         }
       },
     );
@@ -135,7 +152,7 @@ class RoutineDetailState extends State<RoutineDetail> {
       list2.add(a);
     });
     list.add(list2);
-    await new Future.delayed(Duration(milliseconds: 400));
+    await new Future.delayed(Duration(milliseconds: 50));
     return list;
   }
 }

@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'FormMaker.dart';
+import 'dart:async';
+import 'WorkoutRoutineSelector.dart';
+import 'database/db.dart';
+
+
+
 
 class newWorkout extends StatefulWidget {
   @override
@@ -20,33 +26,40 @@ class newWorkoutState extends State<newWorkout> {
       appBar: AppBar(
         title: Text("New Workout"),
       ),
-      body: Form(
-        key: _formKey,
-        child: form.form(
-            [
-              "Workout Name",
-            ],
-            [
-              controller1,
-            ],
-            [
-              1,
-            ],
-            [
-              30,
-            ],
-            [
-              _valid,
-            ]
-        ),
+      body: Container(
+        child:
+          Form(
+            key: _formKey,
+            child: form.form(
+                [
+                  "Workout Name",
+                ],
+                [
+                  controller1,
+                ],
+                [
+                  1,
+                ],
+                [
+                  30,
+                ],
+                [
+                  _valid,
+                ]
+            ),
+          ),
       ),
       floatingActionButton:FloatingActionButton(
         heroTag: "Workout1",
-          onPressed: () {
+          onPressed: () async{
             // Navigate back to the first screen by popping the current route
             // off the stack
             if (_formKey.currentState.validate()) {
-              Navigator.pop(context, controller1.text);
+//              Navigator.pop(context, controller1.text);
+              await Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => WorkoutRoutineSelector(controller1.text)),
+              );
             }
           },
           child: Icon(Icons.save),

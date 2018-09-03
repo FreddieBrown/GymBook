@@ -1,28 +1,22 @@
 import 'package:flutter/material.dart';
-import 'newRoutine.dart';
-import 'RoutineDetail.dart';
 import 'Models/Routine.dart';
-import 'Models/RoutineExercise.dart';
 import 'database/db.dart';
 import 'dart:async';
+import 'Models/Workout.dart';
 
 final _biggerFont = const TextStyle(fontSize: 18.0);
-
-class RoutineList extends StatefulWidget{
+class WorkoutRoutineSelector extends StatefulWidget{
+  String name;
+  WorkoutRoutineSelector(this.name);
   @override
-  RoutineListState createState() => new RoutineListState();
+  WorkoutRoutineSelectorState createState() => WorkoutRoutineSelectorState(name);
 }
 
-class RoutineListState extends State<RoutineList>{
-
+class WorkoutRoutineSelectorState extends State<WorkoutRoutineSelector>{
+  String name;
+  WorkoutRoutineSelectorState(this.name);
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context){
-
+  Widget build(BuildContext context) {
     var fut = FutureBuilder(
       future: data(),
       builder: (BuildContext context, AsyncSnapshot snapshot){
@@ -45,16 +39,13 @@ class RoutineListState extends State<RoutineList>{
         }
       },
     );
-
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Choose a routine'),
+      ),
         body: Center(
           child: fut,
         ),
-        floatingActionButton: new FloatingActionButton(
-          heroTag: "Routine1",
-          onPressed: _addRoutine,
-          child: Icon(Icons.add),
-        )
     );
   }
 
@@ -85,42 +76,21 @@ class RoutineListState extends State<RoutineList>{
       ),
       trailing: new Icon(Icons.keyboard_arrow_right),
       onTap: () {
-        setState(() {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => RoutineDetail(r),
-            ),
-          );
+        setState((){
+          if('$name' != 'null') {
+            try {
+              db.get().updateWorkout(
+                  Workout(name: name, routine: r.id, date: '${DateTime.now()}'));
+            }
+            catch(e){
+              print(e.toString());
+            }
+          }
         });
+
+        Navigator.popUntil(context, ModalRoute.withName('/'));
       },
     );
-  }
-
-  void _addRoutine() {
-    /// This will use a route to go to a new page. On this page a new routine can
-    /// be created.
-    setState(() {
-      _navigateAndDisplaySelection(context);
-    });
-  }
-
-  /// This will push a new page onto the stack and will wait to receive data back.
-  _navigateAndDisplaySelection(BuildContext context) async {
-    // Navigator.push returns a Future that will complete after we call
-    // Navigator.pop on the Selection Screen!
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => newRoutine()),
-    );
-
-    // After the Selection Screen returns a result, show it in a Snackbar!
-//    Scaffold.of(context).showSnackBar(SnackBar(content: Text("$result")));
-//    ra.add(
-//      new Routine(name: result));
-    if('$result' != 'null') {
-      db.get().updateRoutine(Routine(name: result));
-    }
   }
 
   Future<List<Routine>> data() async{
