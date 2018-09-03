@@ -8,6 +8,7 @@ import 'database/db.dart';
 import 'ExerciseSelector.dart';
 import 'dart:async';
 
+final _biggerFont = const TextStyle(fontSize: 18.0);
 class RoutineDetail extends StatefulWidget{
   var routine;
   RoutineDetail(this.routine);
@@ -33,10 +34,14 @@ class RoutineDetailState extends State<RoutineDetail> {
           case ConnectionState.active:
             return new Text('Active');
           case ConnectionState.waiting:
-            return new Text('Awaiting result...');
+            return new Center(
+            child: CircularProgressIndicator(
+              value: null,
+              strokeWidth: 7.0,
+            ));
           case ConnectionState.done:
             if (snapshot.hasError)
-              return new Text('Error: ${snapshot.error}');
+              return new Center(child: Text('Add some Exercises to this Routine!', style: _biggerFont,));
             else
               return _routineD(context, snapshot);
         }
@@ -55,7 +60,7 @@ class RoutineDetailState extends State<RoutineDetail> {
               padding: const EdgeInsets.all(8.0),
               child: Text(
             '${routine.name}',
-            style: const TextStyle(fontSize: 26.0),
+                  style: const TextStyle(fontSize: 30.0, fontWeight: FontWeight.w700, decoration: TextDecoration.underline)
           ))),
           new Align(
             alignment: Alignment.center,
@@ -74,7 +79,6 @@ class RoutineDetailState extends State<RoutineDetail> {
 
 
   Widget _routineD(BuildContext context, AsyncSnapshot snapshot){
-    /// There is a problem with the length bit here
     var re = snapshot.data[0];
     exercises = snapshot.data[1];
     return ListView.builder(
@@ -97,12 +101,8 @@ class RoutineDetailState extends State<RoutineDetail> {
       title: Text(ex.name),
       trailing: new Icon(Icons.delete),
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ExerciseDetail(exercise: ex),
-          ),
-        );
+        db.get().removeRoutineExercise(re.id);
+        setState(() {});
       }
     );
 

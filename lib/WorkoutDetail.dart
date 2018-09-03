@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'Models/Workout.dart';
+import 'database/db.dart';
 class WorkoutDetail extends StatelessWidget {
   final Workout workout;
   String formatted;
@@ -32,6 +33,13 @@ class WorkoutDetail extends StatelessWidget {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.delete),
+          onPressed: (){
+            db.get().removeWorkout(workout.id);
+            Navigator.pop(context);
+          },
+      )
     );
   }
 }

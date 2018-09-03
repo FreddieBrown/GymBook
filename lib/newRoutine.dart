@@ -60,7 +60,7 @@ class newRoutineState extends State<newRoutine> {
               });
             }
           },
-          child: Text("Next"),
+          child: Icon(Icons.save),
         ),
     );
   }

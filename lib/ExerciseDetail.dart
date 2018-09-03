@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'Models/Exercise.dart';
+import 'database/db.dart';
 
 class ExerciseDetail extends StatelessWidget {
   final Exercise exercise;
@@ -26,6 +27,13 @@ class ExerciseDetail extends StatelessWidget {
             style: const TextStyle(fontSize: 18.0),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.delete),
+        onPressed: () {
+          db.get().removeExercise(exercise.id);
+          Navigator.pop(context);
+        },
       ),
     );
   }

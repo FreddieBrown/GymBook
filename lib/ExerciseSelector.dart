@@ -26,7 +26,11 @@ class ExerciseSelectorState extends State<ExerciseSelector>{
           case ConnectionState.active:
             return new Text('Active');
           case ConnectionState.waiting:
-            return new Text('Awaiting result...');
+            return new Center(
+                child: CircularProgressIndicator(
+                  value: null,
+                  strokeWidth: 7.0,
+                ));
           case ConnectionState.done:
             if (snapshot.hasError)
               return new Text('Error: ${snapshot.error}');
