@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'Models/Exercise.dart';
 import 'database/db.dart';
+import 'Models/RoutineExercise.dart';
+import 'database/db.dart';
 
 class ExerciseSelector extends StatefulWidget{
-
+  var routine;
+  ExerciseSelector(this.routine);
   @override
-  ExerciseSelectorState createState() => ExerciseSelectorState();
+  ExerciseSelectorState createState() => ExerciseSelectorState(routine);
 }
 
 class ExerciseSelectorState extends State<ExerciseSelector>{
-
+  final routine;
+  ExerciseSelectorState(this.routine);
   @override
   Widget build(BuildContext context){
 
@@ -66,10 +70,19 @@ class ExerciseSelectorState extends State<ExerciseSelector>{
       title: Text('${e.name}'),
       trailing: new Icon(Icons.keyboard_arrow_right),
       onTap: () {
-        Navigator.pop(context, e);
+        var r = RoutineExercise(
+            id: null,
+            exercise: e.id,
+            routine: routine.id
+        );
+        db.get().updateRoutineExercise(r);
+        setState(() {
+          Navigator.pop(context);
+        });
       },
     );
   }
+
 
   data() async{
     var exe;

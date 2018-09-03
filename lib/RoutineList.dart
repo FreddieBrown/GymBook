@@ -85,7 +85,7 @@ class RoutineListState extends State<RoutineList>{
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => RoutineDetail(routine: r),
+              builder: (context) => RoutineDetail(r),
             ),
           );
         });
