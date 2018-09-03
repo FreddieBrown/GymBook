@@ -55,6 +55,13 @@ class RoutineDetailState extends State<RoutineDetail> {
       body: ListView(
         padding: EdgeInsets.all(8.0),
         children: <Widget>[
+          RaisedButton(
+              child: Text("Delete Routine"),
+              onPressed: () {
+                db.get().removeRoutine(routine.id);
+                Navigator.pop(context);
+              },
+          ),
           Center(
           child: Container(
               padding: const EdgeInsets.all(8.0),
