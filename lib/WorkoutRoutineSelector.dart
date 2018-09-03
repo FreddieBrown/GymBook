@@ -3,6 +3,7 @@ import 'Models/Routine.dart';
 import 'database/db.dart';
 import 'dart:async';
 import 'Models/Workout.dart';
+import 'ExerciseDataSelector.dart';
 
 final _biggerFont = const TextStyle(fontSize: 18.0);
 class WorkoutRoutineSelector extends StatefulWidget{
@@ -76,19 +77,13 @@ class WorkoutRoutineSelectorState extends State<WorkoutRoutineSelector>{
       ),
       trailing: new Icon(Icons.keyboard_arrow_right),
       onTap: () {
-        setState((){
           if('$name' != 'null') {
-            try {
-              db.get().updateWorkout(
-                  Workout(name: name, routine: r.id, date: '${DateTime.now()}'));
-            }
-            catch(e){
-              print(e.toString());
-            }
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ExerciseDataSelector(r, name)),
+            );
           }
-        });
 
-        Navigator.popUntil(context, ModalRoute.withName('/'));
       },
     );
   }

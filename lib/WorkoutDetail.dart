@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'Models/Workout.dart';
 import 'database/db.dart';
+import 'Models/ExerciseData.dart';
+import 'Models/Routine.dart';
+import 'Models/Exercise.dart';
+
 class WorkoutDetail extends StatelessWidget {
   final Workout workout;
   String formatted;
@@ -14,6 +18,29 @@ class WorkoutDetail extends StatelessWidget {
   }
   @override
   Widget build(BuildContext context) {
+
+    var fut = FutureBuilder(
+      future: data(),
+      builder: (BuildContext context, AsyncSnapshot snapshot){
+        switch (snapshot.connectionState) {
+          case ConnectionState.none:
+            return new Text('Press button to start.');
+          case ConnectionState.active:
+            return new Text('Active');
+          case ConnectionState.waiting:
+            return new Center(
+                child: CircularProgressIndicator(
+                  value: null,
+                  strokeWidth: 7.0,
+                ));
+          case ConnectionState.done:
+            if (snapshot.hasError)
+              return new Center(child: Text('This workout has no exercises part of it!'));
+            else
+              return _exercises(context, snapshot);
+        }
+      },
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -30,13 +57,18 @@ class WorkoutDetail extends StatelessWidget {
                 Navigator.popUntil(context, ModalRoute.withName('/'));
               },
             ),
-            Text('${workout.name}',
-              style: const TextStyle(fontSize: 18.0)
-              ),
-            Text(
-              '$formatted at $formatted1\n${workout.routine}',
-              style: const TextStyle(fontSize: 11.0),
+            Center(
+              child: Text('${workout.name}',
+                style: const TextStyle(fontSize: 28.0)
+              )
             ),
+            Center(
+              child: Text(
+                'Started $formatted at $formatted1',
+                style: const TextStyle(fontSize: 18.0),
+              )
+            ),
+            fut,
           ],
         ),
       ),
@@ -49,4 +81,51 @@ class WorkoutDetail extends StatelessWidget {
       )
     );
   }
+
+  _exercises(BuildContext context, AsyncSnapshot snapshot){
+    var data = snapshot.data[0];
+    var exe = snapshot.data[1];
+    return ListView.builder(
+        padding: const EdgeInsets.all(8.0),
+        shrinkWrap: true,
+        itemCount: data.length*2,
+        itemBuilder: (context, i) {
+          if(i.isOdd){
+            return new Divider();
+          }
+          final index = i ~/ 2;
+          return _exercise(data[index], exe[index]);
+        }
+    );
+  }
+
+  _exercise(ExerciseData exd, Exercise ex){
+    if(ex.flag == 0) {
+      return ListTile(
+        title: Text('${ex.name}'),
+        subtitle: Text(
+            'Weight: ${exd.weight}, Sets: ${exd.sets}, Reps: ${exd.reps}'),
+      );
+    }
+    else{
+      return ListTile(
+        title: Text('${ex.name}'),
+        subtitle: Text(
+            'Distance: ${exd.distance}, Time: ${exd.time}'),
+      );
+    }
+  }
+
+  data() async{
+    var list = [];
+    /// Get Routine name and exercises that make it up and its details.
+    List ed = await db.get().getEDByWorkout('${workout.id}');
+    var exe = [];
+    ed.forEach((e) async{
+      exe.add(await db.get().getExercise('${e.exercise}'));
+    });
+    list = [ed, exe];
+    return list;
+  }
+
 }

@@ -112,11 +112,12 @@ class ExercisesListState extends State<ExercisesList>{
       context,
       MaterialPageRoute(builder: (context) => newExercise()),
     );
+    print(result["flag"]);
     // After the Selection Screen returns a result, show it in a Snackbar!
 //    Scaffold.of(context).showSnackBar(SnackBar(content: Text("$result")));
 //    _exerciseArr.add(
 //    new Exercise(name: result["name"], id: _exerciseArr.length+2, notes: result["notes"]));
-    db.get().updateExercise(new Exercise(name: result["name"], notes: result["notes"]));
+    db.get().updateExercise(new Exercise(name: result["name"], notes: result["notes"], flag: result["flag"]));
     /// Here I should add this to the DB or whatever storage this uses
   }
 

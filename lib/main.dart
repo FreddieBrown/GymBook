@@ -21,10 +21,10 @@ void main() async{
   ];
 
   List exe= [
-    new Exercise(name: "Bench Press", id: 1, notes: "Hold bar above chest and bring down until arms are at right angles before pushing bar back up until arms are straight"),
-    new Exercise(name: "Squat", id: 2, notes: "Crouch down keeping back straight until knees and thigh are at a right angle with the floor"),
-    new Exercise(name: "Barbell Curl", id: 3, notes: "Bring bar up to chest"),
-    new Exercise(name: "Running", id: 4, notes: "Just Run"),
+    new Exercise(name: "Bench Press", id: 1, notes: "Hold bar above chest and bring down until arms are at right angles before pushing bar back up until arms are straight", flag: 0),
+    new Exercise(name: "Squat", id: 2, notes: "Crouch down keeping back straight until knees and thigh are at a right angle with the floor", flag: 0),
+    new Exercise(name: "Barbell Curl", id: 3, notes: "Bring bar up to chest", flag: 0),
+    new Exercise(name: "Running", id: 4, notes: "Just Run", flag: 1),
   ];
 
   List rea = [

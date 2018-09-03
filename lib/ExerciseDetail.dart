@@ -10,7 +10,13 @@ class ExerciseDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    var flag;
+    if(exercise.flag == 1){
+      flag = "Cardio";
+    }
+    else{
+      flag = "Weights";
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text("Exercise"),
@@ -24,6 +30,10 @@ class ExerciseDetail extends StatelessWidget {
           ),
           Text(
             '${exercise.notes}',
+            style: const TextStyle(fontSize: 18.0),
+          ),
+          Text(
+            flag,
             style: const TextStyle(fontSize: 18.0),
           ),
         ],
