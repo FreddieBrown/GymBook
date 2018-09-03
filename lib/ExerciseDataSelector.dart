@@ -6,6 +6,7 @@ import 'Models/Routine.dart';
 import 'Models/RoutineExercise.dart';
 import 'Models/Exercise.dart';
 import 'Models/ExerciseData.dart';
+import 'dart:async';
 
 class ExerciseDataSelector extends StatefulWidget{
   Routine routine;
@@ -89,6 +90,7 @@ class ExerciseDataSelectorState extends State<ExerciseDataSelector>{
             return new Divider();
           }
           else if(i % 3 == 1){
+            /// Need to use controllers here to take in values to create ExerciseData
             if(hold.flag == 0){
               return Text('Weights');
 
@@ -120,6 +122,7 @@ class ExerciseDataSelectorState extends State<ExerciseDataSelector>{
       list1.forEach((re)async{
         list.add(await db.get().getExercise('${re.exercise}'));
       });
+      await new Future.delayed(Duration(milliseconds: 50));
 
     }
     catch(e){
