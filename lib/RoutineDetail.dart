@@ -5,23 +5,65 @@ import 'Models/RoutineExercise.dart';
 import 'Models/Exercise.dart';
 import 'ExerciseDetail.dart';
 import 'database/db.dart';
+import 'ExerciseSelector.dart';
+import 'dart:async';
 
-class RoutineDetail extends StatelessWidget {
+final _biggerFont = const TextStyle(fontSize: 18.0);
+class RoutineDetail extends StatefulWidget{
+  var routine;
+  RoutineDetail(this.routine);
+  @override
+  RoutineDetailState createState() => RoutineDetailState(routine: routine);
+}
+
+class RoutineDetailState extends State<RoutineDetail> {
   final Routine routine;
-  final List routineEx;
+  var exercises;
 
-  static List exercises = [
-    new Exercise(name: "Bench Press", id: 1, notes: "Hold bar above chest and bring down until arms are at right angles before pushing bar back up until arms are straight"),
-    new Exercise(name: "Squat", id: 2, notes: "Crouch down keeping back straight until knees and thigh are at a right angle with the floor"),
-    new Exercise(name: "Barbell Curl", id: 3, notes: "Bring bar up to chest"),
-    new Exercise(name: "Running", id: 4, notes: "Just Run"),
-  ];
-
-  List exe = exercises;
-  RoutineDetail({Key key, @required this.routine, this.routineEx}) : super(key: key);
+  RoutineDetailState({@required this.routine});
 
   @override
   Widget build(BuildContext context) {
+
+    var fut = FutureBuilder(
+      future: data(),
+      builder: (BuildContext context, AsyncSnapshot snapshot){
+        switch (snapshot.connectionState) {
+          case ConnectionState.none:
+            return new Text('Press button to start.');
+          case ConnectionState.active:
+            return new Text('Active');
+          case ConnectionState.waiting:
+            return new Center(
+            child: CircularProgressIndicator(
+              value: null,
+              strokeWidth: 7.0,
+            ));
+          case ConnectionState.done:
+            if (snapshot.hasError) {
+              return new Center(child: Text(
+                'Add some Exercises to this Routine!', style: _biggerFont,));
+            }
+            else {
+              if (snapshot.data[1].length == 0) {
+                return Column(
+                  children: <Widget>[
+                    Text(
+                        "Error getting data, try again!",
+                        style: _biggerFont,
+                    ),
+                    CircularProgressIndicator(
+                      value: null,
+                      strokeWidth: 7.0,
+                    ),
+                  ],
+                );
+              }
+              return _routineD(context, snapshot);
+            }
+        }
+      },
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -30,33 +72,39 @@ class RoutineDetail extends StatelessWidget {
       body: ListView(
         padding: EdgeInsets.all(8.0),
         children: <Widget>[
+          RaisedButton(
+              child: Text("Delete Routine"),
+              onPressed: () {
+                db.get().removeRoutine(routine.id);
+                Navigator.pop(context);
+              },
+          ),
           Center(
           child: Container(
               padding: const EdgeInsets.all(8.0),
               child: Text(
             '${routine.name}',
-            style: const TextStyle(fontSize: 26.0),
+                  style: const TextStyle(fontSize: 30.0, fontWeight: FontWeight.w700, decoration: TextDecoration.underline)
           ))),
           new Align(
             alignment: Alignment.center,
-            child: _routineD(),
+            child: fut,
           ),
         ],
+      ),
+      floatingActionButton: new FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+            _navigateAndDisplaySelection(context);
+        },
       ),
     );
   }
 
 
-  Widget _routineD(){
-    List re = [];
-    routineEx.forEach((element) {
-      exercises.forEach((exercise) {
-        if(element.exercise == exercise.id){
-          re.add(element);
-        }
-      });
-    });
-
+  Widget _routineD(BuildContext context, AsyncSnapshot snapshot){
+    var re = snapshot.data[0];
+    exercises = snapshot.data[1];
     return ListView.builder(
         padding: const EdgeInsets.all(8.0),
         shrinkWrap: true,
@@ -66,41 +114,45 @@ class RoutineDetail extends StatelessWidget {
             return new Divider();
           }
           final index = i ~/ 2;
-          return _exercise(re[index], context);
+          return _exercise(re[index], exercises[index], context);
         }
     );
 
   }
 
-  Widget _exercise(RoutineExercise re, context){
-    var ex;
-    exercises.forEach((exercise) {
-      if(re.exercise == exercise.id){
-        ex = exercise;
-      }
-    });
+  Widget _exercise(RoutineExercise re, Exercise ex, BuildContext context){
     return ListTile(
       title: Text(ex.name),
-      subtitle: re.reps == 0? Text('Distance: ${re.distance}km Time: ${re.time}mins') : Text('Reps: ${re.reps} Sets: ${re.sets} Weight: ${re.weight}kg'),
-      trailing: new Icon(Icons.keyboard_arrow_right),
+      trailing: new Icon(Icons.delete),
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ExerciseDetail(exercise: ex),
-          ),
-        );
+        db.get().removeRoutineExercise(re.id);
+        setState(() {});
       }
     );
 
   }
 
+  _navigateAndDisplaySelection(BuildContext context) async {
+    // Navigator.push returns a Future that will complete after we call
+    // Navigator.pop on the Selection Screen!
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ExerciseSelector(routine)),
+    );
+
+  }
+
   data() async{
-    List ids;
-    routineEx.forEach((element){
-      ids.add('${element.exercise}');
+    var list = [];
+    var list1 = await db.get().getREByRoutine('${routine.id}');
+    list.add(list1);
+    var list2 = [];
+    list1.forEach((re) async{
+      var a = await db.get().getExercise('${re.exercise}');
+      list2.add(a);
     });
-     exe = await db.get().getExercises(ids);
-     return exe;
+    list.add(list2);
+    await new Future.delayed(Duration(milliseconds: 50));
+    return list;
   }
 }

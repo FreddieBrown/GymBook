@@ -21,7 +21,11 @@ class SettingsState extends State<Settings>{
       appBar: AppBar(
         title: Text("Settings"),
       ),
-      body: Text("Settings"),
+      body: Center(
+          child: CircularProgressIndicator(
+            value: null,
+            strokeWidth: 7.0,
+          )),
     );
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'FormMaker.dart';
+import 'Models/Routine.dart';
+import 'database/db.dart';
 
 class newRoutine extends StatefulWidget {
   @override
@@ -44,7 +46,18 @@ class newRoutineState extends State<newRoutine> {
             // Navigate back to the first screen by popping the current route
             // off the stack
             if (_formKey.currentState.validate()) {
-              Navigator.pop(context, controller1.text);
+//              Navigator.pop(context, '${controller1.text}');
+              var routine = Routine(id: null, name: controller1.text);
+              db.get().updateRoutine(routine);
+              setState(() {
+//                Navigator.push(
+//                  context,
+//                  MaterialPageRoute(
+//                    builder: (context) => RoutineBuilder(),
+//                  ),
+//                );
+              Navigator.pop(context);
+              });
             }
           },
           child: Icon(Icons.save),
@@ -54,7 +67,6 @@ class newRoutineState extends State<newRoutine> {
 }
 
 String _valid(value){
-  print(value);
   if (value.isEmpty) {
     return 'Please enter some text';
   }

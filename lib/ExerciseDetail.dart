@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'Models/Exercise.dart';
+import 'database/db.dart';
 
 class ExerciseDetail extends StatelessWidget {
   final Exercise exercise;
@@ -9,7 +10,13 @@ class ExerciseDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    var flag;
+    if(exercise.flag == 1){
+      flag = "Cardio";
+    }
+    else{
+      flag = "Weights";
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text("Exercise"),
@@ -25,7 +32,18 @@ class ExerciseDetail extends StatelessWidget {
             '${exercise.notes}',
             style: const TextStyle(fontSize: 18.0),
           ),
+          Text(
+            flag,
+            style: const TextStyle(fontSize: 18.0),
+          ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.delete),
+        onPressed: () {
+          db.get().removeExercise(exercise.id);
+          Navigator.pop(context);
+        },
       ),
     );
   }

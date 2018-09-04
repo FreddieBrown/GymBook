@@ -12,6 +12,7 @@ class newExerciseState extends State<newExercise> {
   final controller1 = TextEditingController();
   final controller2 = TextEditingController();
   var form = FormMaker();
+  var flag = 0;
 
 
   @override
@@ -30,26 +31,54 @@ class newExerciseState extends State<newExercise> {
       ),
       body: Form(
         key: _formKey,
-        child: form.form(
-            [
+        child: ListView(
+          padding: EdgeInsets.only(top: 10.0),
+          children: <Widget>[
+            Text(
               "Exercise Name",
+              style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.w700, height: 2.0),
+            ),
+            Container(
+              padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
+              child: TextFormField(
+                validator: _valid,
+                controller: controller1,
+                maxLines: 1,
+                maxLength: 30,
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: "Exercise Name"
+                ),
+              ),
+            ),
+            Text(
               "Notes",
-            ],
-            [
-              controller1,
-              controller2
-            ],
-            [
-              1,
-              null
-            ],
-            [
-              30,
-              null
-            ],
-          [
-            _valid,
-            null
+              style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.w700, height: 2.0),
+            ),
+            Container(
+              padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
+              child: TextFormField(
+                validator: null,
+                controller: controller2,
+                maxLines: null,
+                maxLength: null,
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: "Notes"
+                ),
+              ),
+            ),
+            RadioListTile(
+                title: Text("Cardio?"),
+                value: 1,
+                groupValue: flag,
+                onChanged: (int fl){
+                 setState(() {
+                   flag = fl;
+                   print(flag);
+                 });
+                }
+                ),
           ]
         ),
       ),
@@ -60,7 +89,7 @@ class newExerciseState extends State<newExercise> {
             // off the stack
             if (_formKey.currentState.validate()) {
               Navigator.pop(context,
-                  {"name": controller1.text, "notes": controller2.text});
+                  {"name": controller1.text, "notes": controller2.text, "flag": flag});
             }
           },
           child: Icon(Icons.save),
@@ -70,8 +99,9 @@ class newExerciseState extends State<newExercise> {
 }
 
 String _valid(value){
-  print(value);
   if (value.isEmpty) {
     return 'Please enter some text';
   }
 }
+
+

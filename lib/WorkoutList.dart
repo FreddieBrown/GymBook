@@ -15,22 +15,44 @@ class WorkoutList extends StatefulWidget{
 /// _workouts() as its body.
 class WorkoutListState extends State<WorkoutList> {
   /// Need to work out how to get workout information from the start and not after 1 refresh
-  static var workouts = [
-    new Workout(id: 1, name: "Workout1", date: '${DateTime.now()}'),
-    new Workout(id: 2, name: "Workout2", date: '${DateTime.now()}'),
-    new Workout(id: 3, name: "Workout3", date: '${DateTime.now()}'),
-    new Workout(id: 4, name: "Workout4", date: '${DateTime.now()}'),
-  ];
-  WorkoutListState(){
-    db.get().getWorkouts().then((work){workouts = work;});
-  }
   /// TODO: This is where SQL will be used to get Workout details
 
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+
+    var fut = FutureBuilder(
+      future: data(),
+      builder: (BuildContext context, AsyncSnapshot snapshot){
+        switch (snapshot.connectionState) {
+          case ConnectionState.none:
+            return new Text('Press button to start.');
+          case ConnectionState.active:
+            return new Text('Active');
+          case ConnectionState.waiting:
+            return new Center(
+                child: CircularProgressIndicator(
+                  value: null,
+                  strokeWidth: 7.0,
+                ));
+          case ConnectionState.done:
+            if (snapshot.hasError)
+              return new Text('Error: ${snapshot.error}');
+            else if(snapshot.data.length == 0){
+              return Center(child: Text("You don't have any workouts, try creating one!"));
+            }
+            else
+              return _workouts(context, snapshot);
+        }
+      },
+    );
+
     return Scaffold(
-      body: _workouts(),
+      body: fut,
       floatingActionButton: new FloatingActionButton(
         heroTag: "Workout1",
         onPressed: _addWorkout,
@@ -40,7 +62,8 @@ class WorkoutListState extends State<WorkoutList> {
   }
 
   /// This builds a list using _workout() which is shown by homeList
-  Widget _workouts() {
+  Widget _workouts(BuildContext context, AsyncSnapshot snapshot) {
+    var workouts = snapshot.data;
     return ListView.builder(
         padding: const EdgeInsets.all(8.0),
         shrinkWrap: true,
@@ -61,14 +84,12 @@ class WorkoutListState extends State<WorkoutList> {
     var formatter1 = new DateFormat('jm');
     String formatted = formatter.format(DateTime.parse(workout.date));
     String formatted1 = formatter1.format(DateTime.parse(workout.date));
-    String text = "${workout.name}";
-    String date = "$formatted at $formatted1";
     return ListTile(
       title: Text(
-        text,
+        "${workout.name}",
         style: _biggerFont,
       ),
-      subtitle: Text(date),
+      subtitle: Text("$formatted at $formatted1"),
       trailing: new Icon(Icons.keyboard_arrow_right),
       onTap: () {
         setState(() {
@@ -76,7 +97,7 @@ class WorkoutListState extends State<WorkoutList> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => WorkoutDetail(name: text, date: date),
+              builder: (context) => WorkoutDetail(workout: workout),
             ),
           );
         });
@@ -105,10 +126,9 @@ class WorkoutListState extends State<WorkoutList> {
 //    Scaffold.of(context).showSnackBar(SnackBar(content: Text("$result")));
 //    work.add(new Workout(id: work.length+2, name: "$result", date: '${DateTime.now()}'));
     if('$result' != 'null') {
-      print('$result');
       try {
         db.get().updateWorkout(
-            Workout(name: result, date: '${DateTime.now()}'));
+            Workout(name: result, routine: 1, date: '${DateTime.now()}'));
       }
       catch(e){
         print(e.toString());
@@ -117,17 +137,13 @@ class WorkoutListState extends State<WorkoutList> {
   }
 
    data() async{
+    var list;
     try {
-      workouts.forEach((element) {
-        db.get().updateWorkout(element);
-      });
-      workouts = await db.get().getWorkouts();
+      list = await db.get().getWorkouts();
     }
     catch(e){
       print(e.toString());
     }
-    finally {
-      return workouts;
-    }
+    return list;
   }
 }
