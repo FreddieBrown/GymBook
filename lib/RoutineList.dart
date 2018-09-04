@@ -40,6 +40,9 @@ class RoutineListState extends State<RoutineList>{
           case ConnectionState.done:
             if (snapshot.hasError)
               return new Text('Error: ${snapshot.error}');
+            else if(snapshot.data.length == 0){
+              return Text("You don't have any routines, try creating one!");
+            }
             else
               return _routines(context, snapshot);
         }
@@ -79,9 +82,6 @@ class RoutineListState extends State<RoutineList>{
       title: Text(
         r.name,
         style: _biggerFont,
-      ),
-      subtitle: Text(
-        "ID: ${r.id}",
       ),
       trailing: new Icon(Icons.keyboard_arrow_right),
       onTap: () {

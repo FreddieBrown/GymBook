@@ -227,6 +227,17 @@ class db {
     return exercises;
   }
 
+  Future<List> getWorkoutByDate(String s) async{
+    var db = await _getDb();
+    var workouts =[];
+    var result = await db.rawQuery('SELECT * FROM $tableNameW WHERE ${Workout.db_date} = "$s"');
+    if(result.length == 0)return null;
+    for (Map<String, dynamic> item in result) {
+      workouts.add(new Workout.fromMap(item));
+    }
+    return workouts;
+  }
+
 
   Future<Routine> getRoutine(String id) async{
     var db = await _getDb();

@@ -5,6 +5,7 @@ import 'database/db.dart';
 import 'Models/ExerciseData.dart';
 import 'Models/Routine.dart';
 import 'Models/Exercise.dart';
+import 'dart:async';
 
 class WorkoutDetail extends StatelessWidget {
   final Workout workout;
@@ -71,13 +72,6 @@ class WorkoutDetail extends StatelessWidget {
             fut,
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.delete),
-          onPressed: (){
-            db.get().removeWorkout(workout.id);
-            Navigator.pop(context);
-          },
       )
     );
   }
@@ -104,26 +98,26 @@ class WorkoutDetail extends StatelessWidget {
       return ListTile(
         title: Text('${ex.name}'),
         subtitle: Text(
-            'Weight: ${exd.weight}, Sets: ${exd.sets}, Reps: ${exd.reps}'),
+            'Weight: ${exd.weight}kg, Reps: ${exd.reps}, Sets: ${exd.sets}'),
       );
     }
     else{
       return ListTile(
         title: Text('${ex.name}'),
         subtitle: Text(
-            'Distance: ${exd.distance}, Time: ${exd.time}'),
+            'Distance: ${exd.distance}km, Time: ${exd.time}mins'),
       );
     }
   }
 
   data() async{
     var list = [];
-    /// Get Routine name and exercises that make it up and its details.
     List ed = await db.get().getEDByWorkout('${workout.id}');
     var exe = [];
     ed.forEach((e) async{
       exe.add(await db.get().getExercise('${e.exercise}'));
     });
+    await new Future.delayed(Duration(milliseconds: 50));
     list = [ed, exe];
     return list;
   }

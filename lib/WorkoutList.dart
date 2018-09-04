@@ -42,6 +42,9 @@ class WorkoutListState extends State<WorkoutList> {
           case ConnectionState.done:
             if (snapshot.hasError)
               return new Text('Error: ${snapshot.error}');
+            else if(snapshot.data.length == 0){
+              return Center(child: Text("You don't have any workouts, try creating one!"));
+            }
             else
               return _workouts(context, snapshot);
         }
