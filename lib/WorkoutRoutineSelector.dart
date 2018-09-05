@@ -4,6 +4,7 @@ import 'database/db.dart';
 import 'dart:async';
 import 'Models/Workout.dart';
 import 'ExerciseDataSelector.dart';
+import 'Models/ExerciseData.dart';
 
 final _biggerFont = const TextStyle(fontSize: 18.0);
 class WorkoutRoutineSelector extends StatefulWidget{
@@ -76,14 +77,47 @@ class WorkoutRoutineSelectorState extends State<WorkoutRoutineSelector>{
         "ID: ${r.id}",
       ),
       trailing: new Icon(Icons.keyboard_arrow_right),
-      onTap: () {
+      onTap: () async {
           if('$name' != 'null') {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ExerciseDataSelector(r, name)),
-            );
+            try {
+              var date = DateTime.now();
+              await db.get().updateWorkout(
+                  Workout(
+                      name: name,
+                      routine: r.id,
+                      date: '$date'));
+              List w = await db.get().getWorkoutByDate('$date');
+              Workout work = w[0];
+              List dataE = await exercises(r);
+              for(int j = 0; j < dataE.length; j++){
+                if(dataE[j].flag == 0){
+                  db.get().updateExerciseData(
+                      ExerciseData(
+                          workout: work.id,
+                          exercise: dataE[j].id,
+                          sets: 0,
+                          reps: 0,
+                          weight: 0.0
+                      )
+                  );
+                }
+                else{
+                  db.get().updateExerciseData(
+                      ExerciseData(
+                        workout: work.id,
+                        exercise: dataE[j].id,
+                        distance: 0.0,
+                        time: 0.0,
+                      )
+                  );
+                }
+              }
+            }
+            catch (e) {
+              print(e.toString());
+            }
+            Navigator.popUntil(context, ModalRoute.withName('/'));
           }
-
       },
     );
   }
@@ -92,6 +126,22 @@ class WorkoutRoutineSelectorState extends State<WorkoutRoutineSelector>{
     var list;
     try {
       list = await db.get().getRoutines();
+    }
+    catch(e){
+      print(e.toString());
+    }
+    return list;
+  }
+
+  Future<List> exercises(Routine routine) async{
+    var list = [];
+    try {
+      var list1 = await db.get().getREByRoutine('${routine.id}');
+      list1.forEach((re)async{
+        list.add(await db.get().getExercise('${re.exercise}'));
+      });
+      await new Future.delayed(Duration(milliseconds: 50));
+
     }
     catch(e){
       print(e.toString());
