@@ -73,6 +73,8 @@ class RoutineDetailState extends State<RoutineDetail> {
         padding: EdgeInsets.all(8.0),
         children: <Widget>[
           RaisedButton(
+              color: Colors.blue,
+              textColor: Colors.white,
               child: Text("Delete Routine"),
               onPressed: () {
                 db.get().removeRoutine(routine.id);
@@ -84,7 +86,7 @@ class RoutineDetailState extends State<RoutineDetail> {
               padding: const EdgeInsets.all(8.0),
               child: Text(
             '${routine.name}',
-                  style: const TextStyle(fontSize: 30.0, fontWeight: FontWeight.w700, decoration: TextDecoration.underline)
+                  style: const TextStyle(fontSize: 30.0, fontWeight: FontWeight.w700)
           ))),
           new Align(
             alignment: Alignment.center,

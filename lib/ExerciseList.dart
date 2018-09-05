@@ -84,6 +84,10 @@ class ExercisesListState extends State<ExercisesList>{
         e.name,
         style: _biggerFont,
       ),
+      subtitle: Text(
+        e.notes,
+        maxLines: 1,
+      ),
       trailing: new Icon(Icons.keyboard_arrow_right),
       onTap: () {
         setState(() {

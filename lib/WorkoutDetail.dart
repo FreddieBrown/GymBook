@@ -52,6 +52,8 @@ class WorkoutDetail extends StatelessWidget {
         child: ListView(
           children: <Widget>[
             RaisedButton(
+              color: Colors.blue,
+              textColor: Colors.white,
               child: Text("Delete Workout"),
               onPressed: () {
                 db.get().removeWorkout(workout.id);
@@ -60,7 +62,7 @@ class WorkoutDetail extends StatelessWidget {
             ),
             Center(
               child: Text('${workout.name}',
-                style: const TextStyle(fontSize: 28.0)
+                style: const TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700)
               )
             ),
             Center(

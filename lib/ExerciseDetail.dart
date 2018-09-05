@@ -24,17 +24,34 @@ class ExerciseDetail extends StatelessWidget {
       body: ListView(
         padding: EdgeInsets.all(8.0),
         children: <Widget>[
-          Text(
-            '${exercise.name}',
-            style: const TextStyle(fontSize: 26.0),
+
+          Center(
+            child: Text(
+              '${exercise.name}',
+              style: const TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700),
+            ),
+          ),
+          Container(
+          padding: EdgeInsets.only(top: 16.0),
+          child: Text(
+                  'Notes',
+                  style: const TextStyle(fontSize: 22.0),
+                ),
+          ),
+          Container(
+            padding: EdgeInsets.only(bottom: 16.0),
+            child: Text(
+                '${exercise.notes}',
+                style: const TextStyle(fontSize: 16.0),
+            ),
           ),
           Text(
-            '${exercise.notes}',
-            style: const TextStyle(fontSize: 18.0),
+            'Exercise Type',
+            style: const TextStyle(fontSize: 22.0),
           ),
           Text(
             flag,
-            style: const TextStyle(fontSize: 18.0),
+            style: const TextStyle(fontSize: 16.0),
           ),
         ],
       ),

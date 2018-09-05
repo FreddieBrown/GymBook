@@ -22,14 +22,19 @@ void main() async{
   ];
 
   db data = db.get();
+
+  reset() async{
+    db.get().data.delete("Workouts");
+    db.get().data.delete("Routines");
+    db.get().data.delete("Exercises");
+    db.get().data.delete("RoutineExercises");
+    db.get().data.delete("ExerciseData");
+    await data.init();
+  }
+
   try {
     await data.init();
-//    db.get().data.delete("Workouts");
-//    db.get().data.delete("Routines");
-//    db.get().data.delete("Exercises");
-//    db.get().data.delete("RoutineExercises");
-//    db.get().data.delete("ExerciseData");
-//    await data.init();
+//    reset();
   }
   catch(e){
     print(e.toString());
@@ -39,10 +44,12 @@ void main() async{
     await db.get().updateExercise(element);
   });
   runApp(new GymBook());
+
+
 }
 
 class GymBook extends StatelessWidget {
-  // This widget is the root of your application.
+  // This widget is the root of the application.
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -50,13 +57,10 @@ class GymBook extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Gym Book',
       theme: new ThemeData(
-//        primarySwatch: Colors.white,// Add the 3 lines from here...
-        primaryColor: Colors.white,
-        accentColor: Colors.blueGrey,
-//        dividerColor: Colors.red,
+        primaryColor: Colors.blue,
+        accentColor: Colors.white,
+        fontFamily: 'Nunito',
       ),
-//      home: new MyHomePage(title: 'GymBook'),
-//        home: new homeList(),
       home: DefaultTabController(
         length: 3,
         child: Home(),

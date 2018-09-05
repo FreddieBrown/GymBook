@@ -163,12 +163,15 @@ class ExerciseDataSelectorState extends State<ExerciseDataSelector>{
               direction: Axis.horizontal,
               children: <Widget>[
                 Container(
-                  width: 100.0,
+                  width: 250.0,
                   padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
                   child: TextFormField(
                     validator: (value){
                       if (value.isEmpty) {
                         return 'Please enter some text';
+                      }
+                      else if(!isNumeric(value)){
+                        return 'Please enter a numeric value';
                       }
                     },
 //                    keyboardType: TextInputType.number,
@@ -181,12 +184,15 @@ class ExerciseDataSelectorState extends State<ExerciseDataSelector>{
                   ),
                 ),
                 Container(
-                  width: 100.0,
+                  width: 250.0,
                   padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
                   child: TextFormField(
                     validator: (value){
                       if (value.isEmpty) {
                         return 'Please enter some text';
+                      }
+                      else if(!isNumeric(value)){
+                        return 'Please enter a numeric value';
                       }
                     },
 //                    keyboardType: TextInputType.number,
@@ -199,12 +205,15 @@ class ExerciseDataSelectorState extends State<ExerciseDataSelector>{
                   ),
                 ),
                 Container(
-                  width: 150.0,
+                  width: 250.0,
                   padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
                   child: TextFormField(
                     validator: (value){
                       if (value.isEmpty) {
                         return 'Please enter some text';
+                      }
+                      else if(!isNumeric(value)){
+                        return 'Please enter a numeric value';
                       }
                     },
 //                    keyboardType: TextInputType.number,
@@ -225,12 +234,15 @@ class ExerciseDataSelectorState extends State<ExerciseDataSelector>{
                 direction: Axis.horizontal,
                 children: <Widget>[
                   Container(
-                    width: 160.0,
+                    width: 250.0,
                     padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
                     child: TextFormField(
                       validator: (value){
                         if (value.isEmpty) {
                           return 'Please enter some text';
+                        }
+                        else if(!isNumeric(value)){
+                          return 'Please enter a numeric value';
                         }
                       },
 //                      keyboardType: TextInputType.number,
@@ -243,12 +255,15 @@ class ExerciseDataSelectorState extends State<ExerciseDataSelector>{
                     ),
                   ),
                   Container(
-                    width: 160.0,
+                    width: 250.0,
                     padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
                     child: TextFormField(
                       validator: (value){
                         if (value.isEmpty) {
                           return 'Please enter some text';
+                        }
+                        else if(!isNumeric(value)){
+                          return 'Please enter a numeric value';
                         }
                       },
 //                      keyboardType: TextInputType.number,
@@ -293,5 +308,12 @@ class ExerciseDataSelectorState extends State<ExerciseDataSelector>{
       print(e.toString());
     }
     return list;
+  }
+
+  bool isNumeric(String s) {
+    if(s == null) {
+      return false;
+    }
+    return double.parse(s, (e) => null) != null;
   }
 }
