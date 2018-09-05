@@ -42,6 +42,7 @@ class newExerciseState extends State<newExercise> {
               padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
               child: TextFormField(
                 validator: _valid,
+                keyboardType: TextInputType.number,
                 controller: controller1,
                 maxLines: 1,
                 maxLength: 30,
@@ -58,6 +59,7 @@ class newExerciseState extends State<newExercise> {
             Container(
               padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
               child: TextFormField(
+                keyboardType: TextInputType.number,
                 validator: null,
                 controller: controller2,
                 maxLines: null,

@@ -18,11 +18,11 @@ class ExerciseDataSelector extends StatefulWidget{
 }
 
 class ExerciseDataSelectorState extends State<ExerciseDataSelector>{
-  var controllers = [];
+  List<TextEditingController> controllers = <TextEditingController>[];
   Routine routine;
   String name;
   List dataE;
-  var date = DateTime.now();
+  DateTime date = DateTime.now();
   var future;
   final _formKey = GlobalKey<FormState>();
   ExerciseDataSelectorState(this.routine, this.name);
@@ -144,7 +144,8 @@ class ExerciseDataSelectorState extends State<ExerciseDataSelector>{
       }
     });
     for(int j = 0; j < num; j++){
-      controllers.add(TextEditingController());
+      var c = TextEditingController();
+      controllers.add(c);
     };
     var hold;
     int cindex = 0;
@@ -158,7 +159,6 @@ class ExerciseDataSelectorState extends State<ExerciseDataSelector>{
           else if(i % 3 == 1){
             /// Need to use controllers here to take in values to create ExerciseData
             if(hold.flag == 0){
-//              return Text('Weights');
             return Wrap(
               direction: Axis.horizontal,
               children: <Widget>[
@@ -171,6 +171,7 @@ class ExerciseDataSelectorState extends State<ExerciseDataSelector>{
                         return 'Please enter some text';
                       }
                     },
+//                    keyboardType: TextInputType.number,
                     controller: controllers[cindex++],
                     maxLines: 1,
                     decoration: InputDecoration(
@@ -188,6 +189,7 @@ class ExerciseDataSelectorState extends State<ExerciseDataSelector>{
                         return 'Please enter some text';
                       }
                     },
+//                    keyboardType: TextInputType.number,
                     controller: controllers[cindex++],
                     maxLines: 1,
                     decoration: InputDecoration(
@@ -205,6 +207,7 @@ class ExerciseDataSelectorState extends State<ExerciseDataSelector>{
                         return 'Please enter some text';
                       }
                     },
+//                    keyboardType: TextInputType.number,
                     controller: controllers[cindex++],
                     maxLines: 1,
                     decoration: InputDecoration(
@@ -218,7 +221,6 @@ class ExerciseDataSelectorState extends State<ExerciseDataSelector>{
 
             }
             else{
-//              return Text('Cardio');
               return Wrap(
                 direction: Axis.horizontal,
                 children: <Widget>[
@@ -231,6 +233,7 @@ class ExerciseDataSelectorState extends State<ExerciseDataSelector>{
                           return 'Please enter some text';
                         }
                       },
+//                      keyboardType: TextInputType.number,
                       controller: controllers[cindex++],
                       maxLines: 1,
                       decoration: InputDecoration(
@@ -248,6 +251,7 @@ class ExerciseDataSelectorState extends State<ExerciseDataSelector>{
                           return 'Please enter some text';
                         }
                       },
+//                      keyboardType: TextInputType.number,
                       controller: controllers[cindex++],
                       maxLines: 1,
                       decoration: InputDecoration(
