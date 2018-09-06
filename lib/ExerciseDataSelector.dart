@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'Models/Workout.dart';
 import 'database/db.dart';
-import 'Models/Routine.dart';
-import 'Models/RoutineExercise.dart';
 import 'Models/Exercise.dart';
 import 'Models/ExerciseData.dart';
-import 'dart:async';
+
 
 class ExerciseDataSelector extends StatefulWidget{
   Exercise ex;
@@ -49,40 +46,42 @@ class ExerciseDataSelectorState extends State<ExerciseDataSelector>{
     return Scaffold(
       appBar: AppBar(
         title: Text('Edit Exercise Data'),
+        centerTitle: true,
+        actions: <Widget>[
+          IconButton(icon: Icon(Icons.save),
+            onPressed: () async{
+              if (_formKey.currentState.validate()) {
+                var ed;
+                try {
+                  if (ex.flag == 1) {
+                    ed = ExerciseData(id: exd.id,
+                        distance: double.parse(controller1.text),
+                        time: double.parse(controller2.text),
+                        workout: work.id,
+                        exercise: ex.id);
+                    await db.get().updateExerciseData(ed);
+                  }
+                  else {
+                    ed = ExerciseData(id: exd.id,
+                        sets: int.parse(controller2.text),
+                        reps: int.parse(controller1.text),
+                        weight: double.parse(controller3.text),
+                        workout: work.id,
+                        exercise: ex.id);
+                    await db.get().updateExerciseData(ed);
+                  }
+                }
+                catch(e){
+                  print(e.toString());
+                }
+                Navigator.pop(context);
+              }
+            },
+          ),
+        ],
       ),
       body: Center(
         child: form(context),
-      ),
-      floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.save),
-          onPressed: () async{
-            if (_formKey.currentState.validate()) {
-              var ed;
-              try {
-                if (ex.flag == 1) {
-                  ed = ExerciseData(id: exd.id,
-                      distance: double.parse(controller1.text),
-                      time: double.parse(controller2.text),
-                      workout: work.id,
-                      exercise: ex.id);
-                  await db.get().updateExerciseData(ed);
-                }
-                else {
-                  ed = ExerciseData(id: exd.id,
-                      sets: int.parse(controller2.text),
-                      reps: int.parse(controller1.text),
-                      weight: double.parse(controller3.text),
-                      workout: work.id,
-                      exercise: ex.id);
-                  await db.get().updateExerciseData(ed);
-                }
-              }
-              catch(e){
-                print(e.toString());
-              }
-              Navigator.pop(context);
-            }
-          }
       ),
     );
   }
@@ -96,6 +95,7 @@ class ExerciseDataSelectorState extends State<ExerciseDataSelector>{
             ListTile(
               title: Text(
                 '${ex.name}',
+                style: const TextStyle(fontSize: 30.0, fontWeight: FontWeight.w700),
               ),
             ),
             Wrap(
@@ -159,6 +159,7 @@ class ExerciseDataSelectorState extends State<ExerciseDataSelector>{
             ListTile(
               title: Text(
                 '${ex.name}',
+                style: const TextStyle(fontSize: 30.0, fontWeight: FontWeight.w700),
               ),
             ),
             Wrap(

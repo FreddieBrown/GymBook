@@ -3,7 +3,6 @@ import 'Models/Routine.dart';
 import 'database/db.dart';
 import 'dart:async';
 import 'Models/Workout.dart';
-import 'ExerciseDataSelector.dart';
 import 'Models/ExerciseData.dart';
 
 final _biggerFont = const TextStyle(fontSize: 18.0);
@@ -44,6 +43,7 @@ class WorkoutRoutineSelectorState extends State<WorkoutRoutineSelector>{
     return Scaffold(
       appBar: AppBar(
         title: Text('Choose a routine'),
+        centerTitle: true,
       ),
         body: Center(
           child: fut,

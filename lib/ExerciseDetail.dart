@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'Models/Exercise.dart';
 import 'database/db.dart';
 
@@ -20,6 +19,7 @@ class ExerciseDetail extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Exercise"),
+        centerTitle: true,
       ),
       body: ListView(
         padding: EdgeInsets.all(8.0),
@@ -53,14 +53,16 @@ class ExerciseDetail extends StatelessWidget {
             flag,
             style: const TextStyle(fontSize: 16.0),
           ),
+          RaisedButton(
+            color: Colors.blue,
+            textColor: Colors.white,
+            child: Text("Delete Exercise"),
+            onPressed: () {
+              db.get().removeExercise(exercise.id);
+              Navigator.pop(context);
+            },
+          ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.delete),
-        onPressed: () {
-          db.get().removeExercise(exercise.id);
-          Navigator.pop(context);
-        },
       ),
     );
   }

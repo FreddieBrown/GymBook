@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 import 'Models/Workout.dart';
 import 'database/db.dart';
 import 'Models/ExerciseData.dart';
-import 'Models/Routine.dart';
 import 'Models/Exercise.dart';
 import 'dart:async';
 import 'ExerciseDataSelector.dart';
@@ -47,20 +46,18 @@ class WorkoutDetail extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Workout"),
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+        actions: <Widget>[
+          IconButton(icon: Icon(Icons.save),
+            onPressed: (){Navigator.pop(context);},
+          ),
+        ],
       ),
       body: Padding(
         padding: EdgeInsets.all(8.0),
         child: ListView(
           children: <Widget>[
-            RaisedButton(
-              color: Colors.blue,
-              textColor: Colors.white,
-              child: Text("Delete Workout"),
-              onPressed: () {
-                db.get().removeWorkout(workout.id);
-                Navigator.popUntil(context, ModalRoute.withName('/'));
-              },
-            ),
             Center(
               child: Text('${workout.name}',
                 style: const TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700)
@@ -73,6 +70,15 @@ class WorkoutDetail extends StatelessWidget {
               )
             ),
             fut,
+            RaisedButton(
+              color: Colors.blue,
+              textColor: Colors.white,
+              child: Text("Delete Workout"),
+              onPressed: () {
+                db.get().removeWorkout(workout.id);
+                Navigator.popUntil(context, ModalRoute.withName('/'));
+              },
+            ),
           ],
         ),
       )

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'newExercise.dart';
 import 'ExerciseDetail.dart';
 import 'Models/Exercise.dart';
 import 'database/db.dart';
+import 'GymButton.dart';
 
 final _biggerFont = const TextStyle(fontSize: 18.0);
 
@@ -54,52 +54,53 @@ class ExercisesListState extends State<ExercisesList>{
         body: Center(
           child: fut,
         ),
-        floatingActionButton: new FloatingActionButton(
-          heroTag: "Exercise1",
-          onPressed: _addExericse,
-          child: Icon(Icons.add),
-        )
     );
   }
 
   Widget _exercises(BuildContext context, AsyncSnapshot snapshot){
     var exe = snapshot.data;
-    var _length = exe.length*2;
+    var _length = exe.length;
     return ListView.builder(
         padding: const EdgeInsets.all(8.0),
-        itemCount: _length,
+        itemCount: _length+2,
         itemBuilder: (context, i) {
-          if(i.isOdd){
-            return new Divider();
+          if(i == _length){
+            return GymButton(func: _addExericse, text: Text("Add Exercise", style: const TextStyle(color: Colors.white)));
           }
-          final index = i ~/ 2;
-          return _exercise(exe[index]);
+          else if(i == _length+1){
+            return Container(
+              padding: EdgeInsets.all(50.0),
+            );
+          }
+          return _exercise(exe[i]);
         }
     );
   }
 
   Widget _exercise(Exercise e){
-    return ListTile(
-      title: Text(
-        e.name,
-        style: _biggerFont,
-      ),
-      subtitle: Text(
-        e.notes,
-        maxLines: 1,
-      ),
-      trailing: new Icon(Icons.keyboard_arrow_right),
-      onTap: () {
-        setState(() {
+    return Card(
+        child: ListTile(
+          title: Text(
+            e.name,
+            style: _biggerFont,
+          ),
+          subtitle: Text(
+            e.notes,
+            maxLines: 1,
+          ),
+          trailing: new Icon(Icons.keyboard_arrow_right),
+          onTap: () {
+            setState(() {
 
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ExerciseDetail(exercise: e),
-            ),
-          );
-        });
-      },
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ExerciseDetail(exercise: e),
+                ),
+              );
+            });
+          },
+        )
     );
   }
 

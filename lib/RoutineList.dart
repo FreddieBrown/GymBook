@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'newRoutine.dart';
 import 'RoutineDetail.dart';
 import 'Models/Routine.dart';
-import 'Models/RoutineExercise.dart';
 import 'database/db.dart';
 import 'dart:async';
+import 'GymButton.dart';
 
 final _biggerFont = const TextStyle(fontSize: 18.0);
 
@@ -53,47 +53,48 @@ class RoutineListState extends State<RoutineList>{
         body: Center(
           child: fut,
         ),
-        floatingActionButton: new FloatingActionButton(
-          heroTag: "Routine1",
-          onPressed: _addRoutine,
-          child: Icon(Icons.add),
-        )
     );
   }
 
   Widget _routines(BuildContext context, AsyncSnapshot snapshot){
     var ra = snapshot.data;
-    var _length = ra.length*2;
+    var _length = ra.length;
     return ListView.builder(
         padding: const EdgeInsets.all(8.0),
-        itemCount: _length,
+        itemCount: _length+2,
         itemBuilder: (context, i) {
-          if(i.isOdd){
-            return new Divider();
+          if(i == _length){
+            return GymButton(func: _addRoutine, text: Text("Add Routine", style: const TextStyle(color: Colors.white)));
           }
-          final index = i ~/ 2;
-          return _routine(ra[index]);
+          else if(i == _length+1){
+            return Container(
+              padding: EdgeInsets.all(50.0),
+            );
+          }
+          return _routine(ra[i]);
         }
     );
   }
 
   Widget _routine(Routine r){
-    return ListTile(
-      title: Text(
-        r.name,
-        style: _biggerFont,
-      ),
-      trailing: new Icon(Icons.keyboard_arrow_right),
-      onTap: () {
-        setState(() {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => RoutineDetail(r),
-            ),
-          );
-        });
-      },
+    return Card(
+        child: ListTile(
+          title: Text(
+            r.name,
+            style: _biggerFont,
+          ),
+          trailing: new Icon(Icons.keyboard_arrow_right),
+          onTap: () {
+            setState(() {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => RoutineDetail(r),
+                ),
+              );
+            });
+          },
+        )
     );
   }
 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'FormMaker.dart';
 
 class newExercise extends StatefulWidget {
@@ -28,22 +27,26 @@ class newExerciseState extends State<newExercise> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Add Exercise"),
+        centerTitle: true,
       ),
       body: Form(
         key: _formKey,
         child: ListView(
           padding: EdgeInsets.only(top: 10.0),
           children: <Widget>[
-            Text(
-              "Exercise Name",
-              style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.w700, height: 2.0),
+            Container(
+              padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
+              child: Text(
+                  "Exercise Name",
+                  style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.w700, height: 2.0),
+                ),
             ),
             Container(
               padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
               child: TextFormField(
                 validator: _valid,
-                keyboardType: TextInputType.number,
                 controller: controller1,
+                autofocus: true,
                 maxLines: 1,
                 maxLength: 30,
                 decoration: InputDecoration(
@@ -52,14 +55,17 @@ class newExerciseState extends State<newExercise> {
                 ),
               ),
             ),
-            Text(
-              "Notes",
-              style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.w700, height: 2.0),
+            Container(
+              padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
+              child: Text(
+                "Notes",
+                style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.w700, height: 2.0),
+              ),
             ),
             Container(
               padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
               child: TextFormField(
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType.multiline,
                 validator: null,
                 controller: controller2,
                 maxLines: null,

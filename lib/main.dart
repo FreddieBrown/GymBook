@@ -1,16 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'WorkoutList.dart';
-import 'RoutineList.dart';
-import 'ExerciseList.dart';
-import 'Settings.dart';
 import 'Home.dart';
 import 'database/db.dart';
-import 'Models/Workout.dart';
 import 'Models/Exercise.dart';
-import 'Models/Routine.dart';
-import 'Models/RoutineExercise.dart';
-import 'Models/ExerciseData.dart';
 
 void main() async{
 
@@ -29,6 +20,7 @@ void main() async{
     db.get().data.delete("Exercises");
     db.get().data.delete("RoutineExercises");
     db.get().data.delete("ExerciseData");
+    db.get().data.delete("users");
     await data.init();
   }
 
@@ -58,7 +50,7 @@ class GymBook extends StatelessWidget {
       title: 'Gym Book',
       theme: new ThemeData(
         primaryColor: Colors.blue,
-        accentColor: Colors.white,
+        accentColor: Colors.blue,
         fontFamily: 'Nunito',
       ),
       home: DefaultTabController(
