@@ -1,6 +1,5 @@
 import 'package:meta/meta.dart';
 import 'package:gym_book/database/db.dart';
-import 'dart:async';
 
 class RoutineExercise {
   static final db_exercise = "exercise_id";

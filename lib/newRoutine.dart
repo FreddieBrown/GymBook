@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'FormMaker.dart';
 import 'Models/Routine.dart';
 import 'database/db.dart';
@@ -19,6 +18,7 @@ class newRoutineState extends State<newRoutine> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Add Routine"),
+        centerTitle: true,
       ),
       body: Form(
         key: _formKey,
@@ -37,7 +37,11 @@ class newRoutineState extends State<newRoutine> {
             ],
             [
               _valid,
+            ],
+            [
+              true
             ]
+
         ),
       ),
       floatingActionButton: FloatingActionButton(

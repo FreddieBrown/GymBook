@@ -8,6 +8,8 @@ import '../Models/Workout.dart';
 import '../Models/Routine.dart';
 import '../Models/RoutineExercise.dart';
 import '../Models/ExerciseData.dart';
+import '../Models/User.dart';
+
 class db {
   static final db _db = new db._internal();
 
@@ -16,6 +18,7 @@ class db {
   final String tableNameR = "Routines";
   final String tableNameRE = "RoutineExercises";
   final String tableNameED = "ExerciseData";
+  final String tableNameU = "users";
 
   Database data;
 
@@ -40,7 +43,7 @@ class db {
   Future _init() async {
     // Get a location using path_provider
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, "book.db");
+    String path = join(documentsDirectory.path, "gbook.db");
     data = await openDatabase(path, version: 1,
         onCreate: (Database db, int version) async {
           // When creating the db, create the table
@@ -84,6 +87,15 @@ class db {
                   "${ExerciseData.db_exercise} INTEGER NOT NULL,"
                   "FOREIGN KEY (${ExerciseData.db_workout}) REFERENCES ${tableNameW}(${Workout.db_id}),"
                   "FOREIGN KEY (${ExerciseData.db_exercise}) REFERENCES ${tableNameE}(${Exercise.db_id})"
+                  ")");
+          await db.execute(
+              "CREATE TABLE $tableNameU ("
+                  "${User.db_id} INTEGER PRIMARY KEY AUTOINCREMENT,"
+                  "${User.db_name} VARCHAR(30) NOT NULL,"
+                  "${User.db_email} VARCHAR(30) NOT NULL,"
+                  "${User.db_salt} TEXT NOT NULL,"
+                  "${User.db_hashp} TEXT NOT NULL,"
+                  "${User.db_dev} INTEGER NOT NULL"
                   ")");
           /// This is where all DB creation happens.
         });

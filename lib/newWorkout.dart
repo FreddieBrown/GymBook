@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'FormMaker.dart';
-import 'dart:async';
 import 'WorkoutRoutineSelector.dart';
-import 'database/db.dart';
 
 
 
@@ -25,6 +22,7 @@ class newWorkoutState extends State<newWorkout> {
     return Scaffold(
       appBar: AppBar(
         title: Text("New Workout"),
+        centerTitle: true,
       ),
       body: Container(
         child:
@@ -45,6 +43,9 @@ class newWorkoutState extends State<newWorkout> {
                 ],
                 [
                   _valid,
+                ],
+                [
+                  true
                 ]
             ),
           ),

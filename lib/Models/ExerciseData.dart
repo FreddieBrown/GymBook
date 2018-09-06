@@ -1,5 +1,4 @@
 import 'package:meta/meta.dart';
-import 'dart:async';
 import 'package:gym_book/database/db.dart';
 
 class ExerciseData {

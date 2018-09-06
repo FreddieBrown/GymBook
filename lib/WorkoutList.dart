@@ -4,6 +4,8 @@ import 'newWorkout.dart';
 import 'WorkoutDetail.dart';
 import 'Models/Workout.dart';
 import 'database/db.dart';
+import 'GymButton.dart';
+import 'dart:io' show Platform;
 
 final _biggerFont = const TextStyle(fontSize: 18.0);
 
@@ -14,8 +16,6 @@ class WorkoutList extends StatefulWidget{
 /// This is used to describe the state of the homeList StatefulWidget. It uses
 /// _workouts() as its body.
 class WorkoutListState extends State<WorkoutList> {
-  /// Need to work out how to get workout information from the start and not after 1 refresh
-  /// TODO: This is where SQL will be used to get Workout details
 
   @override
   void initState() {
@@ -43,7 +43,17 @@ class WorkoutListState extends State<WorkoutList> {
             if (snapshot.hasError)
               return new Text('Error: ${snapshot.error}');
             else if(snapshot.data.length == 0){
-              return Center(child: Text("You don't have any workouts, try creating one!"));
+              return Column(
+                children: <Widget>[
+                  GymButton(func: _addWorkout, text: Text("Add Workout", style: const TextStyle(color: Colors.white))),
+                  Padding(
+                      padding: EdgeInsets.only(top: 300.0),
+                      child: Center(
+                          child: Text("You don't have any Workouts, try creating one!")
+                      )
+                  )
+                ],
+              );
             }
             else
               return _workouts(context, snapshot);
@@ -53,11 +63,6 @@ class WorkoutListState extends State<WorkoutList> {
 
     return Scaffold(
       body: fut,
-      floatingActionButton: new FloatingActionButton(
-        heroTag: "Workout1",
-        onPressed: _addWorkout,
-        child: Icon(Icons.add),
-      ),
     );
   }
 
@@ -66,14 +71,24 @@ class WorkoutListState extends State<WorkoutList> {
     var workouts = snapshot.data;
     return ListView.builder(
         padding: const EdgeInsets.all(8.0),
-        shrinkWrap: true,
-        itemCount: workouts.length*2,
+        itemCount: workouts.length+2,
         itemBuilder: (context, i) {
-          if(i.isOdd){
-            return new Divider();
+          if(i == workouts.length){
+            return GymButton(func: _addWorkout, text: Text("Add Workout", style: const TextStyle(color: Colors.white)));
           }
-          final index = i ~/ 2;
-          return _workout(workouts[index]);
+          else if(i == workouts.length+1){
+            if(Platform.isAndroid) {
+              return Container(
+                padding: EdgeInsets.all(50.0),
+              );
+            }
+            else{
+              return Container(
+                padding: EdgeInsets.all(60.0),
+              );
+            }
+          }
+          return _workout(workouts[workouts.length-i-1]);
         }
     );
   }
@@ -84,24 +99,26 @@ class WorkoutListState extends State<WorkoutList> {
     var formatter1 = new DateFormat('jm');
     String formatted = formatter.format(DateTime.parse(workout.date));
     String formatted1 = formatter1.format(DateTime.parse(workout.date));
-    return ListTile(
-      title: Text(
-        "${workout.name}",
-        style: _biggerFont,
-      ),
-      subtitle: Text("$formatted at $formatted1"),
-      trailing: new Icon(Icons.keyboard_arrow_right),
-      onTap: () {
-        setState(() {
-          /// This is an example of how to push data to another screen
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => WorkoutDetail(workout: workout),
-            ),
-          );
-        });
-      },
+    return Card(
+        child: ListTile(
+          title: Text(
+            "${workout.name}",
+            style: _biggerFont,
+          ),
+          subtitle: Text("$formatted at $formatted1"),
+          trailing: new Icon(Icons.keyboard_arrow_right),
+          onTap: () {
+            setState(() {
+              /// This is an example of how to push data to another screen
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => WorkoutDetail(workout: workout),
+                ),
+              );
+            });
+          },
+        )
     );
   }
 

@@ -3,9 +3,9 @@ import 'package:intl/intl.dart';
 import 'Models/Workout.dart';
 import 'database/db.dart';
 import 'Models/ExerciseData.dart';
-import 'Models/Routine.dart';
 import 'Models/Exercise.dart';
 import 'dart:async';
+import 'ExerciseDataSelector.dart';
 
 class WorkoutDetail extends StatelessWidget {
   final Workout workout;
@@ -46,20 +46,18 @@ class WorkoutDetail extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Workout"),
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+        actions: <Widget>[
+          IconButton(icon: Icon(Icons.save),
+            onPressed: (){Navigator.pop(context);},
+          ),
+        ],
       ),
       body: Padding(
         padding: EdgeInsets.all(8.0),
         child: ListView(
           children: <Widget>[
-            RaisedButton(
-              color: Colors.blue,
-              textColor: Colors.white,
-              child: Text("Delete Workout"),
-              onPressed: () {
-                db.get().removeWorkout(workout.id);
-                Navigator.popUntil(context, ModalRoute.withName('/'));
-              },
-            ),
             Center(
               child: Text('${workout.name}',
                 style: const TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700)
@@ -72,6 +70,15 @@ class WorkoutDetail extends StatelessWidget {
               )
             ),
             fut,
+            RaisedButton(
+              color: Colors.blue,
+              textColor: Colors.white,
+              child: Text("Delete Workout"),
+              onPressed: () {
+                db.get().removeWorkout(workout.id);
+                Navigator.popUntil(context, ModalRoute.withName('/'));
+              },
+            ),
           ],
         ),
       )
@@ -90,24 +97,44 @@ class WorkoutDetail extends StatelessWidget {
             return new Divider();
           }
           final index = i ~/ 2;
-          return _exercise(data[index], exe[index]);
+          return _exercise(data[index], exe[index], context);
         }
     );
   }
 
-  _exercise(ExerciseData exd, Exercise ex){
+  _exercise(ExerciseData exd, Exercise ex, BuildContext context){
     if(ex.flag == 0) {
       return ListTile(
         title: Text('${ex.name}'),
         subtitle: Text(
-            'Weight: ${exd.weight}kg, Reps: ${exd.reps}, Sets: ${exd.sets}'),
+            'Reps: ${exd.reps}, Sets: ${exd.sets}, Weight: ${exd.weight}kg '
+        ),
+        trailing: new Icon(Icons.keyboard_arrow_right),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ExerciseDataSelector(exd, ex, workout),
+            ),
+          );
+        },
       );
     }
     else{
       return ListTile(
         title: Text('${ex.name}'),
         subtitle: Text(
-            'Distance: ${exd.distance}km, Time: ${exd.time}mins'),
+            'Distance: ${exd.distance}km, Time: ${exd.time}mins'
+        ),
+        trailing: new Icon(Icons.keyboard_arrow_right),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ExerciseDataSelector(exd, ex, workout),
+            ),
+          );
+        },
       );
     }
   }

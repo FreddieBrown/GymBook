@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'Models/Routine.dart';
 import 'Models/RoutineExercise.dart';
 import 'Models/Exercise.dart';
-import 'ExerciseDetail.dart';
 import 'database/db.dart';
 import 'ExerciseSelector.dart';
 import 'dart:async';
@@ -68,19 +66,17 @@ class RoutineDetailState extends State<RoutineDetail> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Routine"),
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+        actions: <Widget>[
+          IconButton(icon: Icon(Icons.save),
+            onPressed: (){Navigator.pop(context);},
+          ),
+        ],
       ),
       body: ListView(
         padding: EdgeInsets.all(8.0),
         children: <Widget>[
-          RaisedButton(
-              color: Colors.blue,
-              textColor: Colors.white,
-              child: Text("Delete Routine"),
-              onPressed: () {
-                db.get().removeRoutine(routine.id);
-                Navigator.pop(context);
-              },
-          ),
           Center(
           child: Container(
               padding: const EdgeInsets.all(8.0),
@@ -91,6 +87,15 @@ class RoutineDetailState extends State<RoutineDetail> {
           new Align(
             alignment: Alignment.center,
             child: fut,
+          ),
+          RaisedButton(
+            color: Colors.blue,
+            textColor: Colors.white,
+            child: Text("Delete Routine"),
+            onPressed: () {
+              db.get().removeRoutine(routine.id);
+              Navigator.pop(context);
+            },
           ),
         ],
       ),
@@ -110,28 +115,25 @@ class RoutineDetailState extends State<RoutineDetail> {
     return ListView.builder(
         padding: const EdgeInsets.all(8.0),
         shrinkWrap: true,
-        itemCount: re.length*2,
+        itemCount: re.length,
         itemBuilder: (context, i) {
-          if(i.isOdd){
-            return new Divider();
-          }
-          final index = i ~/ 2;
-          return _exercise(re[index], exercises[index], context);
+          return _exercise(re[i], exercises[i], context);
         }
     );
 
   }
 
   Widget _exercise(RoutineExercise re, Exercise ex, BuildContext context){
-    return ListTile(
-      title: Text(ex.name),
-      trailing: new Icon(Icons.delete),
-      onTap: () {
-        db.get().removeRoutineExercise(re.id);
-        setState(() {});
-      }
+    return Card(
+        child: ListTile(
+          title: Text(ex.name),
+          trailing: new Icon(Icons.delete),
+          onTap: () {
+            db.get().removeRoutineExercise(re.id);
+            setState(() {});
+          }
+        )
     );
-
   }
 
   _navigateAndDisplaySelection(BuildContext context) async {

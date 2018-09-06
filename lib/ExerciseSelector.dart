@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'Models/Exercise.dart';
 import 'database/db.dart';
 import 'Models/RoutineExercise.dart';
-import 'database/db.dart';
 
 class ExerciseSelector extends StatefulWidget{
   var routine;
@@ -43,6 +42,7 @@ class ExerciseSelectorState extends State<ExerciseSelector>{
     return Scaffold(
       appBar: AppBar(
         title: Text("Select an Exercise"),
+        centerTitle: true,
       ),
       body: fut,
     );
