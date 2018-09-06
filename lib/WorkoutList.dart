@@ -5,6 +5,7 @@ import 'WorkoutDetail.dart';
 import 'Models/Workout.dart';
 import 'database/db.dart';
 import 'GymButton.dart';
+import 'dart:io' show Platform;
 
 final _biggerFont = const TextStyle(fontSize: 18.0);
 
@@ -42,7 +43,17 @@ class WorkoutListState extends State<WorkoutList> {
             if (snapshot.hasError)
               return new Text('Error: ${snapshot.error}');
             else if(snapshot.data.length == 0){
-              return Center(child: Text("You don't have any workouts, try creating one!"));
+              return Column(
+                children: <Widget>[
+                  GymButton(func: _addWorkout, text: Text("Add Workout", style: const TextStyle(color: Colors.white))),
+                  Padding(
+                      padding: EdgeInsets.only(top: 300.0),
+                      child: Center(
+                          child: Text("You don't have any Workouts, try creating one!")
+                      )
+                  )
+                ],
+              );
             }
             else
               return _workouts(context, snapshot);
@@ -66,9 +77,16 @@ class WorkoutListState extends State<WorkoutList> {
             return GymButton(func: _addWorkout, text: Text("Add Workout", style: const TextStyle(color: Colors.white)));
           }
           else if(i == workouts.length+1){
-            return Container(
-              padding: EdgeInsets.all(50.0),
-            );
+            if(Platform.isAndroid) {
+              return Container(
+                padding: EdgeInsets.all(50.0),
+              );
+            }
+            else{
+              return Container(
+                padding: EdgeInsets.all(60.0),
+              );
+            }
           }
           return _workout(workouts[workouts.length-i-1]);
         }

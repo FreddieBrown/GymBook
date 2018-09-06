@@ -5,6 +5,7 @@ import 'Models/Routine.dart';
 import 'database/db.dart';
 import 'dart:async';
 import 'GymButton.dart';
+import 'dart:io' show Platform;
 
 final _biggerFont = const TextStyle(fontSize: 18.0);
 
@@ -41,7 +42,17 @@ class RoutineListState extends State<RoutineList>{
             if (snapshot.hasError)
               return new Text('Error: ${snapshot.error}');
             else if(snapshot.data.length == 0){
-              return Text("You don't have any routines, try creating one!");
+              return Column(
+                children: <Widget>[
+                  GymButton(func: _addRoutine, text: Text("Add Routine", style: const TextStyle(color: Colors.white))),
+                  Padding(
+                    padding: EdgeInsets.only(top: 300.0),
+                    child: Center(
+                        child: Text("You don't have any Routines, try creating one!")
+                    )
+                  )
+                ],
+              );
             }
             else
               return _routines(context, snapshot);
@@ -67,9 +78,16 @@ class RoutineListState extends State<RoutineList>{
             return GymButton(func: _addRoutine, text: Text("Add Routine", style: const TextStyle(color: Colors.white)));
           }
           else if(i == _length+1){
-            return Container(
-              padding: EdgeInsets.all(50.0),
-            );
+            if(Platform.isAndroid) {
+              return Container(
+                padding: EdgeInsets.all(50.0),
+              );
+            }
+            else{
+              return Container(
+                padding: EdgeInsets.all(60.0),
+              );
+            }
           }
           return _routine(ra[i]);
         }

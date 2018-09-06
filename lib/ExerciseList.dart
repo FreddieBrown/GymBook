@@ -4,6 +4,7 @@ import 'ExerciseDetail.dart';
 import 'Models/Exercise.dart';
 import 'database/db.dart';
 import 'GymButton.dart';
+import 'dart:io' show Platform;
 
 final _biggerFont = const TextStyle(fontSize: 18.0);
 
@@ -42,7 +43,18 @@ class ExercisesListState extends State<ExercisesList>{
             if (snapshot.hasError)
               return new Text('Error: ${snapshot.error}');
             else if(snapshot.data.length == 0){
-              return Text("You don't have any exercises, try creating one!");
+              return Column(
+                children: <Widget>[
+                  GymButton(func: _addExericse, text: Text("Add Exercise", style: const TextStyle(color: Colors.white))),
+                  Padding(
+                      padding: EdgeInsets.only(top: 300.0),
+                      child: Center(
+                          child: Text("You don't have any Exercises, try creating one!")
+                      )
+                  )
+                ],
+              );
+
             }
             else
               return _exercises(context, snapshot);
@@ -68,9 +80,16 @@ class ExercisesListState extends State<ExercisesList>{
             return GymButton(func: _addExericse, text: Text("Add Exercise", style: const TextStyle(color: Colors.white)));
           }
           else if(i == _length+1){
-            return Container(
-              padding: EdgeInsets.all(50.0),
-            );
+            if(Platform.isAndroid) {
+              return Container(
+                padding: EdgeInsets.all(50.0),
+              );
+            }
+            else{
+              return Container(
+                padding: EdgeInsets.all(60.0),
+              );
+            }
           }
           return _exercise(exe[i]);
         }
