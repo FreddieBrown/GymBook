@@ -100,6 +100,9 @@ class WorkoutListState extends State<WorkoutList> {
     String formatted = formatter.format(DateTime.parse(workout.date));
     String formatted1 = formatter1.format(DateTime.parse(workout.date));
     return Card(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        ),
         child: ListTile(
           title: Text(
             "${workout.name}",

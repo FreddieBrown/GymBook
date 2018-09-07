@@ -98,6 +98,9 @@ class ExercisesListState extends State<ExercisesList>{
 
   Widget _exercise(Exercise e){
     return Card(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        ),
         child: ListTile(
           title: Text(
             e.name,

@@ -96,6 +96,9 @@ class RoutineListState extends State<RoutineList>{
 
   Widget _routine(Routine r){
     return Card(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        ),
         child: ListTile(
           title: Text(
             r.name,

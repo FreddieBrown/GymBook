@@ -11,6 +11,9 @@ class GymButton extends StatelessWidget{
   Widget build(BuildContext context) {
     return GestureDetector(
       child: Card(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        ),
         color: colour,
         child: Padding(
           padding: EdgeInsets.only(top: 16.0, bottom: 16.0, left: 120.0, right: 120.0),
