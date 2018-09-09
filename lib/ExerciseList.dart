@@ -5,6 +5,7 @@ import 'Models/Exercise.dart';
 import 'database/db.dart';
 import 'GymButton.dart';
 import 'dart:io' show Platform;
+import 'GymPageRoute.dart';
 
 final _biggerFont = const TextStyle(fontSize: 18.0);
 
@@ -113,11 +114,10 @@ class ExercisesListState extends State<ExercisesList>{
           trailing: new Icon(Icons.keyboard_arrow_right),
           onTap: () {
             setState(() {
-
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => ExerciseDetail(exercise: e),
+                GymPageRoute(
+                    builder: (context) => ExerciseDetail(exercise: e)
                 ),
               );
             });
@@ -163,15 +163,4 @@ class ExercisesListState extends State<ExercisesList>{
   }
 }
 
-/// How to use a snackbar
-//    final snackBar = SnackBar(
-//      content: Text('Yay! A SnackBar!'),
-//      action: SnackBarAction(
-//        label: 'Undo',
-//        onPressed: () {
-//          // Some code to undo the change!
-//        },
-//      ),
-//    );
-//    Scaffold.of(context).showSnackBar(snackBar);
 

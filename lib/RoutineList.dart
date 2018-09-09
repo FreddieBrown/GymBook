@@ -6,6 +6,7 @@ import 'database/db.dart';
 import 'dart:async';
 import 'GymButton.dart';
 import 'dart:io' show Platform;
+import 'GymPageRoute.dart';
 
 final _biggerFont = const TextStyle(fontSize: 18.0);
 
@@ -109,7 +110,7 @@ class RoutineListState extends State<RoutineList>{
             setState(() {
               Navigator.push(
                 context,
-                MaterialPageRoute(
+                GymPageRoute(
                   builder: (context) => RoutineDetail(r),
                 ),
               );
@@ -133,7 +134,7 @@ class RoutineListState extends State<RoutineList>{
     // Navigator.pop on the Selection Screen!
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => newRoutine()),
+      GymPageRoute(builder: (context) => newRoutine()),
     );
 
     // After the Selection Screen returns a result, show it in a Snackbar!

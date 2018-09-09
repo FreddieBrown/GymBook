@@ -6,6 +6,7 @@ import 'Models/Workout.dart';
 import 'database/db.dart';
 import 'GymButton.dart';
 import 'dart:io' show Platform;
+import 'GymPageRoute.dart';
 
 final _biggerFont = const TextStyle(fontSize: 18.0);
 
@@ -115,7 +116,7 @@ class WorkoutListState extends State<WorkoutList> {
               /// This is an example of how to push data to another screen
               Navigator.push(
                 context,
-                MaterialPageRoute(
+                GymPageRoute(
                   builder: (context) => WorkoutDetail(workout: workout),
                 ),
               );

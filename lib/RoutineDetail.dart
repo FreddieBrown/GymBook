@@ -5,6 +5,8 @@ import 'Models/Exercise.dart';
 import 'database/db.dart';
 import 'ExerciseSelector.dart';
 import 'dart:async';
+import 'GymPageRoute.dart';
+import 'GymButton.dart';
 
 final _biggerFont = const TextStyle(fontSize: 18.0);
 class RoutineDetail extends StatefulWidget{
@@ -88,14 +90,12 @@ class RoutineDetailState extends State<RoutineDetail> {
             alignment: Alignment.center,
             child: fut,
           ),
-          RaisedButton(
-            color: Colors.blue,
-            textColor: Colors.white,
-            child: Text("Delete Routine"),
-            onPressed: () {
-              db.get().removeRoutine(routine.id);
-              Navigator.pop(context);
-            },
+          GymButton(
+              func:() {
+                db.get().removeRoutine(routine.id);
+                Navigator.pop(context);
+              },
+              text: Text("Delete Routine", style: const TextStyle(color: Colors.white))
           ),
         ],
       ),
@@ -141,7 +141,7 @@ class RoutineDetailState extends State<RoutineDetail> {
     // Navigator.pop on the Selection Screen!
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ExerciseSelector(routine)),
+      GymPageRoute(builder: (context) => ExerciseSelector(routine)),
     );
 
   }

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'FormMaker.dart';
 import 'WorkoutRoutineSelector.dart';
-
-
-
+import 'GymPageRoute.dart';
 
 class newWorkout extends StatefulWidget {
   @override
@@ -59,7 +57,7 @@ class newWorkoutState extends State<newWorkout> {
 //              Navigator.pop(context, controller1.text);
               await Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => WorkoutRoutineSelector(controller1.text)),
+                GymPageRoute(builder: (context) => WorkoutRoutineSelector(controller1.text)),
               );
             }
           },

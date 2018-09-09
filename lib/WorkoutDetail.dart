@@ -6,6 +6,8 @@ import 'Models/ExerciseData.dart';
 import 'Models/Exercise.dart';
 import 'dart:async';
 import 'ExerciseDataSelector.dart';
+import 'GymPageRoute.dart';
+import 'GymButton.dart';
 
 class WorkoutDetail extends StatelessWidget {
   final Workout workout;
@@ -70,14 +72,12 @@ class WorkoutDetail extends StatelessWidget {
               )
             ),
             fut,
-            RaisedButton(
-              color: Colors.blue,
-              textColor: Colors.white,
-              child: Text("Delete Workout"),
-              onPressed: () {
-                db.get().removeWorkout(workout.id);
-                Navigator.popUntil(context, ModalRoute.withName('/'));
-              },
+            GymButton(
+                  func:() {
+                    db.get().removeWorkout(workout.id);
+                    Navigator.popUntil(context, ModalRoute.withName('/'));
+                  },
+                  text: Text("Delete Workout", style: const TextStyle(color: Colors.white))
             ),
           ],
         ),
@@ -113,7 +113,7 @@ class WorkoutDetail extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(
+            GymPageRoute(
               builder: (context) => ExerciseDataSelector(exd, ex, workout),
             ),
           );
@@ -130,7 +130,7 @@ class WorkoutDetail extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(
+            GymPageRoute(
               builder: (context) => ExerciseDataSelector(exd, ex, workout),
             ),
           );

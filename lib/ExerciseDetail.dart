@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'Models/Exercise.dart';
 import 'database/db.dart';
+import 'GymButton.dart';
 
 class ExerciseDetail extends StatelessWidget {
   final Exercise exercise;
@@ -53,14 +54,12 @@ class ExerciseDetail extends StatelessWidget {
             flag,
             style: const TextStyle(fontSize: 16.0),
           ),
-          RaisedButton(
-            color: Colors.blue,
-            textColor: Colors.white,
-            child: Text("Delete Exercise"),
-            onPressed: () {
-              db.get().removeExercise(exercise.id);
-              Navigator.pop(context);
-            },
+          GymButton(
+              func:() {
+                db.get().removeExercise(exercise.id);
+                Navigator.pop(context);
+              },
+              text: Text("Delete Exercise", style: const TextStyle(color: Colors.white))
           ),
         ],
       ),

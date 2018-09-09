@@ -3,6 +3,7 @@ import 'WorkoutList.dart';
 import 'RoutineList.dart';
 import 'ExerciseList.dart';
 import 'Settings.dart';
+import 'GymPageRoute.dart';
 
 class Home extends StatelessWidget{
 
@@ -39,7 +40,7 @@ class Home extends StatelessWidget{
               onPressed: (){
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Settings()),
+                  GymPageRoute(builder: (context) => Settings()),
                 );
               }
           ),
