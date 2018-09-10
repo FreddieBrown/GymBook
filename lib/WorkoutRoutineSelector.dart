@@ -68,57 +68,62 @@ class WorkoutRoutineSelectorState extends State<WorkoutRoutineSelector>{
   }
 
   Widget _routine(Routine r){
-    return ListTile(
-      title: Text(
-        r.name,
-        style: _biggerFont,
-      ),
-      subtitle: Text(
-        "ID: ${r.id}",
-      ),
-      trailing: new Icon(Icons.keyboard_arrow_right),
-      onTap: () async {
-          if('$name' != 'null') {
-            try {
-              var date = DateTime.now();
-              await db.get().updateWorkout(
-                  Workout(
-                      name: name,
-                      routine: r.id,
-                      date: '$date'));
-              List w = await db.get().getWorkoutByDate('$date');
-              Workout work = w[0];
-              List dataE = await exercises(r);
-              for(int j = 0; j < dataE.length; j++){
-                if(dataE[j].flag == 0){
-                  db.get().updateExerciseData(
-                      ExerciseData(
-                          workout: work.id,
-                          exercise: dataE[j].id,
-                          sets: 0,
-                          reps: 0,
-                          weight: 0.0
-                      )
-                  );
+    return Card(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        ),
+        child: ListTile(
+          title: Text(
+            r.name,
+            style: _biggerFont,
+          ),
+          subtitle: Text(
+            "ID: ${r.id}",
+          ),
+          trailing: new Icon(Icons.keyboard_arrow_right, color: Colors.white),
+          onTap: () async {
+              if('$name' != 'null') {
+                try {
+                  var date = DateTime.now();
+                  await db.get().updateWorkout(
+                      Workout(
+                          name: name,
+                          routine: r.id,
+                          date: '$date'));
+                  List w = await db.get().getWorkoutByDate('$date');
+                  Workout work = w[0];
+                  List dataE = await exercises(r);
+                  for(int j = 0; j < dataE.length; j++){
+                    if(dataE[j].flag == 0){
+                      db.get().updateExerciseData(
+                          ExerciseData(
+                              workout: work.id,
+                              exercise: dataE[j].id,
+                              sets: 0,
+                              reps: 0,
+                              weight: 0.0
+                          )
+                      );
+                    }
+                    else{
+                      db.get().updateExerciseData(
+                          ExerciseData(
+                            workout: work.id,
+                            exercise: dataE[j].id,
+                            distance: 0.0,
+                            time: 0.0,
+                          )
+                      );
+                    }
+                  }
                 }
-                else{
-                  db.get().updateExerciseData(
-                      ExerciseData(
-                        workout: work.id,
-                        exercise: dataE[j].id,
-                        distance: 0.0,
-                        time: 0.0,
-                      )
-                  );
+                catch (e) {
+                  print(e.toString());
                 }
+                Navigator.popUntil(context, ModalRoute.withName('/'));
               }
-            }
-            catch (e) {
-              print(e.toString());
-            }
-            Navigator.popUntil(context, ModalRoute.withName('/'));
-          }
-      },
+          },
+      )
     );
   }
 

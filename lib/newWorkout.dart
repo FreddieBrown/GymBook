@@ -61,7 +61,7 @@ class newWorkoutState extends State<newWorkout> {
               );
             }
           },
-          child: Icon(Icons.save),
+          child: Icon(Icons.save, color: Colors.white),
         ),
     );
   }

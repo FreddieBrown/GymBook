@@ -49,6 +49,7 @@ class ExerciseDataSelectorState extends State<ExerciseDataSelector>{
         centerTitle: true,
         actions: <Widget>[
           IconButton(icon: Icon(Icons.save),
+            color: Colors.white,
             onPressed: () async{
               if (_formKey.currentState.validate()) {
                 var ed;
@@ -92,19 +93,25 @@ class ExerciseDataSelectorState extends State<ExerciseDataSelector>{
         key: _formKey,
         child: ListView(
           children: <Widget>[
-            ListTile(
-              title: Text(
-                '${ex.name}',
-                style: const TextStyle(fontSize: 30.0, fontWeight: FontWeight.w700),
-              ),
+            Card(
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                ),
+              child: ListTile(
+                title: Text(
+                  '${ex.name}',
+                  style: const TextStyle(fontSize: 30.0, fontWeight: FontWeight.w700),
+                ),
+              )
             ),
             Wrap(
               children: <Widget>[
                 Container(
                   width: 250.0,
                   padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
-                  child:TextFormField(
+                  child: TextFormField(
                     autofocus: true,
+                    style: TextStyle(color: Colors.black),
                     validator: (value){
                       if (value.isEmpty) {
                         return 'Please enter some text';
@@ -117,9 +124,10 @@ class ExerciseDataSelectorState extends State<ExerciseDataSelector>{
                     controller: controller1,
                     maxLines: 1,
                     decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.grey[300],
                       border: OutlineInputBorder(),
-                      labelText: "Distance (km)",
-                      hintText: "${exd.distance}km",
+                      hintText: "Distance: ${exd.distance}km",
                     ),
                   ),
                 ),
@@ -127,6 +135,7 @@ class ExerciseDataSelectorState extends State<ExerciseDataSelector>{
                     width: 250.0,
                     padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
                     child: TextFormField(
+                      style: TextStyle(color: Colors.black),
                       validator: (value){
                         if (value.isEmpty) {
                           return 'Please enter some text';
@@ -139,9 +148,10 @@ class ExerciseDataSelectorState extends State<ExerciseDataSelector>{
                       controller: controller2,
                       maxLines: 1,
                       decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.grey[300],
                         border: OutlineInputBorder(),
-                        labelText: "Time (mins)",
-                        hintText: "${exd.time}mins",
+                        hintText: "Time: ${exd.time}mins",
                       ),
                     )
                 ),
@@ -157,10 +167,10 @@ class ExerciseDataSelectorState extends State<ExerciseDataSelector>{
         child: ListView(
           children: <Widget>[
             ListTile(
-              title: Text(
-                '${ex.name}',
-                style: const TextStyle(fontSize: 30.0, fontWeight: FontWeight.w700),
-              ),
+                title: Text(
+                  '${ex.name}',
+                  style: const TextStyle(fontSize: 30.0, fontWeight: FontWeight.w700),
+                ),
             ),
             Wrap(
               children: <Widget>[
@@ -168,6 +178,7 @@ class ExerciseDataSelectorState extends State<ExerciseDataSelector>{
                   width: 250.0,
                   padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
                   child:TextFormField(
+                    style: TextStyle(color: Colors.black),
                     autofocus: true,
                     validator: (value){
                       if (value.isEmpty) {
@@ -181,9 +192,10 @@ class ExerciseDataSelectorState extends State<ExerciseDataSelector>{
                     controller: controller1,
                     maxLines: 1,
                     decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.grey[300],
                       border: OutlineInputBorder(),
-                      labelText: "Reps",
-                      hintText: "${exd.reps}",
+                      hintText: "Reps: ${exd.reps}",
                     ),
                   ),
                 ),
@@ -191,6 +203,7 @@ class ExerciseDataSelectorState extends State<ExerciseDataSelector>{
                     width: 250.0,
                     padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
                     child: TextFormField(
+                      style: TextStyle(color: Colors.black),
                       validator: (value){
                         if (value.isEmpty) {
                           return 'Please enter some text';
@@ -203,9 +216,10 @@ class ExerciseDataSelectorState extends State<ExerciseDataSelector>{
                       controller: controller2,
                       maxLines: 1,
                       decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.grey[300],
                         border: OutlineInputBorder(),
-                        labelText: "Sets",
-                        hintText: "${exd.sets}",
+                        hintText: "Sets: ${exd.sets}",
                       ),
                     )
                 ),
@@ -213,6 +227,7 @@ class ExerciseDataSelectorState extends State<ExerciseDataSelector>{
                     width: 250.0,
                     padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
                     child: TextFormField(
+                      style: TextStyle(color: Colors.black),
                       validator: (value){
                         if (value.isEmpty) {
                           return 'Please enter some text';
@@ -225,9 +240,10 @@ class ExerciseDataSelectorState extends State<ExerciseDataSelector>{
                       controller: controller3,
                       maxLines: 1,
                       decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.grey[300],
                         border: OutlineInputBorder(),
-                        labelText: "Weight (kg)",
-                        hintText: "${exd.weight}kg",
+                        hintText: "Weight: ${exd.weight}kg",
                       ),
                     )
                 ),

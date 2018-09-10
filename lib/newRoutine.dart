@@ -64,7 +64,7 @@ class newRoutineState extends State<newRoutine> {
               });
             }
           },
-          child: Icon(Icons.save),
+          child: Icon(Icons.save, color: Colors.white),
         ),
     );
   }

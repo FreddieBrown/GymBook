@@ -51,6 +51,11 @@ class GymBook extends StatelessWidget {
       theme: new ThemeData(
         primaryColor: Colors.blue,
         accentColor: Colors.blue,
+        textTheme: TextTheme(display1: TextStyle(color: Colors.white), display2: TextStyle(color: Colors.white), display3: TextStyle(color: Colors.white), display4: TextStyle(color: Colors.white), headline: TextStyle(color: Colors.white), subhead: TextStyle(color: Colors.white), body1: TextStyle(color: Colors.white), body2: TextStyle(color: Colors.white), button: TextStyle(color: Colors.white), title: TextStyle(color: Colors.white), caption: TextStyle(color: Colors.white)),
+        scaffoldBackgroundColor: Colors.grey[800],
+        cardColor: Colors.grey[900],
+        iconTheme: IconThemeData(color: Colors.white),
+        accentIconTheme: IconThemeData(color: Colors.white),
         fontFamily: 'Nunito',
       ),
       home: DefaultTabController(

@@ -108,7 +108,7 @@ class GymPageRoute<T> extends PageRoute<T> {
   }
 
   @override
-  Duration get transitionDuration => const Duration(milliseconds: 500);
+  Duration get transitionDuration => const Duration(milliseconds: 300);
 
   @override
   Color get barrierColor => null;

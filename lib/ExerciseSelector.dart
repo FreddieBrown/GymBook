@@ -70,20 +70,25 @@ class ExerciseSelectorState extends State<ExerciseSelector>{
   }
 
   Widget exercise(Exercise e){
-    return ListTile(
-      title: Text('${e.name}'),
-      trailing: new Icon(Icons.keyboard_arrow_right),
-      onTap: () {
-        var r = RoutineExercise(
-            id: null,
-            exercise: e.id,
-            routine: routine.id
-        );
-        db.get().updateRoutineExercise(r);
-        setState(() {
-          Navigator.pop(context);
-        });
-      },
+    return Card(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        ),
+      child: ListTile(
+        title: Text('${e.name}'),
+        trailing: new Icon(Icons.keyboard_arrow_right, color: Colors.white),
+        onTap: () {
+          var r = RoutineExercise(
+              id: null,
+              exercise: e.id,
+              routine: routine.id
+          );
+          db.get().updateRoutineExercise(r);
+          setState(() {
+            Navigator.pop(context);
+          });
+        },
+      )
     );
   }
 

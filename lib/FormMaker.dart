@@ -26,12 +26,15 @@ class FormMaker{
     return Container(
       padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
       child: TextFormField(
+        style: TextStyle(color: Colors.black),
         validator: func,
         autofocus: autof,
         controller: controller,
         maxLines: lines,
         maxLength: chars,
         decoration: InputDecoration(
+            filled: true,
+            fillColor: Colors.grey[300],
             border: OutlineInputBorder(),
             hintText: label
         ),

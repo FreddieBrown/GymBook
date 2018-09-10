@@ -12,6 +12,7 @@ class newExerciseState extends State<newExercise> {
   final controller2 = TextEditingController();
   var form = FormMaker();
   var flag = 0;
+  var b = false;
 
 
   @override
@@ -28,6 +29,15 @@ class newExerciseState extends State<newExercise> {
       appBar: AppBar(
         title: Text("Add Exercise"),
         centerTitle: true,
+        actions: <Widget>[
+          IconButton(icon: Icon(Icons.save), onPressed: () {
+            if (_formKey.currentState.validate()) {
+              Navigator.pop(context,
+                  {"name": controller1.text, "notes": controller2.text, "flag": flag});
+            }
+          }, color: Colors.white
+      ),
+    ]
       ),
       body: Form(
         key: _formKey,
@@ -44,12 +54,15 @@ class newExerciseState extends State<newExercise> {
             Container(
               padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
               child: TextFormField(
+                style: TextStyle(color: Colors.black),
                 validator: _valid,
                 controller: controller1,
                 autofocus: true,
                 maxLines: 1,
                 maxLength: 30,
                 decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.grey[300],
                     border: OutlineInputBorder(),
                     hintText: "Exercise Name"
                 ),
@@ -65,42 +78,32 @@ class newExerciseState extends State<newExercise> {
             Container(
               padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
               child: TextFormField(
+                style: TextStyle(color: Colors.black),
                 keyboardType: TextInputType.multiline,
                 validator: null,
                 controller: controller2,
                 maxLines: null,
                 maxLength: null,
                 decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.grey[300],
                     border: OutlineInputBorder(),
                     hintText: "Notes"
                 ),
               ),
             ),
-            RadioListTile(
+            SwitchListTile(
                 title: Text("Cardio?"),
-                value: 1,
-                groupValue: flag,
-                onChanged: (int fl){
+                value: b,
+                onChanged: (bool v){
                  setState(() {
-                   flag = fl;
-                   print(flag);
+                   b = v;
+                   flag = 1;
                  });
                 }
                 ),
           ]
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        heroTag: "Exercise1",
-          onPressed: () {
-            // Navigate back to the first screen by popping the current route
-            // off the stack
-            if (_formKey.currentState.validate()) {
-              Navigator.pop(context,
-                  {"name": controller1.text, "notes": controller2.text, "flag": flag});
-            }
-          },
-          child: Icon(Icons.save),
       ),
     );
   }

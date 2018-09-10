@@ -71,7 +71,7 @@ class RoutineDetailState extends State<RoutineDetail> {
         centerTitle: true,
         automaticallyImplyLeading: false,
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.save),
+          IconButton(icon: Icon(Icons.save, color: Colors.white),
             onPressed: (){Navigator.pop(context);},
           ),
         ],
@@ -100,7 +100,7 @@ class RoutineDetailState extends State<RoutineDetail> {
         ],
       ),
       floatingActionButton: new FloatingActionButton(
-        child: Icon(Icons.add),
+        child: Icon(Icons.add, color: Colors.white),
         onPressed: () {
             _navigateAndDisplaySelection(context);
         },
@@ -125,9 +125,12 @@ class RoutineDetailState extends State<RoutineDetail> {
 
   Widget _exercise(RoutineExercise re, Exercise ex, BuildContext context){
     return Card(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        ),
         child: ListTile(
           title: Text(ex.name),
-          trailing: new Icon(Icons.delete),
+          trailing: new Icon(Icons.delete, color: Colors.white),
           onTap: () {
             db.get().removeRoutineExercise(re.id);
             setState(() {});

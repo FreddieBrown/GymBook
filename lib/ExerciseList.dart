@@ -111,7 +111,7 @@ class ExercisesListState extends State<ExercisesList>{
             e.notes,
             maxLines: 1,
           ),
-          trailing: new Icon(Icons.keyboard_arrow_right),
+          trailing: new Icon(Icons.keyboard_arrow_right, color: Colors.white),
           onTap: () {
             setState(() {
               Navigator.push(

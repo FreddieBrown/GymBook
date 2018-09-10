@@ -110,7 +110,7 @@ class WorkoutListState extends State<WorkoutList> {
             style: _biggerFont,
           ),
           subtitle: Text("$formatted at $formatted1"),
-          trailing: new Icon(Icons.keyboard_arrow_right),
+          trailing: new Icon(Icons.keyboard_arrow_right, color: Colors.white),
           onTap: () {
             setState(() {
               /// This is an example of how to push data to another screen

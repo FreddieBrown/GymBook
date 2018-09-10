@@ -51,7 +51,7 @@ class WorkoutDetail extends StatelessWidget {
         centerTitle: true,
         automaticallyImplyLeading: false,
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.save),
+          IconButton(icon: Icon(Icons.save, color: Colors.white),
             onPressed: (){Navigator.pop(context);},
           ),
         ],
@@ -91,25 +91,25 @@ class WorkoutDetail extends StatelessWidget {
     return ListView.builder(
         padding: const EdgeInsets.all(8.0),
         shrinkWrap: true,
-        itemCount: data.length*2,
+        itemCount: data.length,
         itemBuilder: (context, i) {
-          if(i.isOdd){
-            return new Divider();
-          }
-          final index = i ~/ 2;
-          return _exercise(data[index], exe[index], context);
+          return _exercise(data[i], exe[i], context);
         }
     );
   }
 
   _exercise(ExerciseData exd, Exercise ex, BuildContext context){
     if(ex.flag == 0) {
-      return ListTile(
+      return Card(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20.0)),
+          ),
+        child: ListTile(
         title: Text('${ex.name}'),
         subtitle: Text(
             'Reps: ${exd.reps}, Sets: ${exd.sets}, Weight: ${exd.weight}kg '
         ),
-        trailing: new Icon(Icons.keyboard_arrow_right),
+        trailing: new Icon(Icons.keyboard_arrow_right, color: Colors.white),
         onTap: () {
           Navigator.push(
             context,
@@ -118,15 +118,16 @@ class WorkoutDetail extends StatelessWidget {
             ),
           );
         },
-      );
+      ));
     }
     else{
-      return ListTile(
+      return Card(
+          child: ListTile(
         title: Text('${ex.name}'),
         subtitle: Text(
             'Distance: ${exd.distance}km, Time: ${exd.time}mins'
         ),
-        trailing: new Icon(Icons.keyboard_arrow_right),
+        trailing: new Icon(Icons.keyboard_arrow_right, color: Colors.white),
         onTap: () {
           Navigator.push(
             context,
@@ -135,7 +136,7 @@ class WorkoutDetail extends StatelessWidget {
             ),
           );
         },
-      );
+      ));
     }
   }
 
