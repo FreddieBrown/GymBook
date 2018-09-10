@@ -122,6 +122,9 @@ class WorkoutDetail extends StatelessWidget {
     }
     else{
       return Card(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20.0)),
+          ),
           child: ListTile(
         title: Text('${ex.name}'),
         subtitle: Text(
