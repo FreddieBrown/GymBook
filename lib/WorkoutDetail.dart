@@ -109,7 +109,7 @@ class WorkoutDetail extends StatelessWidget {
         subtitle: Text(
             'Reps: ${exd.reps}, Sets: ${exd.sets}, Weight: ${exd.weight}kg '
         ),
-        trailing: new Icon(Icons.keyboard_arrow_right, color: Colors.white),
+        trailing: new Icon(Icons.keyboard_arrow_right, color: Colors.blue),
         onTap: () {
           Navigator.push(
             context,
@@ -126,20 +126,21 @@ class WorkoutDetail extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(20.0)),
           ),
           child: ListTile(
-        title: Text('${ex.name}'),
-        subtitle: Text(
-            'Distance: ${exd.distance}km, Time: ${exd.time}mins'
-        ),
-        trailing: new Icon(Icons.keyboard_arrow_right, color: Colors.white),
-        onTap: () {
-          Navigator.push(
-            context,
-            GymPageRoute(
-              builder: (context) => ExerciseDataSelector(exd, ex, workout),
-            ),
-          );
-        },
-      ));
+            title: Text('${ex.name}'),
+            subtitle: Text(
+              'Distance: ${exd.distance}km, Time: ${exd.time}mins'
+          ),
+          trailing: new Icon(Icons.keyboard_arrow_right, color: Colors.blue),
+          onTap: () {
+            Navigator.push(
+              context,
+              GymPageRoute(
+                builder: (context) => ExerciseDataSelector(exd, ex, workout),
+              ),
+            );
+          },
+        )
+      );
     }
   }
 

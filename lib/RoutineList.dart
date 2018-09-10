@@ -105,7 +105,7 @@ class RoutineListState extends State<RoutineList>{
             r.name,
             style: _biggerFont,
           ),
-          trailing: new Icon(Icons.keyboard_arrow_right, color: Colors.white),
+          trailing: new Icon(Icons.keyboard_arrow_right, color: Colors.blue),
           onTap: () {
             setState(() {
               Navigator.push(

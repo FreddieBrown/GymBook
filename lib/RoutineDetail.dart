@@ -130,7 +130,7 @@ class RoutineDetailState extends State<RoutineDetail> {
         ),
         child: ListTile(
           title: Text(ex.name),
-          trailing: new Icon(Icons.delete, color: Colors.white),
+          trailing: new Icon(Icons.delete, color: Colors.blue),
           onTap: () {
             db.get().removeRoutineExercise(re.id);
             setState(() {});

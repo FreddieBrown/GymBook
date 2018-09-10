@@ -11,19 +11,30 @@ class Home extends StatelessWidget{
   Widget build(BuildContext context){
 
     return Scaffold(
-      bottomNavigationBar: SafeArea(child: Card(
-            margin: EdgeInsets.all(0.0),
-            child: Padding(
-              padding: EdgeInsets.only(top: 8.0, bottom: 10.0),
-                child: TabBar(
-                  unselectedLabelColor: Colors.white,
-                  tabs: [
-                    Tab(child: Text("Workouts", style: const TextStyle(fontSize: 17.0))),
-                    Tab(child: Text("Routines" , style: const TextStyle(fontSize: 18.0))),
-                    Tab(child: Text("Exercises" , style: const TextStyle(fontSize: 18.0))),
-                  ],
-                )
-            )
+      bottomNavigationBar: SafeArea(
+        child: Container(
+          decoration: new BoxDecoration(boxShadow: [
+            new BoxShadow(
+              color: Colors.black,
+              blurRadius: 10.0,
+            ),
+          ]),
+          child: Card(
+              elevation: 2.0,
+              margin: EdgeInsets.all(0.0),
+              child: Padding(
+                  padding: EdgeInsets.only(top: 8.0, bottom: 10.0),
+                  child: TabBar(
+                    unselectedLabelColor: Colors.white,
+                    indicatorColor: Colors.blue,
+                    tabs: [
+                      Tab(child: Text("Workouts", style: const TextStyle(fontSize: 17.0))),
+                      Tab(child: Text("Routines" , style: const TextStyle(fontSize: 18.0))),
+                      Tab(child: Text("Exercises" , style: const TextStyle(fontSize: 18.0))),
+                    ],
+                  )
+              )
+          ),
         ),
       ),
       appBar: AppBar(

@@ -25,7 +25,6 @@ class ExerciseDetail extends StatelessWidget {
       body: ListView(
         padding: EdgeInsets.all(8.0),
         children: <Widget>[
-
           Center(
             child: Text(
               '${exercise.name}',
@@ -33,10 +32,10 @@ class ExerciseDetail extends StatelessWidget {
             ),
           ),
           Container(
-          padding: EdgeInsets.only(top: 16.0),
+          padding: EdgeInsets.only(top: 8.0),
           child: Text(
                   'Notes',
-                  style: const TextStyle(fontSize: 22.0),
+                  style: const TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600),
                 ),
           ),
           Container(
@@ -46,13 +45,18 @@ class ExerciseDetail extends StatelessWidget {
                 style: const TextStyle(fontSize: 16.0),
             ),
           ),
-          Text(
-            'Exercise Type',
-            style: const TextStyle(fontSize: 22.0),
+          Container(
+            child: Text(
+              'Exercise Type',
+              style: const TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600),
+            ),
           ),
-          Text(
-            flag,
-            style: const TextStyle(fontSize: 16.0),
+          Container(
+            padding: EdgeInsets.only(bottom: 16.0),
+            child: Text(
+              flag,
+              style: const TextStyle(fontSize: 16.0),
+            ),
           ),
           GymButton(
               func:() {

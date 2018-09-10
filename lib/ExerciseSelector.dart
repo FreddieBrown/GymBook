@@ -76,7 +76,7 @@ class ExerciseSelectorState extends State<ExerciseSelector>{
         ),
       child: ListTile(
         title: Text('${e.name}'),
-        trailing: new Icon(Icons.keyboard_arrow_right, color: Colors.white),
+        trailing: new Icon(Icons.keyboard_arrow_right, color: Colors.blue),
         onTap: () {
           var r = RoutineExercise(
               id: null,

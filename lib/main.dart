@@ -10,6 +10,10 @@ void main() async{
     new Exercise(name: "Squat", id: 2, notes: "Crouch down keeping back straight until knees and thigh are at a right angle with the floor", flag: 0),
     new Exercise(name: "Barbell Curl", id: 3, notes: "Bring bar up to chest", flag: 0),
     new Exercise(name: "Running", id: 4, notes: "Just Run", flag: 1),
+    new Exercise(name: "Rowing", id: 5, notes: "Just Row", flag: 1),
+    new Exercise(name: "Bent over rows", id: 6, notes: "Hold bar with arms straight and bend over and knees slightly flexed. Pull up bar to chest only moving arms and the bar.", flag: 0),
+    new Exercise(name: "Overhead Press", id: 7, notes: "Hold bar on chest and push up until arms straight. When arms are straight up above your head with with bar, bring back down to chest and repeat.", flag: 0),
+    new Exercise(name: "Walking", id: 8, notes: "Just Walk!", flag: 1),
   ];
 
   db data = db.get();

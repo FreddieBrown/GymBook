@@ -4,18 +4,18 @@ import 'database/db.dart';
 import 'Models/Exercise.dart';
 import 'Models/ExerciseData.dart';
 
-
-class ExerciseDataSelector extends StatefulWidget{
+class ExerciseDataSelector extends StatefulWidget {
   Exercise ex;
   ExerciseData exd;
   Workout work;
 
   ExerciseDataSelector(this.exd, this.ex, this.work);
   @override
-  ExerciseDataSelectorState createState() => ExerciseDataSelectorState(exd, ex, work);
+  ExerciseDataSelectorState createState() =>
+      ExerciseDataSelectorState(exd, ex, work);
 }
 
-class ExerciseDataSelectorState extends State<ExerciseDataSelector>{
+class ExerciseDataSelectorState extends State<ExerciseDataSelector> {
   ExerciseData exd;
   Exercise ex;
   Workout work;
@@ -48,22 +48,24 @@ class ExerciseDataSelectorState extends State<ExerciseDataSelector>{
         title: Text('Edit Exercise Data'),
         centerTitle: true,
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.save),
+          IconButton(
+            icon: Icon(Icons.save),
             color: Colors.white,
-            onPressed: () async{
+            onPressed: () async {
               if (_formKey.currentState.validate()) {
                 var ed;
                 try {
                   if (ex.flag == 1) {
-                    ed = ExerciseData(id: exd.id,
+                    ed = ExerciseData(
+                        id: exd.id,
                         distance: double.parse(controller1.text),
                         time: double.parse(controller2.text),
                         workout: work.id,
                         exercise: ex.id);
                     await db.get().updateExerciseData(ed);
-                  }
-                  else {
-                    ed = ExerciseData(id: exd.id,
+                  } else {
+                    ed = ExerciseData(
+                        id: exd.id,
                         sets: int.parse(controller2.text),
                         reps: int.parse(controller1.text),
                         weight: double.parse(controller3.text),
@@ -71,8 +73,7 @@ class ExerciseDataSelectorState extends State<ExerciseDataSelector>{
                         exercise: ex.id);
                     await db.get().updateExerciseData(ed);
                   }
-                }
-                catch(e){
+                } catch (e) {
                   print(e.toString());
                 }
                 Navigator.pop(context);
@@ -87,180 +88,190 @@ class ExerciseDataSelectorState extends State<ExerciseDataSelector>{
     );
   }
 
-  Widget form(BuildContext context){
-    if(ex.flag == 1){
+  Widget form(BuildContext context) {
+    if (ex.flag == 1) {
       return Form(
-        key: _formKey,
-        child: ListView(
-          children: <Widget>[
-            Card(
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                ),
-              child: ListTile(
-                title: Text(
-                  '${ex.name}',
-                  style: const TextStyle(fontSize: 30.0, fontWeight: FontWeight.w700),
-                ),
-              )
-            ),
-            Wrap(
+          key: _formKey,
+          child: Container(
+            padding: EdgeInsets.only(top: 18.0),
+            alignment: Alignment.center,
+            child: Column(
               children: <Widget>[
-                Container(
-                  width: 250.0,
-                  padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
-                  child: TextFormField(
-                    autofocus: true,
-                    style: TextStyle(color: Colors.black),
-                    validator: (value){
-                      if (value.isEmpty) {
-                        return 'Please enter some text';
-                      }
-                      else if(!isNumeric(value)){
-                        return 'Please enter a numeric value';
-                      }
-                    },
-                    keyboardType: TextInputType.number,
-                    controller: controller1,
-                    maxLines: 1,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.grey[300],
-                      border: OutlineInputBorder(),
-                      hintText: "Distance: ${exd.distance}km",
+                Align(
+                  child: Text(
+                    '${ex.name}',
+                    style: const TextStyle(
+                        fontSize: 30.0, fontWeight: FontWeight.w700),
+                  ),
+                ),
+                Card(
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        top: 18.0, bottom: 8.0, left: 8.0, right: 8.0),
+                    child: Wrap(
+                      children: <Widget>[
+                        Container(
+                          width: 250.0,
+                          padding: const EdgeInsets.only(
+                              left: 10.0, right: 10.0, bottom: 10.0),
+                          child: TextFormField(
+                            autofocus: true,
+                            style: TextStyle(color: Colors.black),
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'Please enter some text';
+                              } else if (!isNumeric(value)) {
+                                return 'Please enter a numeric value';
+                              }
+                            },
+                            keyboardType: TextInputType.number,
+                            controller: controller1,
+                            maxLines: 1,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.grey[300],
+                              border: OutlineInputBorder(),
+                              hintText: "Distance: ${exd.distance}km",
+                            ),
+                          ),
+                        ),
+                        Container(
+                            width: 250.0,
+                            padding: const EdgeInsets.only(
+                                left: 10.0, right: 10.0, bottom: 10.0),
+                            child: TextFormField(
+                              style: TextStyle(color: Colors.black),
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return 'Please enter some text';
+                                } else if (!isNumeric(value)) {
+                                  return 'Please enter a numeric value';
+                                }
+                              },
+                              keyboardType: TextInputType.number,
+                              controller: controller2,
+                              maxLines: 1,
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.grey[300],
+                                border: OutlineInputBorder(),
+                                hintText: "Time: ${exd.time}mins",
+                              ),
+                            )),
+                      ],
                     ),
                   ),
                 ),
-                Container(
-                    width: 250.0,
-                    padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
-                    child: TextFormField(
-                      style: TextStyle(color: Colors.black),
-                      validator: (value){
-                        if (value.isEmpty) {
-                          return 'Please enter some text';
-                        }
-                        else if(!isNumeric(value)){
-                          return 'Please enter a numeric value';
-                        }
-                      },
-                      keyboardType: TextInputType.number,
-                      controller: controller2,
-                      maxLines: 1,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.grey[300],
-                        border: OutlineInputBorder(),
-                        hintText: "Time: ${exd.time}mins",
-                      ),
-                    )
-                ),
               ],
             ),
-          ],
-        ),
-      );
-    }
-    else{
+          ));
+    } else {
       return Form(
         key: _formKey,
-        child: ListView(
-          children: <Widget>[
-            ListTile(
-                title: Text(
+        child: Container(
+          padding: EdgeInsets.only(top: 18.0),
+          alignment: Alignment.center,
+          child: Column(
+            children: <Widget>[
+              Align(
+                child: Text(
                   '${ex.name}',
-                  style: const TextStyle(fontSize: 30.0, fontWeight: FontWeight.w700),
+                  style: const TextStyle(
+                      fontSize: 30.0, fontWeight: FontWeight.w700),
                 ),
-            ),
-            Wrap(
-              children: <Widget>[
-                Container(
-                  width: 250.0,
-                  padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
-                  child:TextFormField(
-                    style: TextStyle(color: Colors.black),
-                    autofocus: true,
-                    validator: (value){
-                      if (value.isEmpty) {
-                        return 'Please enter some text';
-                      }
-                      else if(!isNumeric(value)){
-                        return 'Please enter a numeric value';
-                      }
-                    },
-                    keyboardType: TextInputType.number,
-                    controller: controller1,
-                    maxLines: 1,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.grey[300],
-                      border: OutlineInputBorder(),
-                      hintText: "Reps: ${exd.reps}",
-                    ),
+              ),
+              Card(
+                child: Padding(
+                  padding: EdgeInsets.only(
+                      top: 18.0, bottom: 8.0, left: 8.0, right: 8.0),
+                  child: Wrap(
+                    children: <Widget>[
+                      Container(
+                        width: 250.0,
+                        padding: const EdgeInsets.only(
+                            left: 10.0, right: 10.0, bottom: 10.0),
+                        child: TextFormField(
+                          style: TextStyle(color: Colors.black),
+                          autofocus: true,
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Please enter some text';
+                            } else if (!isNumeric(value)) {
+                              return 'Please enter a numeric value';
+                            }
+                          },
+                          keyboardType: TextInputType.number,
+                          controller: controller1,
+                          maxLines: 1,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.grey[300],
+                            border: OutlineInputBorder(),
+                            hintText: "Reps: ${exd.reps}",
+                          ),
+                        ),
+                      ),
+                      Container(
+                          width: 250.0,
+                          padding: const EdgeInsets.only(
+                              left: 10.0, right: 10.0, bottom: 10.0),
+                          child: TextFormField(
+                            style: TextStyle(color: Colors.black),
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'Please enter some text';
+                              } else if (!isNumeric(value)) {
+                                return 'Please enter a numeric value';
+                              }
+                            },
+                            keyboardType: TextInputType.number,
+                            controller: controller2,
+                            maxLines: 1,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.grey[300],
+                              border: OutlineInputBorder(),
+                              hintText: "Sets: ${exd.sets}",
+                            ),
+                          )),
+                      Container(
+                          width: 250.0,
+                          padding: const EdgeInsets.only(
+                              left: 10.0, right: 10.0, bottom: 10.0),
+                          child: TextFormField(
+                            style: TextStyle(color: Colors.black),
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'Please enter some text';
+                              } else if (!isNumeric(value)) {
+                                return 'Please enter a numeric value';
+                              }
+                            },
+                            keyboardType: TextInputType.number,
+                            controller: controller3,
+                            maxLines: 1,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.grey[300],
+                              border: OutlineInputBorder(),
+                              hintText: "Weight: ${exd.weight}kg",
+                            ),
+                          )),
+                    ],
                   ),
                 ),
-                Container(
-                    width: 250.0,
-                    padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
-                    child: TextFormField(
-                      style: TextStyle(color: Colors.black),
-                      validator: (value){
-                        if (value.isEmpty) {
-                          return 'Please enter some text';
-                        }
-                        else if(!isNumeric(value)){
-                          return 'Please enter a numeric value';
-                        }
-                      },
-                      keyboardType: TextInputType.number,
-                      controller: controller2,
-                      maxLines: 1,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.grey[300],
-                        border: OutlineInputBorder(),
-                        hintText: "Sets: ${exd.sets}",
-                      ),
-                    )
-                ),
-                Container(
-                    width: 250.0,
-                    padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
-                    child: TextFormField(
-                      style: TextStyle(color: Colors.black),
-                      validator: (value){
-                        if (value.isEmpty) {
-                          return 'Please enter some text';
-                        }
-                        else if(!isNumeric(value)){
-                          return 'Please enter a numeric value';
-                        }
-                      },
-                      keyboardType: TextInputType.number,
-                      controller: controller3,
-                      maxLines: 1,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.grey[300],
-                        border: OutlineInputBorder(),
-                        hintText: "Weight: ${exd.weight}kg",
-                      ),
-                    )
-                ),
-              ],
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
       );
     }
   }
 
   bool isNumeric(String s) {
-    if(s == null) {
+    if (s == null) {
       return false;
     }
     return double.parse(s, (e) => null) != null;
   }
-
-
 }
