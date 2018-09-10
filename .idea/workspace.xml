@@ -2,22 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b608c0cd-618c-4f6d-be70-cc561630a612" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ExerciseDataSelector.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ExerciseDataSelector.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ExerciseList.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ExerciseList.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ExerciseSelector.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ExerciseSelector.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/FormMaker.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/FormMaker.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/GymPageRoute.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/GymPageRoute.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Home.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Home.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/RoutineDetail.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/RoutineDetail.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/RoutineList.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/RoutineList.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/WorkoutDetail.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/WorkoutDetail.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/WorkoutList.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/WorkoutList.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/WorkoutRoutineSelector.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/WorkoutRoutineSelector.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/newExercise.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/newExercise.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/newRoutine.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/newRoutine.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/newWorkout.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/newWorkout.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Settings.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Settings.dart" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -29,11 +14,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Settings.dart" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Settings.dart" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib/Settings.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="609">
-              <caret line="45" column="28" selection-start-line="45" selection-start-column="28" selection-end-line="45" selection-end-column="28" />
+            <state relative-caret-position="297">
+              <caret line="39" column="16" lean-forward="true" selection-start-line="39" selection-start-column="16" selection-end-line="39" selection-end-column="16" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
               </folding>
@@ -41,26 +26,20 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="WorkoutList.dart" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/WorkoutList.dart">
+      <file leaf-file-name="container.dart" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/flutter/packages/flutter/lib/src/widgets/container.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="258">
-              <caret line="112" column="33" selection-start-line="112" selection-start-column="29" selection-end-line="112" selection-end-column="33" />
-              <folding>
-                <element signature="e#0#39#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="939">
+              <caret line="294" column="25" lean-forward="true" selection-start-line="294" selection-start-column="8" selection-end-line="294" selection-end-column="25" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="WorkoutRoutineSelector.dart" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/lib/WorkoutRoutineSelector.dart">
+      <file leaf-file-name="basic.dart" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/flutter/packages/flutter/lib/src/widgets/basic.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-251">
-              <caret line="82" column="33" selection-start-line="82" selection-start-column="29" selection-end-line="82" selection-end-column="33" />
-              <folding>
-                <element signature="e#0#39#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="266">
+              <caret line="3863" column="2" selection-start-line="3863" selection-start-column="2" selection-end-line="3863" selection-end-column="2" />
             </state>
           </provider>
         </entry>
@@ -152,7 +131,6 @@
         <option value="$PROJECT_DIR$/lib/Models/RoutineExercise.dart" />
         <option value="$PROJECT_DIR$/lib/Models/User.dart" />
         <option value="$PROJECT_DIR$/lib/NewCard.dart" />
-        <option value="$PROJECT_DIR$/lib/Settings.dart" />
         <option value="$PROJECT_DIR$/lib/Help.dart" />
         <option value="$PROJECT_DIR$/lib/GymButton.dart" />
         <option value="$PROJECT_DIR$/lib/ExerciseDetail.dart" />
@@ -171,6 +149,7 @@
         <option value="$PROJECT_DIR$/lib/RoutineList.dart" />
         <option value="$PROJECT_DIR$/lib/WorkoutDetail.dart" />
         <option value="$PROJECT_DIR$/lib/WorkoutRoutineSelector.dart" />
+        <option value="$PROJECT_DIR$/lib/Settings.dart" />
       </list>
     </option>
   </component>
@@ -322,12 +301,12 @@
       <workItem from="1536263857428" duration="10475000" />
       <workItem from="1536503964658" duration="48000" />
       <workItem from="1536504212259" duration="101000" />
-      <workItem from="1536533755237" duration="4702000" />
+      <workItem from="1536533755237" duration="5142000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="139134000" />
+    <option name="totallyTimeSpent" value="139574000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
@@ -476,13 +455,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/flutter/packages/flutter/lib/src/widgets/container.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="308" column="12" lean-forward="true" selection-start-line="308" selection-start-column="12" selection-end-line="308" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/flutter/packages/flutter/lib/src/painting/edge_insets.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-92">
@@ -522,13 +494,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="474">
           <caret line="61" column="8" selection-start-line="61" selection-start-column="8" selection-end-line="61" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/flutter/packages/flutter/lib/src/widgets/basic.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15680">
-          <caret line="5153" column="21" lean-forward="true" selection-start-line="5153" selection-start-column="21" selection-end-line="5153" selection-end-column="21" />
         </state>
       </provider>
     </entry>
@@ -788,16 +753,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/Settings.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="609">
-          <caret line="45" column="28" selection-start-line="45" selection-start-column="28" selection-end-line="45" selection-end-column="28" />
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/WorkoutList.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="258">
@@ -810,8 +765,32 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/WorkoutRoutineSelector.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-251">
+        <state relative-caret-position="1230">
           <caret line="82" column="33" selection-start-line="82" selection-start-column="29" selection-end-line="82" selection-end-column="33" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/flutter/packages/flutter/lib/src/widgets/basic.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="266">
+          <caret line="3863" column="2" selection-start-line="3863" selection-start-column="2" selection-end-line="3863" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/flutter/packages/flutter/lib/src/widgets/container.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="939">
+          <caret line="294" column="25" lean-forward="true" selection-start-line="294" selection-start-column="8" selection-end-line="294" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/Settings.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="297">
+          <caret line="39" column="16" lean-forward="true" selection-start-line="39" selection-start-column="16" selection-end-line="39" selection-end-column="16" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
           </folding>

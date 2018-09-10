@@ -25,36 +25,39 @@ class SettingsState extends State<Settings>{
         title: Text("Settings"),
         centerTitle: true,
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          GestureDetector(
-            child: Card(
-              color: Colors.blue,
-              child: Padding(
-                padding: EdgeInsets.only(top: 30.0, bottom: 30.0, left: 120.0, right: 120.0),
-                child: Text("Help", style: const TextStyle(color: Colors.white)),
-              ),
-            ),
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => Help()));
-            },
-          ),
+      body: Container(
+        margin: EdgeInsets.all(10.0),
+        alignment: Alignment.center,
+        child: Column(
+          children: <Widget>[
             GestureDetector(
               child: Card(
                 color: Colors.blue,
                 child: Padding(
-                  padding: EdgeInsets.only(top: 30.0, bottom: 30.0, left: 120.0, right: 120.0),
-                  child: Text("Reset", style: const TextStyle(color: Colors.white)),
+                  padding: EdgeInsets.only(top: 30.0, bottom: 30.0, left: 122.0, right: 122.0),
+                  child: Text("Help", style: const TextStyle(color: Colors.white)),
                 ),
               ),
               onTap: () {
-                setState(() {
-                  reset();
-                });
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Help()));
               },
             ),
-        ],
+              GestureDetector(
+                child: Card(
+                  color: Colors.blue,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 30.0, bottom: 30.0, left: 102.0, right: 102.0),
+                    child: Text("Reset Data", style: const TextStyle(color: Colors.white)),
+                  ),
+                ),
+                onTap: () {
+                  setState(() {
+                    reset();
+                  });
+                },
+              ),
+          ],
+        )
       )
     );
   }

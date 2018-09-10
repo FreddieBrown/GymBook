@@ -11,12 +11,11 @@ class Home extends StatelessWidget{
   Widget build(BuildContext context){
 
     return Scaffold(
-      bottomNavigationBar: Card(
+      bottomNavigationBar: SafeArea(child: Card(
             margin: EdgeInsets.all(0.0),
             child: Padding(
-              padding: EdgeInsets.only(top: 8.0, bottom: 30.0),
+              padding: EdgeInsets.only(top: 8.0, bottom: 10.0),
                 child: TabBar(
-                  labelColor: Colors.blue[200],
                   unselectedLabelColor: Colors.white,
                   tabs: [
                     Tab(child: Text("Workouts", style: const TextStyle(fontSize: 17.0))),
@@ -24,7 +23,8 @@ class Home extends StatelessWidget{
                     Tab(child: Text("Exercises" , style: const TextStyle(fontSize: 18.0))),
                   ],
                 )
-            ),
+            )
+        ),
       ),
       appBar: AppBar(
         title: Text('GymBook'),
