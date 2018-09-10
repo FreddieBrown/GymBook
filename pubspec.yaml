@@ -22,6 +22,12 @@ dependencies:
   intl: ^0.15.7
   path_provider: '>=0.3.0'
   sqflite: any
+  flutter_launcher_icons: "^0.6.1"
+
+flutter_icons:
+  image_path: "assets/icon/icon.png"
+  android: true
+  ios: true
 
 dev_dependencies:
   flutter_test:
