@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'Models/User.dart';
 import 'package:crypto/crypto.dart';
 import 'dart:convert';
+import 'Models/Status.dart';
 
 class Auth{
 
@@ -46,13 +47,10 @@ class Auth{
   }
 
   static loginUser(String email, String pass) async{
-    final prefs = await SharedPreferences.getInstance();
     var u = await checkUser(email, pass);
     if(u != null){
-      prefs.setInt('id', u.id);
-      prefs.setString('name', u.name);
-      prefs.setString('email', u.email.toLowerCase());
-      prefs.setInt('dev', u.dev);
+      await db.get().updateStatus(Status(id: u.id));
+      setUp(u);
       return true;
     }
     return false;
@@ -60,10 +58,20 @@ class Auth{
 
   static logoutUser() async{
     final prefs = await SharedPreferences.getInstance();
+    var id = prefs.get('id');
     prefs.remove('id');
     prefs.remove('name');
     prefs.remove('email');
     prefs.remove('dev');
+    db.get().removeStatus(id);
     return true;
+  }
+
+  static setUp(User u) async{
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setInt('id', u.id);
+    prefs.setString('name', u.name);
+    prefs.setString('email', u.email.toLowerCase());
+    prefs.setInt('dev', u.dev);
   }
 }

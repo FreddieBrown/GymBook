@@ -9,6 +9,7 @@ import '../Models/Routine.dart';
 import '../Models/RoutineExercise.dart';
 import '../Models/ExerciseData.dart';
 import '../Models/User.dart';
+import '../Models/Status.dart';
 
 class db {
   static final db _db = new db._internal();
@@ -19,6 +20,7 @@ class db {
   final String tableNameRE = "RoutineExercises";
   final String tableNameED = "ExerciseData";
   final String tableNameU = "users";
+  final String tableNameS = "status";
 
   Database data;
 
@@ -100,6 +102,11 @@ class db {
                   "${User.db_salt} TEXT NOT NULL,"
                   "${User.db_hashp} TEXT NOT NULL,"
                   "${User.db_dev} INTEGER NOT NULL"
+                  ")");
+          await db.execute(
+              "CREATE TABLE $tableNameS ("
+                  "${Status.db_id} INTEGER,"
+                  "FOREIGN KEY (${Status.db_id}) REFERENCES ${tableNameU}(${User.db_id})"
                   ")");
           /// This is where all DB creation happens.
         });
@@ -268,7 +275,6 @@ class db {
     }
   }
 
-
   Future<Exercise> getExercise(String id) async{
     var db = await _getDb();
     var result = await db.rawQuery('SELECT * FROM $tableNameE WHERE ${Exercise.db_id} = "$id"');
@@ -295,6 +301,13 @@ class db {
     var result = await db.rawQuery('SELECT * FROM $tableNameU WHERE ${User.db_id} = "$id"');
     if(result.length == 0)return null;
     return new User.fromMap(result[0]);
+  }
+
+  Future<Status> getStatus() async{
+    var db = await _getDb();
+    var result = await db.rawQuery('SELECT * FROM $tableNameS');
+    if(result.length == 0)return null;
+    return new Status.fromMap(result[0]);
   }
 
   Future<User> getUserByEmail(String email) async{
@@ -407,6 +420,15 @@ class db {
         [user.id, user.name, user.email, user.salt, user.hashp, user.dev]);
   }
 
+  Future updateStatus(Status status) async {
+    var db = await _getDb();
+    await db.rawInsert(
+        'INSERT OR REPLACE INTO '
+            '$tableNameS(${Status.db_id})'
+            ' VALUES(?)',
+        [status.id]);
+  }
+
 
   Future close() async {
     var db = await _getDb();
@@ -441,5 +463,10 @@ class db {
   void removeUser(int id) async{
     var db = await _getDb();
     await db.rawQuery('DELETE FROM $tableNameU WHERE ${User.db_id} = "$id"');
+  }
+
+  void removeStatus(int id) async{
+    var db = await _getDb();
+    await db.rawQuery('DELETE FROM $tableNameS WHERE ${Status.db_id} = "$id"');
   }
 }

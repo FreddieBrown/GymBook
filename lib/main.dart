@@ -7,6 +7,8 @@ import 'Models/User.dart';
 import 'package:crypto/crypto.dart';
 import 'dart:convert';
 import 'Register.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'Auth.dart';
 
 void main() async{
 
@@ -44,7 +46,6 @@ void main() async{
   try {
     await data.init();
     await db.get().updateUser(u);
-//    reset();
   }
   catch(e){
     print(e.toString());
@@ -53,12 +54,20 @@ void main() async{
   exe.forEach((element) async{
     await db.get().updateExercise(element);
   });
-  runApp(new GymBook());
+
+  var stat = await db.get().getStatus();
+  if(stat == null) {
+    runApp(new GymBook1());
+  }
+  else{
+    var u = await db.get().getUser('${stat.id}');
+    runApp(new GymBook2(u));
+  }
 
 
 }
 
-class GymBook extends StatelessWidget {
+class GymBook1 extends StatelessWidget {
   // This widget is the root of the application.
   @override
   Widget build(BuildContext context) {
@@ -82,6 +91,50 @@ class GymBook extends StatelessWidget {
         fontFamily: 'Nunito',
       ),
       home: Login()
+//      home: Home()
+    );
+  }
+
+}
+
+class GymBook2 extends StatelessWidget {
+  // This widget is the root of the application.
+  User u;
+  GymBook2(this.u){
+    Auth.setUp(u);
+  }
+  @override
+  Widget build(BuildContext context) {
+    return new MaterialApp(
+        initialRoute: '/',
+        routes: {
+          '/home': (context) => Home(),
+          '/login': (context) => Login(),
+          '/register': (context) => Register(),
+        },
+        debugShowCheckedModeBanner: false,
+        title: 'Gym Book',
+        theme: new ThemeData(
+          primaryColor: Colors.blue,
+          accentColor: Colors.blue,
+          textTheme: TextTheme(display1: TextStyle(color: Colors.white),
+              display2: TextStyle(color: Colors.white),
+              display3: TextStyle(color: Colors.white),
+              display4: TextStyle(color: Colors.white),
+              headline: TextStyle(color: Colors.white),
+              subhead: TextStyle(color: Colors.white),
+              body1: TextStyle(color: Colors.white),
+              body2: TextStyle(color: Colors.white),
+              button: TextStyle(color: Colors.white),
+              title: TextStyle(color: Colors.white),
+              caption: TextStyle(color: Colors.white)),
+          scaffoldBackgroundColor: Colors.grey[800],
+          cardColor: Colors.grey[900],
+          iconTheme: IconThemeData(color: Colors.white),
+          accentIconTheme: IconThemeData(color: Colors.white),
+          fontFamily: 'Nunito',
+        ),
+        home: Home()
 //      home: Home()
     );
   }
