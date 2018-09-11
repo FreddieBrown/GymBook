@@ -4,6 +4,7 @@ import 'database/db.dart';
 import 'dart:async';
 import 'Models/Workout.dart';
 import 'Models/ExerciseData.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final _biggerFont = const TextStyle(fontSize: 18.0);
 class WorkoutRoutineSelector extends StatefulWidget{
@@ -53,16 +54,12 @@ class WorkoutRoutineSelectorState extends State<WorkoutRoutineSelector>{
 
   Widget _routines(BuildContext context, AsyncSnapshot snapshot){
     var ra = snapshot.data;
-    var _length = ra.length*2;
+    var _length = ra.length;
     return ListView.builder(
         padding: const EdgeInsets.all(8.0),
         itemCount: _length,
         itemBuilder: (context, i) {
-          if(i.isOdd){
-            return new Divider();
-          }
-          final index = i ~/ 2;
-          return _routine(ra[index]);
+          return _routine(ra[i]);
         }
     );
   }
@@ -77,19 +74,20 @@ class WorkoutRoutineSelectorState extends State<WorkoutRoutineSelector>{
             r.name,
             style: _biggerFont,
           ),
-          subtitle: Text(
-            "ID: ${r.id}",
-          ),
           trailing: new Icon(Icons.keyboard_arrow_right, color: Colors.white),
           onTap: () async {
               if('$name' != 'null') {
                 try {
+                  var id = await getID();
                   var date = DateTime.now();
                   await db.get().updateWorkout(
                       Workout(
                           name: name,
                           routine: r.id,
-                          date: '$date'));
+                          date: '$date',
+                          user: id
+                      )
+                  );
                   List w = await db.get().getWorkoutByDate('$date');
                   Workout work = w[0];
                   List dataE = await exercises(r);
@@ -128,9 +126,10 @@ class WorkoutRoutineSelectorState extends State<WorkoutRoutineSelector>{
   }
 
   Future<List<Routine>> data() async{
+    var id = await getID();
     var list;
     try {
-      list = await db.get().getRoutines();
+      list = await db.get().getRoutinesByUser(['$id']);
     }
     catch(e){
       print(e.toString());
@@ -152,5 +151,11 @@ class WorkoutRoutineSelectorState extends State<WorkoutRoutineSelector>{
       print(e.toString());
     }
     return list;
+  }
+
+  getID() async{
+    final prefs = await SharedPreferences.getInstance();
+    var id = prefs.get('id');
+    return id;
   }
 }

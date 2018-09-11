@@ -43,7 +43,7 @@ class db {
   Future _init() async {
     // Get a location using path_provider
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, "gbook.db");
+    String path = join(documentsDirectory.path, "gymb.db");
     data = await openDatabase(path, version: 1,
         onCreate: (Database db, int version) async {
           // When creating the db, create the table
@@ -57,15 +57,19 @@ class db {
           await db.execute(
               "CREATE TABLE $tableNameR ("
                   "${Routine.db_id} INTEGER PRIMARY KEY AUTOINCREMENT,"
-                  "${Routine.db_name} VARCHAR(30) NOT NULL"
+                  "${Routine.db_user} INTEGER NOT NULL,"
+                  "${Routine.db_name} VARCHAR(30) NOT NULL,"
+                  "FOREIGN KEY (${Routine.db_user}) REFERENCES ${tableNameU}(${User.db_id})"
                   ")");
           await db.execute(
               "CREATE TABLE $tableNameW ("
                   "${Workout.db_id} INTEGER PRIMARY KEY AUTOINCREMENT,"
                   "${Workout.db_name} VARCHAR(30) NOT NULL,"
                   "${Workout.db_routine} INTEGER NOT NULL,"
+                  "${Workout.db_user} INTEGER NOT NULL,"
                   "${Workout.db_date} TEXT NOT NULL,"
-                  "FOREIGN KEY (${Workout.db_routine}) REFERENCES ${tableNameR}(${Routine.db_id})"
+                  "FOREIGN KEY (${Workout.db_routine}) REFERENCES ${tableNameR}(${Routine.db_id}),"
+                  "FOREIGN KEY (${Workout.db_user}) REFERENCES ${tableNameU}(${User.db_id})"
                   ")");
           await db.execute(
               "CREATE TABLE $tableNameRE ("
@@ -218,6 +222,52 @@ class db {
     }
   }
 
+  Future<List<Routine>> getRoutinesByUser([List<String> ids = null]) async{
+    var db = await _getDb();
+    // Building SELECT * FROM TABLE WHERE ID IN (id1, id2, ..., idn)
+    List<Routine> routines = [];
+    if(ids == null){
+      var result = await db.rawQuery(
+          'SELECT * FROM $tableNameR');
+      for (Map<String, dynamic> item in result) {
+        routines.add(new Routine.fromMap(item));
+      }
+      return routines;
+    }
+    else {
+      var idsString = ids.map((it) => '"$it"').join(',');
+      var result = await db.rawQuery(
+          'SELECT * FROM $tableNameR WHERE ${Routine.db_user} IN ($idsString)');
+      for (Map<String, dynamic> item in result) {
+        routines.add(new Routine.fromMap(item));
+      }
+      return routines;
+    }
+  }
+
+  Future<List<Workout>> getWorkoutsByUser([List<String> ids = null]) async{
+    var db = await _getDb();
+    // Building SELECT * FROM TABLE WHERE ID IN (id1, id2, ..., idn)
+    List<Workout> workouts = [];
+    if(ids == null){
+      var result = await db.rawQuery(
+          'SELECT * FROM $tableNameW');
+      for (Map<String, dynamic> item in result) {
+        workouts.add(new Workout.fromMap(item));
+      }
+      return workouts;
+    }
+    else {
+      var idsString = ids.map((it) => '"$it"').join(',');
+      var result = await db.rawQuery(
+          'SELECT * FROM $tableNameW WHERE ${Workout.db_user} IN ($idsString)');
+      for (Map<String, dynamic> item in result) {
+        workouts.add(new Workout.fromMap(item));
+      }
+      return workouts;
+    }
+  }
+
 
   Future<Exercise> getExercise(String id) async{
     var db = await _getDb();
@@ -316,9 +366,9 @@ class db {
     var db = await _getDb();
     await db.rawInsert(
         'INSERT OR REPLACE INTO '
-            '$tableNameW(${Workout.db_id}, ${Workout.db_name}, ${Workout.db_date}, ${Workout.db_routine})'
-            ' VALUES(?, ?, ?, ?)',
-        [work.id, work.name, work.date, work.routine]);
+            '$tableNameW(${Workout.db_id}, ${Workout.db_name}, ${Workout.db_date}, ${Workout.db_routine}, ${Workout.db_user})'
+            ' VALUES(?, ?, ?, ?, ?)',
+        [work.id, work.name, work.date, work.routine, work.user]);
   }
 
   Future updateRoutineExercise(RoutineExercise exercise) async {
@@ -334,9 +384,9 @@ class db {
     var db = await _getDb();
     await db.rawInsert(
         'INSERT OR REPLACE INTO '
-            '$tableNameR(${Routine.db_id}, ${Routine.db_name})'
-            ' VALUES(?, ?)',
-        [routine.id, routine.name]);
+            '$tableNameR(${Routine.db_id}, ${Routine.db_name}, ${Routine.db_user})'
+            ' VALUES(?, ?, ?)',
+        [routine.id, routine.name, routine.user]);
   }
 
   Future updateExerciseData(ExerciseData ed) async {

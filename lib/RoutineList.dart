@@ -7,6 +7,7 @@ import 'dart:async';
 import 'GymButton.dart';
 import 'dart:io' show Platform;
 import 'GymPageRoute.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final _biggerFont = const TextStyle(fontSize: 18.0);
 
@@ -132,28 +133,31 @@ class RoutineListState extends State<RoutineList>{
   _navigateAndDisplaySelection(BuildContext context) async {
     // Navigator.push returns a Future that will complete after we call
     // Navigator.pop on the Selection Screen!
+    var id = await getID();
     final result = await Navigator.push(
       context,
-      GymPageRoute(builder: (context) => newRoutine()),
+      GymPageRoute(builder: (context) => newRoutine(id)),
     );
-
-    // After the Selection Screen returns a result, show it in a Snackbar!
-//    Scaffold.of(context).showSnackBar(SnackBar(content: Text("$result")));
-//    ra.add(
-//      new Routine(name: result));
     if('$result' != 'null') {
-      db.get().updateRoutine(Routine(name: result));
+      db.get().updateRoutine(Routine(name: result, user: id));
     }
   }
 
   Future<List<Routine>> data() async{
-    var list;
+    List list;
+    var id = await getID();
     try {
-      list = await db.get().getRoutines();
+      list = await db.get().getRoutinesByUser(['$id']);
     }
     catch(e){
       print(e.toString());
     }
     return list;
+  }
+
+  getID() async{
+    final prefs = await SharedPreferences.getInstance();
+    var id = prefs.get('id');
+    return id;
   }
 }

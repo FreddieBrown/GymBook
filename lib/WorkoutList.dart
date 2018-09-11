@@ -7,6 +7,7 @@ import 'database/db.dart';
 import 'GymButton.dart';
 import 'dart:io' show Platform;
 import 'GymPageRoute.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final _biggerFont = const TextStyle(fontSize: 18.0);
 
@@ -138,6 +139,7 @@ class WorkoutListState extends State<WorkoutList> {
   _navigateAndDisplaySelection(BuildContext context) async {
     // Navigator.push returns a Future that will complete after we call
     // Navigator.pop on the Selection Screen!
+    var id = await getID();
     final result = await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => newWorkout()),
@@ -149,7 +151,7 @@ class WorkoutListState extends State<WorkoutList> {
     if('$result' != 'null') {
       try {
         db.get().updateWorkout(
-            Workout(name: result, routine: 1, date: '${DateTime.now()}'));
+            Workout(name: result, routine: 1, date: '${DateTime.now()}', user: id));
       }
       catch(e){
         print(e.toString());
@@ -158,13 +160,21 @@ class WorkoutListState extends State<WorkoutList> {
   }
 
    data() async{
-    var list;
+     var id = await getID();
+    List list;
     try {
-      list = await db.get().getWorkouts();
+      list = await db.get().getWorkoutsByUser(['$id']);
     }
     catch(e){
       print(e.toString());
     }
+
     return list;
+  }
+
+  getID() async{
+    final prefs = await SharedPreferences.getInstance();
+    var id = prefs.get('id');
+    return id;
   }
 }

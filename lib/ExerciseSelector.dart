@@ -58,13 +58,9 @@ class ExerciseSelectorState extends State<ExerciseSelector>{
     return ListView.builder(
         padding: const EdgeInsets.all(8.0),
         shrinkWrap: true,
-        itemCount: exe.length*2,
+        itemCount: exe.length,
         itemBuilder: (context, i) {
-          if(i.isOdd){
-            return new Divider();
-          }
-          final index = i ~/ 2;
-          return exercise(exe[index]);
+          return exercise(exe[i]);
         }
     );
   }
