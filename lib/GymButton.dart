@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class GymButton extends StatelessWidget{
   Function func;
   MaterialColor colour;
-  Text text;
+  Widget text;
 
   GymButton({this.colour = Colors.blue, this.func, this.text});
 

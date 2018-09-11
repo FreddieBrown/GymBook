@@ -8,13 +8,12 @@ import 'dart:convert';
 class Auth{
 
   static newUser(String email, String name, String salt, String pass) async{
-    var u = await db.get().getUserByEmail(email);
-    if(u == null){
+    if(!isUser(email)){
       var utfSalt = utf8.encode(salt);
       var digestSalt = sha256.convert(utfSalt);
       var utfPass = utf8.encode("$pass+${digestSalt.toString()}");
       var digestPass = sha256.convert(utfPass);
-      await db.get().updateUser(User(salt: digestSalt.toString(), name: name, hashp: digestPass.toString(), email: email));
+      await db.get().updateUser(User(salt: digestSalt.toString(), name: name, hashp: digestPass.toString(), email: email.toLowerCase()));
       if(await db.get().getUserByEmail(email) != null){
         return 1;
       }
@@ -27,15 +26,43 @@ class Auth{
     }
   }
 
-  static checkUser(String email, String pass) async{
+  static isUser(String email) async{
+    var u = await db.get().getUserByEmail(email.toLowerCase());
+    if(u == null){
+      return false;
+    }
+    return true;
+  }
 
+  static checkUser(String email, String pass) async{
+    if((await isUser(email))){
+      var u = await db.get().getUserByEmail(email.toLowerCase());
+      var utfPass = utf8.encode("$pass+${u.salt}");
+      var digestPass = sha256.convert(utfPass);
+      if(u.hashp == digestPass.toString()){
+        return u;
+      }
+    }
+    return null;
   }
 
   static loginUser(String email, String pass) async{
-
+    final prefs = await SharedPreferences.getInstance();
+    var u = await checkUser(email, pass);
+    if(u != null){
+      prefs.setInt('id', u.id);
+      prefs.setString('email', u.email.toLowerCase());
+      prefs.setInt('dev', u.dev);
+      return true;
+    }
+    return false;
   }
 
-  static logoutUser(int id) async{
-
+  static logoutUser() async{
+    final prefs = await SharedPreferences.getInstance();
+    prefs.remove('id');
+    prefs.remove('email');
+    prefs.remove('dev');
+    return true;
   }
 }

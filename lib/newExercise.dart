@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'FormMaker.dart';
 
 class newExercise extends StatefulWidget {
   @override
@@ -10,7 +9,6 @@ class newExerciseState extends State<newExercise> {
   final _formKey = GlobalKey<FormState>();
   final controller1 = TextEditingController();
   final controller2 = TextEditingController();
-  var form = FormMaker();
   var flag = 0;
   var b = false;
 

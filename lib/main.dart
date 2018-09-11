@@ -3,6 +3,9 @@ import 'Home.dart';
 import 'database/db.dart';
 import 'Models/Exercise.dart';
 import 'Login.dart';
+import 'Models/User.dart';
+import 'package:crypto/crypto.dart';
+import 'dart:convert';
 
 void main() async{
 
@@ -16,6 +19,14 @@ void main() async{
     new Exercise(name: "Overhead Press", id: 7, notes: "Hold bar on chest and push up until arms straight. When arms are straight up above your head with with bar, bring back down to chest and repeat.", flag: 0),
     new Exercise(name: "Walking", id: 8, notes: "Just Walk!", flag: 1),
   ];
+  var salt = '${DateTime.now()}';
+  var pass = 'password';
+  var utfSalt = utf8.encode(salt);
+  var salth = sha256.convert(utfSalt);
+  var utfPass = utf8.encode("$pass+${salth.toString()}");
+  var passh = sha256.convert(utfPass);
+
+  User u = User(id: 1,salt: salth.toString(), name: 'Freddie', hashp: passh.toString(), email: 'fred@noser.net', dev: 1);
 
   db data = db.get();
 
@@ -31,6 +42,7 @@ void main() async{
 
   try {
     await data.init();
+    await db.get().updateUser(u);
 //    reset();
   }
   catch(e){
@@ -53,6 +65,7 @@ class GymBook extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/home': (context) => Home(),
+        '/login': (context) => Login(),
       },
       debugShowCheckedModeBanner: false,
       title: 'Gym Book',
@@ -67,6 +80,7 @@ class GymBook extends StatelessWidget {
         fontFamily: 'Nunito',
       ),
       home: Login()
+//      home: Home()
     );
   }
 }
