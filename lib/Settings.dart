@@ -83,7 +83,7 @@ class SettingsState extends State<Settings>{
       await db.get().updateExercise(element);
     });
 
-    Navigator.popUntil(context, ModalRoute.withName('/'));
+    Navigator.popUntil(context, ModalRoute.withName('/home'));
 
   }
 }

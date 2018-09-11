@@ -75,7 +75,7 @@ class WorkoutDetail extends StatelessWidget {
             GymButton(
                   func:() {
                     db.get().removeWorkout(workout.id);
-                    Navigator.popUntil(context, ModalRoute.withName('/'));
+                    Navigator.popUntil(context, ModalRoute.withName('/home'));
                   },
                   text: Text("Delete Workout", style: const TextStyle(color: Colors.white))
             ),

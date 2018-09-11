@@ -195,6 +195,29 @@ class db {
     }
   }
 
+  Future<List<User>> getUsers([List<String> ids = null]) async{
+    var db = await _getDb();
+    // Building SELECT * FROM TABLE WHERE ID IN (id1, id2, ..., idn)
+    List<User> users = [];
+    if(ids == null){
+      var result = await db.rawQuery(
+          'SELECT * FROM $tableNameU');
+      for (Map<String, dynamic> item in result) {
+        users.add(new User.fromMap(item));
+      }
+      return users;
+    }
+    else {
+      var idsString = ids.map((it) => '"$it"').join(',');
+      var result = await db.rawQuery(
+          'SELECT * FROM $tableNameU WHERE ${User.db_id} IN ($idsString)');
+      for (Map<String, dynamic> item in result) {
+        users.add(new User.fromMap(item));
+      }
+      return users;
+    }
+  }
+
 
   Future<Exercise> getExercise(String id) async{
     var db = await _getDb();
@@ -215,6 +238,20 @@ class db {
     var result = await db.rawQuery('SELECT * FROM $tableNameRE WHERE ${RoutineExercise.db_id} = "$id"');
     if(result.length == 0)return null;
     return new RoutineExercise.fromMap(result[0]);
+  }
+
+  Future<User> getUser(String id) async{
+    var db = await _getDb();
+    var result = await db.rawQuery('SELECT * FROM $tableNameU WHERE ${User.db_id} = "$id"');
+    if(result.length == 0)return null;
+    return new User.fromMap(result[0]);
+  }
+
+  Future<User> getUserByEmail(String email) async{
+    var db = await _getDb();
+    var result = await db.rawQuery('SELECT * FROM $tableNameU WHERE ${User.db_email} = "$email"');
+    if(result.length == 0)return null;
+    return new User.fromMap(result[0]);
   }
 
   Future<List> getREByRoutine(String id) async{
@@ -311,6 +348,15 @@ class db {
         [ed.id, ed.exercise, ed.workout, ed.time, ed.distance, ed.weight, ed.reps, ed.sets]);
   }
 
+  Future updateUser(User user) async {
+    var db = await _getDb();
+    await db.rawInsert(
+        'INSERT OR REPLACE INTO '
+            '$tableNameU(${User.db_id}, ${User.db_name}, ${User.db_email}, ${User.db_salt}, ${User.db_hashp}, ${User.db_dev})'
+            ' VALUES(?, ?, ?, ?, ?, ?)',
+        [user.id, user.name, user.email, user.salt, user.hashp, user.dev]);
+  }
+
 
   Future close() async {
     var db = await _getDb();
@@ -340,5 +386,10 @@ class db {
   void removeWorkout(int id) async{
     var db = await _getDb();
     await db.rawQuery('DELETE FROM $tableNameW WHERE ${Workout.db_id} = "$id"');
+  }
+
+  void removeUser(int id) async{
+    var db = await _getDb();
+    await db.rawQuery('DELETE FROM $tableNameU WHERE ${User.db_id} = "$id"');
   }
 }

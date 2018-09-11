@@ -7,7 +7,7 @@ description: App which can be used to record workouts.
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # Read more about versioning at semver.org.
-version: 1.0.1
+version: 1.0.2
 
 environment:
   sdk: ">=2.0.0-dev.68.0 <3.0.0"
@@ -23,6 +23,8 @@ dependencies:
   path_provider: '>=0.3.0'
   sqflite: any
   flutter_launcher_icons: "^0.6.1"
+  shared_preferences: "^0.4.2"
+  crypto: "^2.0.6"
 
 flutter_icons:
   image_path: "assets/icon/icon512x512.png"

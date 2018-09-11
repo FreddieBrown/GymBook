@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'Home.dart';
 import 'database/db.dart';
 import 'Models/Exercise.dart';
+import 'Login.dart';
 
 void main() async{
 
@@ -50,6 +51,9 @@ class GymBook extends StatelessWidget {
   Widget build(BuildContext context) {
     return new MaterialApp(
       initialRoute: '/',
+      routes: {
+        '/home': (context) => Home(),
+      },
       debugShowCheckedModeBanner: false,
       title: 'Gym Book',
       theme: new ThemeData(
@@ -62,10 +66,7 @@ class GymBook extends StatelessWidget {
         accentIconTheme: IconThemeData(color: Colors.white),
         fontFamily: 'Nunito',
       ),
-      home: DefaultTabController(
-        length: 3,
-        child: Home(),
-      ),
+      home: Login()
     );
   }
 }

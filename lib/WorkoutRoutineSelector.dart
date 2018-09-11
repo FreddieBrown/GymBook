@@ -120,7 +120,7 @@ class WorkoutRoutineSelectorState extends State<WorkoutRoutineSelector>{
                 catch (e) {
                   print(e.toString());
                 }
-                Navigator.popUntil(context, ModalRoute.withName('/'));
+                Navigator.popUntil(context, ModalRoute.withName('/home'));
               }
           },
       )
