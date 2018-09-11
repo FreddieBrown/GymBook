@@ -139,7 +139,7 @@ class SettingsState extends State<Settings>{
       color: Colors.blue,
       child: Padding(
         padding: EdgeInsets.only(top: 30.0, bottom: 30.0, left: 68.0, right: 68.0),
-        child: Text("ID: ${list[0]}\nEmail: ${list[1]}\nDev: ${list[2]}", style: TextStyle(color: Colors.white)),
+        child: Text("ID: ${list[0]}\nEmail: ${list[1]}\nName: ${list[2]}\nDev: ${list[3]}", style: TextStyle(color: Colors.white)),
       ),
     );
 
@@ -147,7 +147,7 @@ class SettingsState extends State<Settings>{
 
   data() async{
     final prefs = await SharedPreferences.getInstance();
-    var list = [prefs.get('id'), prefs.get('email')];
+    var list = [prefs.get('id'), prefs.get('email'), prefs.get('name')];
     if(prefs.get('dev') == 1){
       list.add("Dev Mode on");
     }

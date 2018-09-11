@@ -78,15 +78,18 @@ class LoginState extends State<Login>{
             widget.passError,
             GymButton(
               func: () async{
-                  if(!(await Auth.isUser(email.text.toLowerCase()))){
+                  if(email.text.isEmpty){
+                    setState(() {
+                      widget.emailError = Text("You have to enter an email", style: TextStyle(color: Colors.red));
+                    });
+                  }
+                  else if(!(await Auth.isUser(email.text.toLowerCase()))){
                     setState(() {
                       widget.emailError = Text("There is an error with your email or password", style: TextStyle(color: Colors.red));
                       widget.passError = Text("There is an error with your email or password" , style: TextStyle(color: Colors.red));
                     });
                   }
                   else{
-
-
                     if(password.text.length < 8){
                       setState(() {
                         widget.emailError = Text("There is an error with your email or password", style: TextStyle(color: Colors.red));
@@ -111,8 +114,7 @@ class LoginState extends State<Login>{
             ),
             GymButton(
               func: (){
-
-                /// Push to register page
+                Navigator.pushNamed(context, '/register');
               },
               text: Center(
                 child: Text('Register'),

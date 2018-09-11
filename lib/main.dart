@@ -6,6 +6,7 @@ import 'Login.dart';
 import 'Models/User.dart';
 import 'package:crypto/crypto.dart';
 import 'dart:convert';
+import 'Register.dart';
 
 void main() async{
 
@@ -66,6 +67,7 @@ class GymBook extends StatelessWidget {
       routes: {
         '/home': (context) => Home(),
         '/login': (context) => Login(),
+        '/register': (context) => Register(),
       },
       debugShowCheckedModeBanner: false,
       title: 'Gym Book',
