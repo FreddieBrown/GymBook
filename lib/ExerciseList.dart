@@ -146,7 +146,10 @@ class ExercisesListState extends State<ExercisesList> {
 //    _exerciseArr.add(
 //    new Exercise(name: result["name"], id: _exerciseArr.length+2, notes: result["notes"]));
     db.get().updateExercise(new Exercise(
-        name: result["name"], notes: result["notes"], flag: result["flag"], user: prefs.get('id')));
+        name: result["name"],
+        notes: result["notes"],
+        flag: result["flag"],
+        user: prefs.get('id')));
 
     /// Here I should add this to the DB or whatever storage this uses
   }

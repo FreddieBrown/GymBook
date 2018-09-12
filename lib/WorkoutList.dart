@@ -99,10 +99,9 @@ class WorkoutListState extends State<WorkoutList> {
   Widget _workout(Workout workout) {
     String status;
     print(workout.status);
-    if(workout.status == 0){
+    if (workout.status == 0) {
       status = 'Unfinshed';
-    }
-    else{
+    } else {
       status = 'Finished';
     }
     var formatter = new DateFormat('dd/MM/yyyy');

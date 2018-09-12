@@ -24,17 +24,17 @@ class ExerciseData {
     this.time = 0.0,
   });
 
-  ExerciseData.fromMap(Map<String, dynamic> map): this(
-    reps: map[db_reps],
-    sets: map[db_sets],
-    weight: map[db_weight],
-    distance: map[db_distance],
-    time: map[db_time],
-    id: map[db_id],
-    exercise: map[db_exercise],
-    workout: map[db_workout],
-  );
-
+  ExerciseData.fromMap(Map<String, dynamic> map)
+      : this(
+          reps: map[db_reps],
+          sets: map[db_sets],
+          weight: map[db_weight],
+          distance: map[db_distance],
+          time: map[db_time],
+          id: map[db_id],
+          exercise: map[db_exercise],
+          workout: map[db_workout],
+        );
 
   Map<String, dynamic> toMap() {
     return {
@@ -49,11 +49,11 @@ class ExerciseData {
     };
   }
 
-  static getExercise(int i) async{
+  static getExercise(int i) async {
     return await db.get().getExercise('$i');
   }
 
-  static getWorkout(int i) async{
+  static getWorkout(int i) async {
     return await db.get().getWorkout('$i');
   }
 }

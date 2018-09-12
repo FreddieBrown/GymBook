@@ -9,7 +9,7 @@ import 'ExerciseDataSelector.dart';
 import 'GymPageRoute.dart';
 import 'GymButton.dart';
 
-class WorkoutDetail extends StatefulWidget{
+class WorkoutDetail extends StatefulWidget {
   Workout workout;
   WorkoutDetail({@required this.workout});
   @override
@@ -26,10 +26,9 @@ class WorkoutDetailState extends State<WorkoutDetail> {
   WorkoutDetailState(this.workout) {
     formatted = formatter.format(DateTime.parse(workout.date));
     formatted1 = formatter1.format(DateTime.parse(workout.date));
-    if(workout.status == 0){
+    if (workout.status == 0) {
       b = false;
-    }
-    else{
+    } else {
       b = true;
     }
   }
@@ -90,16 +89,15 @@ class WorkoutDetailState extends State<WorkoutDetail> {
               SwitchListTile(
                   title: Text("Workout done?"),
                   value: b,
-                  onChanged: (bool v) async{
-                    if(b == false){
+                  onChanged: (bool v) async {
+                    if (b == false) {
                       workout.status = 1;
                       await db.get().updateWorkout(workout);
-                    }
-                    else{
+                    } else {
                       workout.status = 0;
                       await db.get().updateWorkout(workout);
                     }
-                    setState((){
+                    setState(() {
                       b = v;
                     });
                   }),

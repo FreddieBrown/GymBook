@@ -13,12 +13,12 @@ class Routine {
     this.id = null,
   });
 
-  Routine.fromMap(Map<String, dynamic> map): this(
-    name: map[db_name],
-    id: map[db_id],
-    user: map[db_user],
-  );
-
+  Routine.fromMap(Map<String, dynamic> map)
+      : this(
+          name: map[db_name],
+          id: map[db_id],
+          user: map[db_user],
+        );
 
   Map<String, dynamic> toMap() {
     return {

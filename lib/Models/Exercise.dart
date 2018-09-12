@@ -17,14 +17,14 @@ class Exercise {
     this.user = 0,
   });
 
-  Exercise.fromMap(Map<String, dynamic> map): this(
-    name: map[db_name],
-    notes: map[db_notes],
-    id: map[db_id],
-    flag: map[db_flag],
-    user: map[db_user],
-  );
-
+  Exercise.fromMap(Map<String, dynamic> map)
+      : this(
+          name: map[db_name],
+          notes: map[db_notes],
+          id: map[db_id],
+          flag: map[db_flag],
+          user: map[db_user],
+        );
 
   Map<String, dynamic> toMap() {
     return {

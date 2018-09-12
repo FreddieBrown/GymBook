@@ -14,12 +14,12 @@ class RoutineExercise {
     @required this.exercise,
   });
 
-  RoutineExercise.fromMap(Map<String, dynamic> map): this(
-    id: map[db_id],
-    exercise: map[db_exercise],
-    routine: map[db_routine],
-  );
-
+  RoutineExercise.fromMap(Map<String, dynamic> map)
+      : this(
+          id: map[db_id],
+          exercise: map[db_exercise],
+          routine: map[db_routine],
+        );
 
   Map<String, dynamic> toMap() {
     return {
@@ -29,11 +29,11 @@ class RoutineExercise {
     };
   }
 
-  static getRoutine(String i) async{
+  static getRoutine(String i) async {
     return await db.get().getRoutine(i);
   }
 
-  static getExercise(String i) async{
+  static getExercise(String i) async {
     var a = await db.get().getExercise(i);
     return a;
   }

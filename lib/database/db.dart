@@ -35,7 +35,7 @@ class db {
 
   Future<Database> _getDb() async {
     if (!didInit) await _init();
-    if(!addedAlter) await updateDB();
+    if (!addedAlter) await updateDB();
     return data;
   }
 
@@ -103,11 +103,9 @@ class db {
           "FOREIGN KEY (${Status.db_id}) REFERENCES ${tableNameU}(${User.db_id})"
           ")");
       await db.execute("ALTER TABLE $tableNameW "
-          "ADD COLUMN ${Workout.db_status} INTEGER"
-      );
+          "ADD COLUMN ${Workout.db_status} INTEGER");
       await db.execute("ALTER TABLE $tableNameE "
-          "ADD COLUMN ${Exercise.db_user} INTEGER"
-      );
+          "ADD COLUMN ${Exercise.db_user} INTEGER");
 
       /// This is where all DB creation happens.
     });
@@ -115,13 +113,11 @@ class db {
     didInit = true;
   }
 
-  updateDB() async{
+  updateDB() async {
     await data.execute("ALTER TABLE $tableNameW "
-        "ADD COLUMN ${Workout.db_status} INTEGER"
-    );
+        "ADD COLUMN ${Workout.db_status} INTEGER");
     await data.execute("ALTER TABLE $tableNameE "
-        "ADD COLUMN ${Exercise.db_user} INTEGER"
-    );
+        "ADD COLUMN ${Exercise.db_user} INTEGER");
     addedAlter = true;
   }
 
@@ -399,7 +395,13 @@ class db {
         'INSERT OR REPLACE INTO '
         '$tableNameE(${Exercise.db_id}, ${Exercise.db_name}, ${Exercise.db_notes}, ${Exercise.db_flag}, ${Exercise.db_user})'
         ' VALUES(?, ?, ?, ?, ?)',
-        [exercise.id, exercise.name, exercise.notes, exercise.flag, exercise.user]);
+        [
+          exercise.id,
+          exercise.name,
+          exercise.notes,
+          exercise.flag,
+          exercise.user
+        ]);
   }
 
   Future updateWorkout(Workout work) async {

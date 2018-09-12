@@ -185,8 +185,7 @@ class SettingsState extends State<Settings> {
       child: Padding(
         padding:
             EdgeInsets.only(top: 30.0, bottom: 30.0, left: 68.0, right: 68.0),
-        child: Text(
-            "Email: ${list[1]}\nName: ${list[2]}",
+        child: Text("Email: ${list[1]}\nName: ${list[2]}",
             style: TextStyle(color: Colors.white)),
       ),
     );

@@ -20,14 +20,15 @@ class User {
     this.dev = 0,
   });
 
-  User.fromMap(Map<String, dynamic> map): this(
-    id: map[db_id],
-    name: map[db_name],
-    email: map[db_email],
-    salt: map[db_salt],
-    hashp: map[db_hashp],
-    dev: map[db_dev],
-  );
+  User.fromMap(Map<String, dynamic> map)
+      : this(
+          id: map[db_id],
+          name: map[db_name],
+          email: map[db_email],
+          salt: map[db_salt],
+          hashp: map[db_hashp],
+          dev: map[db_dev],
+        );
 
   Map<String, dynamic> toMap() {
     return {

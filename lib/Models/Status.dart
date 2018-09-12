@@ -9,9 +9,10 @@ class Status {
     @required this.id,
   });
 
-  Status.fromMap(Map<String, dynamic> map): this(
-    id: map[db_id],
-  );
+  Status.fromMap(Map<String, dynamic> map)
+      : this(
+          id: map[db_id],
+        );
 
   Map<String, dynamic> toMap() {
     return {

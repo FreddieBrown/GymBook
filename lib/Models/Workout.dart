@@ -22,14 +22,15 @@ class Workout {
     this.status = 0,
   });
 
-  Workout.fromMap(Map<String, dynamic> map): this(
-    id: map[db_id],
-    user: map[db_user],
-    name: map[db_name],
-    date: map[db_date],
-    routine: map[db_routine],
-    status: map[db_status],
-  );
+  Workout.fromMap(Map<String, dynamic> map)
+      : this(
+          id: map[db_id],
+          user: map[db_user],
+          name: map[db_name],
+          date: map[db_date],
+          routine: map[db_routine],
+          status: map[db_status],
+        );
 
   Map<String, dynamic> toMap() {
     return {
@@ -42,7 +43,7 @@ class Workout {
     };
   }
 
-  static getRoutine(int i) async{
+  static getRoutine(int i) async {
     return await db.get().getRoutine('$i');
   }
 }
