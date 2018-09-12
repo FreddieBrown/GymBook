@@ -5,50 +5,51 @@ import 'package:crypto/crypto.dart';
 import 'dart:convert';
 import 'Models/Status.dart';
 
-class Auth{
-
-  static newUser(String email, String name, String salt, String pass) async{
-    if(!(await isUser(email))){
+class Auth {
+  static newUser(String email, String name, String salt, String pass) async {
+    if (!(await isUser(email))) {
       var utfSalt = utf8.encode(salt);
       var digestSalt = sha256.convert(utfSalt);
       var utfPass = utf8.encode("$pass+${digestSalt.toString()}");
       var digestPass = sha256.convert(utfPass);
-      await db.get().updateUser(User(salt: digestSalt.toString(), name: name, hashp: digestPass.toString(), email: email.toLowerCase()));
-      if(await db.get().getUserByEmail(email) != null){
+      await db.get().updateUser(User(
+          salt: digestSalt.toString(),
+          name: name,
+          hashp: digestPass.toString(),
+          email: email.toLowerCase()));
+      if (await db.get().getUserByEmail(email) != null) {
         return 1;
-      }
-      else{
+      } else {
         return -1;
       }
-    }
-    else{
+    } else {
       return 0;
     }
   }
 
-  static isUser(String email) async{
+  static isUser(String email) async {
     var u = await db.get().getUserByEmail(email.toLowerCase());
-    if(u == null){
+    if (u == null) {
       return false;
     }
     return true;
   }
 
-  static checkUser(String email, String pass) async{
-    if((await isUser(email))){
+  static checkUser(String email, String pass) async {
+    if ((await isUser(email))) {
       var u = await db.get().getUserByEmail(email.toLowerCase());
       var utfPass = utf8.encode("$pass+${u.salt}");
       var digestPass = sha256.convert(utfPass);
-      if(u.hashp == digestPass.toString()){
+      if (u.hashp == digestPass.toString()) {
         return u;
       }
     }
     return null;
   }
 
-  static loginUser(String email, String pass) async{
+  static loginUser(String email, String pass) async {
     var u = await checkUser(email, pass);
-    if(u != null){
+    if (u != null) {
       await db.get().updateStatus(Status(id: u.id));
       setUp(u);
       return true;
@@ -56,7 +57,7 @@ class Auth{
     return false;
   }
 
-  static logoutUser() async{
+  static logoutUser() async {
     final prefs = await SharedPreferences.getInstance();
     var id = prefs.get('id');
     prefs.remove('id');
@@ -67,7 +68,7 @@ class Auth{
     return true;
   }
 
-  static setUp(User u) async{
+  static setUp(User u) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setInt('id', u.id);
     prefs.setString('name', u.name);

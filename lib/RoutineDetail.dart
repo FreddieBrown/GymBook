@@ -9,7 +9,8 @@ import 'GymPageRoute.dart';
 import 'GymButton.dart';
 
 final _biggerFont = const TextStyle(fontSize: 18.0);
-class RoutineDetail extends StatefulWidget{
+
+class RoutineDetail extends StatefulWidget {
   var routine;
   RoutineDetail(this.routine);
   @override
@@ -24,10 +25,9 @@ class RoutineDetailState extends State<RoutineDetail> {
 
   @override
   Widget build(BuildContext context) {
-
     var fut = FutureBuilder(
       future: data(),
-      builder: (BuildContext context, AsyncSnapshot snapshot){
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.none:
             return new Text('Press button to start.');
@@ -35,22 +35,24 @@ class RoutineDetailState extends State<RoutineDetail> {
             return new Text('Active');
           case ConnectionState.waiting:
             return new Center(
-            child: CircularProgressIndicator(
+                child: CircularProgressIndicator(
               value: null,
               strokeWidth: 7.0,
             ));
           case ConnectionState.done:
             if (snapshot.hasError) {
-              return new Center(child: Text(
-                'Add some Exercises to this Routine!', style: _biggerFont,));
-            }
-            else {
+              return new Center(
+                  child: Text(
+                'Add some Exercises to this Routine!',
+                style: _biggerFont,
+              ));
+            } else {
               if (snapshot.data[1].length == 0) {
                 return Column(
                   children: <Widget>[
                     Text(
-                        "Error getting data, try again!",
-                        style: _biggerFont,
+                      "Error getting data, try again!",
+                      style: _biggerFont,
                     ),
                     CircularProgressIndicator(
                       value: null,
@@ -71,8 +73,11 @@ class RoutineDetailState extends State<RoutineDetail> {
         centerTitle: true,
         automaticallyImplyLeading: false,
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.save, color: Colors.white),
-            onPressed: (){Navigator.pop(context);},
+          IconButton(
+            icon: Icon(Icons.save, color: Colors.white),
+            onPressed: () {
+              Navigator.pop(context);
+            },
           ),
         ],
       ),
@@ -80,36 +85,34 @@ class RoutineDetailState extends State<RoutineDetail> {
         padding: EdgeInsets.all(8.0),
         children: <Widget>[
           Center(
-          child: Container(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-            '${routine.name}',
-                  style: const TextStyle(fontSize: 30.0, fontWeight: FontWeight.w700)
-          ))),
+              child: Container(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('${routine.name}',
+                      style: const TextStyle(
+                          fontSize: 30.0, fontWeight: FontWeight.w700)))),
           new Align(
             alignment: Alignment.center,
             child: fut,
           ),
           GymButton(
-              func:() {
+              func: () {
                 db.get().removeRoutine(routine.id);
                 Navigator.pop(context);
               },
-              text: Text("Delete Routine", style: const TextStyle(color: Colors.white))
-          ),
+              text: Text("Delete Routine",
+                  style: const TextStyle(color: Colors.white))),
         ],
       ),
       floatingActionButton: new FloatingActionButton(
         child: Icon(Icons.add, color: Colors.white),
         onPressed: () {
-            _navigateAndDisplaySelection(context);
+          _navigateAndDisplaySelection(context);
         },
       ),
     );
   }
 
-
-  Widget _routineD(BuildContext context, AsyncSnapshot snapshot){
+  Widget _routineD(BuildContext context, AsyncSnapshot snapshot) {
     var re = snapshot.data[0];
     exercises = snapshot.data[1];
     return ListView.builder(
@@ -118,25 +121,21 @@ class RoutineDetailState extends State<RoutineDetail> {
         itemCount: re.length,
         itemBuilder: (context, i) {
           return _exercise(re[i], exercises[i], context);
-        }
-    );
-
+        });
   }
 
-  Widget _exercise(RoutineExercise re, Exercise ex, BuildContext context){
+  Widget _exercise(RoutineExercise re, Exercise ex, BuildContext context) {
     return Card(
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(20.0)),
         ),
         child: ListTile(
-          title: Text(ex.name),
-          trailing: new Icon(Icons.delete, color: Colors.blue),
-          onTap: () {
-            db.get().removeRoutineExercise(re.id);
-            setState(() {});
-          }
-        )
-    );
+            title: Text(ex.name),
+            trailing: new Icon(Icons.delete, color: Colors.blue),
+            onTap: () {
+              db.get().removeRoutineExercise(re.id);
+              setState(() {});
+            }));
   }
 
   _navigateAndDisplaySelection(BuildContext context) async {
@@ -146,15 +145,14 @@ class RoutineDetailState extends State<RoutineDetail> {
       context,
       GymPageRoute(builder: (context) => ExerciseSelector(routine)),
     );
-
   }
 
-  data() async{
+  data() async {
     var list = [];
     var list1 = await db.get().getREByRoutine('${routine.id}');
     list.add(list1);
     var list2 = [];
-    list1.forEach((re) async{
+    list1.forEach((re) async {
       var a = await db.get().getExercise('${re.exercise}');
       list2.add(a);
     });

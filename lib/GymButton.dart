@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class GymButton extends StatelessWidget{
+class GymButton extends StatelessWidget {
   Function func;
   MaterialColor colour;
   Widget text;
@@ -16,7 +16,8 @@ class GymButton extends StatelessWidget{
         ),
         color: colour,
         child: Padding(
-          padding: EdgeInsets.only(top: 16.0, bottom: 16.0, left: 120.0, right: 120.0),
+          padding: EdgeInsets.only(
+              top: 16.0, bottom: 16.0, left: 120.0, right: 120.0),
           child: text,
         ),
       ),

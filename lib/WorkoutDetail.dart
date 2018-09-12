@@ -15,16 +15,15 @@ class WorkoutDetail extends StatelessWidget {
   String formatted1;
   var formatter = new DateFormat('dd/MM/yyyy');
   var formatter1 = new DateFormat('jm');
-  WorkoutDetail({@required this.workout}){
-    formatted= formatter.format(DateTime.parse(workout.date));
+  WorkoutDetail({@required this.workout}) {
+    formatted = formatter.format(DateTime.parse(workout.date));
     formatted1 = formatter1.format(DateTime.parse(workout.date));
   }
   @override
   Widget build(BuildContext context) {
-
     var fut = FutureBuilder(
       future: data(),
-      builder: (BuildContext context, AsyncSnapshot snapshot){
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.none:
             return new Text('Press button to start.');
@@ -33,12 +32,13 @@ class WorkoutDetail extends StatelessWidget {
           case ConnectionState.waiting:
             return new Center(
                 child: CircularProgressIndicator(
-                  value: null,
-                  strokeWidth: 7.0,
-                ));
+              value: null,
+              strokeWidth: 7.0,
+            ));
           case ConnectionState.done:
             if (snapshot.hasError)
-              return new Center(child: Text('This workout has no exercises part of it!'));
+              return new Center(
+                  child: Text('This workout has no exercises part of it!'));
             else
               return _exercises(context, snapshot);
         }
@@ -46,46 +46,46 @@ class WorkoutDetail extends StatelessWidget {
     );
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Workout"),
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-        actions: <Widget>[
-          IconButton(icon: Icon(Icons.save, color: Colors.white),
-            onPressed: (){Navigator.pop(context);},
-          ),
-        ],
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(8.0),
-        child: ListView(
-          children: <Widget>[
-            Center(
-              child: Text('${workout.name}',
-                style: const TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700)
-              )
-            ),
-            Center(
-              child: Text(
-                'Started $formatted at $formatted1',
-                style: const TextStyle(fontSize: 18.0),
-              )
-            ),
-            fut,
-            GymButton(
-                  func:() {
-                    db.get().removeWorkout(workout.id);
-                    Navigator.popUntil(context, ModalRoute.withName('/home'));
-                  },
-                  text: Text("Delete Workout", style: const TextStyle(color: Colors.white))
+        appBar: AppBar(
+          title: Text("Workout"),
+          centerTitle: true,
+          automaticallyImplyLeading: false,
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.save, color: Colors.white),
+              onPressed: () {
+                Navigator.pop(context);
+              },
             ),
           ],
         ),
-      )
-    );
+        body: Padding(
+          padding: EdgeInsets.all(8.0),
+          child: ListView(
+            children: <Widget>[
+              Center(
+                  child: Text('${workout.name}',
+                      style: const TextStyle(
+                          fontSize: 28.0, fontWeight: FontWeight.w700))),
+              Center(
+                  child: Text(
+                'Started $formatted at $formatted1',
+                style: const TextStyle(fontSize: 18.0),
+              )),
+              fut,
+              GymButton(
+                  func: () {
+                    db.get().removeWorkout(workout.id);
+                    Navigator.popUntil(context, ModalRoute.withName('/home'));
+                  },
+                  text: Text("Delete Workout",
+                      style: const TextStyle(color: Colors.white))),
+            ],
+          ),
+        ));
   }
 
-  _exercises(BuildContext context, AsyncSnapshot snapshot){
+  _exercises(BuildContext context, AsyncSnapshot snapshot) {
     var data = snapshot.data[0];
     var exe = snapshot.data[1];
     return ListView.builder(
@@ -94,33 +94,11 @@ class WorkoutDetail extends StatelessWidget {
         itemCount: data.length,
         itemBuilder: (context, i) {
           return _exercise(data[i], exe[i], context);
-        }
-    );
+        });
   }
 
-  _exercise(ExerciseData exd, Exercise ex, BuildContext context){
-    if(ex.flag == 0) {
-      return Card(
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(20.0)),
-          ),
-        child: ListTile(
-        title: Text('${ex.name}'),
-        subtitle: Text(
-            'Reps: ${exd.reps}, Sets: ${exd.sets}, Weight: ${exd.weight}kg '
-        ),
-        trailing: new Icon(Icons.keyboard_arrow_right, color: Colors.blue),
-        onTap: () {
-          Navigator.push(
-            context,
-            GymPageRoute(
-              builder: (context) => ExerciseDataSelector(exd, ex, workout),
-            ),
-          );
-        },
-      ));
-    }
-    else{
+  _exercise(ExerciseData exd, Exercise ex, BuildContext context) {
+    if (ex.flag == 0) {
       return Card(
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(20.0)),
@@ -128,32 +106,48 @@ class WorkoutDetail extends StatelessWidget {
           child: ListTile(
             title: Text('${ex.name}'),
             subtitle: Text(
-              'Distance: ${exd.distance}km, Time: ${exd.time}mins'
+                'Reps: ${exd.reps}, Sets: ${exd.sets}, Weight: ${exd.weight}kg '),
+            trailing: new Icon(Icons.keyboard_arrow_right, color: Colors.blue),
+            onTap: () {
+              Navigator.push(
+                context,
+                GymPageRoute(
+                  builder: (context) => ExerciseDataSelector(exd, ex, workout),
+                ),
+              );
+            },
+          ));
+    } else {
+      return Card(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20.0)),
           ),
-          trailing: new Icon(Icons.keyboard_arrow_right, color: Colors.blue),
-          onTap: () {
-            Navigator.push(
-              context,
-              GymPageRoute(
-                builder: (context) => ExerciseDataSelector(exd, ex, workout),
-              ),
-            );
-          },
-        )
-      );
+          child: ListTile(
+            title: Text('${ex.name}'),
+            subtitle:
+                Text('Distance: ${exd.distance}km, Time: ${exd.time}mins'),
+            trailing: new Icon(Icons.keyboard_arrow_right, color: Colors.blue),
+            onTap: () {
+              Navigator.push(
+                context,
+                GymPageRoute(
+                  builder: (context) => ExerciseDataSelector(exd, ex, workout),
+                ),
+              );
+            },
+          ));
     }
   }
 
-  data() async{
+  data() async {
     var list = [];
     List ed = await db.get().getEDByWorkout('${workout.id}');
     var exe = [];
-    ed.forEach((e) async{
+    ed.forEach((e) async {
       exe.add(await db.get().getExercise('${e.exercise}'));
     });
     await new Future.delayed(Duration(milliseconds: 50));
     list = [ed, exe];
     return list;
   }
-
 }

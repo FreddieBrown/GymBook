@@ -7,21 +7,23 @@ import 'Models/ExerciseData.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final _biggerFont = const TextStyle(fontSize: 18.0);
-class WorkoutRoutineSelector extends StatefulWidget{
+
+class WorkoutRoutineSelector extends StatefulWidget {
   String name;
   WorkoutRoutineSelector(this.name);
   @override
-  WorkoutRoutineSelectorState createState() => WorkoutRoutineSelectorState(name);
+  WorkoutRoutineSelectorState createState() =>
+      WorkoutRoutineSelectorState(name);
 }
 
-class WorkoutRoutineSelectorState extends State<WorkoutRoutineSelector>{
+class WorkoutRoutineSelectorState extends State<WorkoutRoutineSelector> {
   String name;
   WorkoutRoutineSelectorState(this.name);
   @override
   Widget build(BuildContext context) {
     var fut = FutureBuilder(
       future: data(),
-      builder: (BuildContext context, AsyncSnapshot snapshot){
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.none:
             return new Text('Press button to start.');
@@ -30,9 +32,9 @@ class WorkoutRoutineSelectorState extends State<WorkoutRoutineSelector>{
           case ConnectionState.waiting:
             return new Center(
                 child: CircularProgressIndicator(
-                  value: null,
-                  strokeWidth: 7.0,
-                ));
+              value: null,
+              strokeWidth: 7.0,
+            ));
           case ConnectionState.done:
             if (snapshot.hasError)
               return new Text('Error: ${snapshot.error}');
@@ -46,13 +48,13 @@ class WorkoutRoutineSelectorState extends State<WorkoutRoutineSelector>{
         title: Text('Choose a routine'),
         centerTitle: true,
       ),
-        body: Center(
-          child: fut,
-        ),
+      body: Center(
+        child: fut,
+      ),
     );
   }
 
-  Widget _routines(BuildContext context, AsyncSnapshot snapshot){
+  Widget _routines(BuildContext context, AsyncSnapshot snapshot) {
     var ra = snapshot.data;
     var _length = ra.length;
     return ListView.builder(
@@ -60,11 +62,10 @@ class WorkoutRoutineSelectorState extends State<WorkoutRoutineSelector>{
         itemCount: _length,
         itemBuilder: (context, i) {
           return _routine(ra[i]);
-        }
-    );
+        });
   }
 
-  Widget _routine(Routine r){
+  Widget _routine(Routine r) {
     return Card(
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(20.0)),
@@ -76,84 +77,67 @@ class WorkoutRoutineSelectorState extends State<WorkoutRoutineSelector>{
           ),
           trailing: new Icon(Icons.keyboard_arrow_right, color: Colors.white),
           onTap: () async {
-              if('$name' != 'null') {
-                try {
-                  var id = await getID();
-                  var date = DateTime.now();
-                  await db.get().updateWorkout(
-                      Workout(
-                          name: name,
-                          routine: r.id,
-                          date: '$date',
-                          user: id
-                      )
-                  );
-                  List w = await db.get().getWorkoutByDate('$date');
-                  Workout work = w[0];
-                  List dataE = await exercises(r);
-                  for(int j = 0; j < dataE.length; j++){
-                    if(dataE[j].flag == 0){
-                      db.get().updateExerciseData(
-                          ExerciseData(
-                              workout: work.id,
-                              exercise: dataE[j].id,
-                              sets: 0,
-                              reps: 0,
-                              weight: 0.0
-                          )
-                      );
-                    }
-                    else{
-                      db.get().updateExerciseData(
-                          ExerciseData(
-                            workout: work.id,
-                            exercise: dataE[j].id,
-                            distance: 0.0,
-                            time: 0.0,
-                          )
-                      );
-                    }
+            if ('$name' != 'null') {
+              try {
+                var id = await getID();
+                var date = DateTime.now();
+                await db.get().updateWorkout(Workout(
+                    name: name, routine: r.id, date: '$date', user: id));
+                List w = await db.get().getWorkoutByDate('$date');
+                Workout work = w[0];
+                List dataE = await exercises(r);
+                for (int j = 0; j < dataE.length; j++) {
+                  if (dataE[j].flag == 0) {
+                    db.get().updateExerciseData(ExerciseData(
+                        workout: work.id,
+                        exercise: dataE[j].id,
+                        sets: 0,
+                        reps: 0,
+                        weight: 0.0));
+                  } else {
+                    db.get().updateExerciseData(ExerciseData(
+                          workout: work.id,
+                          exercise: dataE[j].id,
+                          distance: 0.0,
+                          time: 0.0,
+                        ));
                   }
                 }
-                catch (e) {
-                  print(e.toString());
-                }
-                Navigator.popUntil(context, ModalRoute.withName('/home'));
+              } catch (e) {
+                print(e.toString());
               }
+              Navigator.popUntil(context, ModalRoute.withName('/home'));
+            }
           },
-      )
-    );
+        ));
   }
 
-  Future<List<Routine>> data() async{
+  Future<List<Routine>> data() async {
     var id = await getID();
     var list;
     try {
       list = await db.get().getRoutinesByUser(['$id']);
-    }
-    catch(e){
+    } catch (e) {
       print(e.toString());
     }
     return list;
   }
 
-  Future<List> exercises(Routine routine) async{
+  Future<List> exercises(Routine routine) async {
     var list = [];
     try {
       var list1 = await db.get().getREByRoutine('${routine.id}');
-      list1.forEach((re)async{
+      list1.forEach((re) async {
         list.add(await db.get().getExercise('${re.exercise}'));
       });
       await new Future.delayed(Duration(milliseconds: 50));
-
-    }
-    catch(e){
+    } catch (e) {
       print(e.toString());
     }
     return list;
   }
 
-  getID() async{
+  getID() async {
     final prefs = await SharedPreferences.getInstance();
     var id = prefs.get('id');
     return id;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+
 final Tween<Offset> _kBottomUpTween = new Tween<Offset>(
   begin: const Offset(0.0, 0.25),
   end: Offset.zero,
@@ -12,14 +13,16 @@ class _RaynesParkPageTransition extends StatelessWidget {
     @required bool fade,
     @required Animation<double> routeAnimation,
     @required this.child,
-  }) : _positionAnimation = _kBottomUpTween.animate(new CurvedAnimation(
-    parent: routeAnimation, // The route's linear 0.0 - 1.0 animation.
-    curve: Curves.fastOutSlowIn,
-  )),
-        _opacityAnimation = fade ? new CurvedAnimation(
-          parent: routeAnimation,
-          curve: Curves.easeIn, // Eyeballed from other Material apps.
-        ) : const AlwaysStoppedAnimation<double>(1.0),
+  })  : _positionAnimation = _kBottomUpTween.animate(new CurvedAnimation(
+          parent: routeAnimation, // The route's linear 0.0 - 1.0 animation.
+          curve: Curves.fastOutSlowIn,
+        )),
+        _opacityAnimation = fade
+            ? new CurvedAnimation(
+                parent: routeAnimation,
+                curve: Curves.easeIn, // Eyeballed from other Material apps.
+              )
+            : const AlwaysStoppedAnimation<double>(1.0),
         super(key: key);
 
   final Animation<Offset> _positionAnimation;
@@ -74,7 +77,7 @@ class GymPageRoute<T> extends PageRoute<T> {
     this.maintainState = true,
     this.CupertinoTrans = true,
     bool fullscreenDialog = false,
-  }) : assert(builder != null),
+  })  : assert(builder != null),
         super(settings: settings, fullscreenDialog: fullscreenDialog) {
     // ignore: prefer_asserts_in_initializer_lists , https://github.com/dart-lang/sdk/issues/31223
     assert(opaque);
@@ -99,6 +102,7 @@ class GymPageRoute<T> extends PageRoute<T> {
     );
     return _internalCupertinoPageRoute;
   }
+
   CupertinoPageRoute<T> _internalCupertinoPageRoute;
 
   /// Whether we should currently be using Cupertino transitions. This is true
@@ -124,8 +128,8 @@ class GymPageRoute<T> extends PageRoute<T> {
   @override
   bool canTransitionTo(TransitionRoute<dynamic> nextRoute) {
     // Don't perform outgoing animation if the next route is a fullscreen dialog.
-    return (nextRoute is GymPageRoute && !nextRoute.fullscreenDialog)
-        || (nextRoute is CupertinoPageRoute && !nextRoute.fullscreenDialog);
+    return (nextRoute is GymPageRoute && !nextRoute.fullscreenDialog) ||
+        (nextRoute is CupertinoPageRoute && !nextRoute.fullscreenDialog);
   }
 
   @override
@@ -135,7 +139,8 @@ class GymPageRoute<T> extends PageRoute<T> {
   }
 
   @override
-  Widget buildPage(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
+  Widget buildPage(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation) {
     final Widget result = new Semantics(
       scopesRoute: true,
       explicitChildNodes: true,
@@ -145,8 +150,7 @@ class GymPageRoute<T> extends PageRoute<T> {
       if (result == null) {
         throw new FlutterError(
             'The builder for route "${settings.name}" returned null.\n'
-                'Route builders must never return null.'
-        );
+            'Route builders must never return null.');
       }
       return true;
     }());
@@ -154,9 +158,11 @@ class GymPageRoute<T> extends PageRoute<T> {
   }
 
   @override
-  Widget buildTransitions(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+  Widget buildTransitions(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation, Widget child) {
     if (_useCupertinoTransitions) {
-      return _cupertinoPageRoute.buildTransitions(context, animation, secondaryAnimation, child);
+      return _cupertinoPageRoute.buildTransitions(
+          context, animation, secondaryAnimation, child);
     } else {
       return new _RaynesParkPageTransition(
         routeAnimation: animation,

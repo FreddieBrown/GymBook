@@ -11,14 +11,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 final _biggerFont = const TextStyle(fontSize: 18.0);
 
-class WorkoutList extends StatefulWidget{
+class WorkoutList extends StatefulWidget {
   @override
   WorkoutListState createState() => new WorkoutListState();
 }
+
 /// This is used to describe the state of the homeList StatefulWidget. It uses
 /// _workouts() as its body.
 class WorkoutListState extends State<WorkoutList> {
-
   @override
   void initState() {
     super.initState();
@@ -26,10 +26,9 @@ class WorkoutListState extends State<WorkoutList> {
 
   @override
   Widget build(BuildContext context) {
-
     var fut = FutureBuilder(
       future: data(),
-      builder: (BuildContext context, AsyncSnapshot snapshot){
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.none:
             return new Text('Press button to start.');
@@ -38,26 +37,27 @@ class WorkoutListState extends State<WorkoutList> {
           case ConnectionState.waiting:
             return new Center(
                 child: CircularProgressIndicator(
-                  value: null,
-                  strokeWidth: 7.0,
-                ));
+              value: null,
+              strokeWidth: 7.0,
+            ));
           case ConnectionState.done:
             if (snapshot.hasError)
               return new Text('Error: ${snapshot.error}');
-            else if(snapshot.data.length == 0){
+            else if (snapshot.data.length == 0) {
               return Column(
                 children: <Widget>[
-                  GymButton(func: _addWorkout, text: Text("Add Workout", style: const TextStyle(color: Colors.white))),
+                  GymButton(
+                      func: _addWorkout,
+                      text: Text("Add Workout",
+                          style: const TextStyle(color: Colors.white))),
                   Padding(
                       padding: EdgeInsets.only(top: 300.0),
                       child: Center(
-                          child: Text("You don't have any Workouts, try creating one!")
-                      )
-                  )
+                          child: Text(
+                              "You don't have any Workouts, try creating one!")))
                 ],
               );
-            }
-            else
+            } else
               return _workouts(context, snapshot);
         }
       },
@@ -73,26 +73,26 @@ class WorkoutListState extends State<WorkoutList> {
     var workouts = snapshot.data;
     return ListView.builder(
         padding: const EdgeInsets.all(8.0),
-        itemCount: workouts.length+2,
+        itemCount: workouts.length + 2,
         itemBuilder: (context, i) {
-          if(i == workouts.length){
-            return GymButton(func: _addWorkout, text: Text("Add Workout", style: const TextStyle(color: Colors.white)));
-          }
-          else if(i == workouts.length+1){
-            if(Platform.isAndroid) {
+          if (i == workouts.length) {
+            return GymButton(
+                func: _addWorkout,
+                text: Text("Add Workout",
+                    style: const TextStyle(color: Colors.white)));
+          } else if (i == workouts.length + 1) {
+            if (Platform.isAndroid) {
               return Container(
                 padding: EdgeInsets.all(50.0),
               );
-            }
-            else{
+            } else {
               return Container(
                 padding: EdgeInsets.all(60.0),
               );
             }
           }
-          return _workout(workouts[workouts.length-i-1]);
-        }
-    );
+          return _workout(workouts[workouts.length - i - 1]);
+        });
   }
 
   /// Returns a single ListTile Widget
@@ -123,8 +123,7 @@ class WorkoutListState extends State<WorkoutList> {
               );
             });
           },
-        )
-    );
+        ));
   }
 
   void _addWorkout() {
@@ -148,31 +147,29 @@ class WorkoutListState extends State<WorkoutList> {
     // After the Selection Screen returns a result, show it in a Snackbar!
 //    Scaffold.of(context).showSnackBar(SnackBar(content: Text("$result")));
 //    work.add(new Workout(id: work.length+2, name: "$result", date: '${DateTime.now()}'));
-    if('$result' != 'null') {
+    if ('$result' != 'null') {
       try {
-        db.get().updateWorkout(
-            Workout(name: result, routine: 1, date: '${DateTime.now()}', user: id));
-      }
-      catch(e){
+        db.get().updateWorkout(Workout(
+            name: result, routine: 1, date: '${DateTime.now()}', user: id));
+      } catch (e) {
         print(e.toString());
       }
     }
   }
 
-   data() async{
-     var id = await getID();
+  data() async {
+    var id = await getID();
     List list;
     try {
       list = await db.get().getWorkoutsByUser(['$id']);
-    }
-    catch(e){
+    } catch (e) {
       print(e.toString());
     }
 
     return list;
   }
 
-  getID() async{
+  getID() async {
     final prefs = await SharedPreferences.getInstance();
     var id = prefs.get('id');
     return id;

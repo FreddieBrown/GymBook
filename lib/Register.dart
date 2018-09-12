@@ -27,8 +27,9 @@ class RegisterState extends State<Register> {
                     alignment: Alignment.topLeft,
                     child: IconButton(
                         icon: Icon(Icons.arrow_back),
-                        onPressed: (){Navigator.pop(context);})
-                ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        })),
                 Container(
                   child: Align(
                     child: Text('Register',
@@ -36,10 +37,14 @@ class RegisterState extends State<Register> {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
+                  padding: const EdgeInsets.only(
+                      left: 10.0, right: 10.0, bottom: 10.0),
                   child: Text(
                     "Email",
-                    style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.w700, height: 2.0),
+                    style: const TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.w700,
+                        height: 2.0),
                   ),
                 ),
                 TextField(
@@ -50,15 +55,18 @@ class RegisterState extends State<Register> {
                       filled: true,
                       fillColor: Colors.grey[300],
                       border: OutlineInputBorder(),
-                      hintText: "Email"
-                  ),
+                      hintText: "Email"),
                 ),
                 widget.emailError,
                 Container(
-                  padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
+                  padding: const EdgeInsets.only(
+                      left: 10.0, right: 10.0, bottom: 10.0),
                   child: Text(
                     "Full Name",
-                    style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.w700, height: 2.0),
+                    style: const TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.w700,
+                        height: 2.0),
                   ),
                 ),
                 TextField(
@@ -69,15 +77,18 @@ class RegisterState extends State<Register> {
                       filled: true,
                       fillColor: Colors.grey[300],
                       border: OutlineInputBorder(),
-                      hintText: "Name"
-                  ),
+                      hintText: "Name"),
                 ),
                 widget.nameError,
                 Container(
-                  padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
+                  padding: const EdgeInsets.only(
+                      left: 10.0, right: 10.0, bottom: 10.0),
                   child: Text(
                     "Password",
-                    style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.w700, height: 2.0),
+                    style: const TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.w700,
+                        height: 2.0),
                   ),
                 ),
                 TextField(
@@ -89,47 +100,48 @@ class RegisterState extends State<Register> {
                       filled: true,
                       fillColor: Colors.grey[300],
                       border: OutlineInputBorder(),
-                      hintText: "Password"
-                  ),
+                      hintText: "Password"),
                 ),
                 widget.passError,
                 GymButton(
-                  func: () async{
-                    if(email.text.isEmpty){
+                  func: () async {
+                    if (email.text.isEmpty) {
                       setState(() {
-                        widget.emailError = Text("You have to enter an email", style: TextStyle(color: Colors.red));
+                        widget.emailError = Text("You have to enter an email",
+                            style: TextStyle(color: Colors.red));
                         widget.nameError = Text("");
                         widget.passError = Text("");
                       });
-                    }
-                    else if((await Auth.isUser(email.text.toLowerCase()))){
+                    } else if ((await Auth.isUser(email.text.toLowerCase()))) {
                       setState(() {
-                        widget.emailError = Text("There is already an account with that email, try another!", style: TextStyle(color: Colors.red));
+                        widget.emailError = Text(
+                            "There is already an account with that email, try another!",
+                            style: TextStyle(color: Colors.red));
                         widget.nameError = Text("");
                         widget.passError = Text("");
                       });
-                    }
-                    else{
-                      if(name.text.isEmpty){
+                    } else {
+                      if (name.text.isEmpty) {
                         setState(() {
-                          widget.nameError = Text("You have to enter a name!", style: TextStyle(color: Colors.red));
+                          widget.nameError = Text("You have to enter a name!",
+                              style: TextStyle(color: Colors.red));
                           widget.emailError = Text("");
                           widget.passError = Text("");
                         });
-
-                      }
-                      else{
-                        if(password.text.length < 8){
+                      } else {
+                        if (password.text.length < 8) {
                           setState(() {
                             widget.nameError = Text("");
                             widget.emailError = Text("");
-                            widget.passError = Text("Your chosen password is too short" , style: TextStyle(color: Colors.red));
+                            widget.passError = Text(
+                                "Your chosen password is too short",
+                                style: TextStyle(color: Colors.red));
                           });
-                        }
-                        else{
-                        await Auth.newUser(email.text, name.text, '${DateTime.now()}', password.text);
-                        await Auth.loginUser(email.text, password.text);
-                        Navigator.pushNamed(context, '/home');
+                        } else {
+                          await Auth.newUser(email.text, name.text,
+                              '${DateTime.now()}', password.text);
+                          await Auth.loginUser(email.text, password.text);
+                          Navigator.pushNamed(context, '/home');
                         }
                       }
                     }

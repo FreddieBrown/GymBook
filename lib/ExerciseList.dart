@@ -9,12 +9,12 @@ import 'GymPageRoute.dart';
 
 final _biggerFont = const TextStyle(fontSize: 18.0);
 
-class ExercisesList extends StatefulWidget{
+class ExercisesList extends StatefulWidget {
   @override
   ExercisesListState createState() => new ExercisesListState();
 }
 
-class ExercisesListState extends State<ExercisesList>{
+class ExercisesListState extends State<ExercisesList> {
   /// Need to make changes so that Exercises are pulled straight from the DB and not only after
   /// newExercise is pressed.
 
@@ -24,11 +24,10 @@ class ExercisesListState extends State<ExercisesList>{
   }
 
   @override
-  Widget build(BuildContext context){
-
+  Widget build(BuildContext context) {
     var fut = FutureBuilder(
       future: data(),
-      builder: (BuildContext context, AsyncSnapshot snapshot){
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.none:
             return new Text('Press button to start.');
@@ -37,67 +36,67 @@ class ExercisesListState extends State<ExercisesList>{
           case ConnectionState.waiting:
             return new Center(
                 child: CircularProgressIndicator(
-                  value: null,
-                  strokeWidth: 7.0,
-                ));
+              value: null,
+              strokeWidth: 7.0,
+            ));
           case ConnectionState.done:
             if (snapshot.hasError)
               return new Text('Error: ${snapshot.error}');
-            else if(snapshot.data.length == 0){
+            else if (snapshot.data.length == 0) {
               return Column(
                 children: <Widget>[
-                  GymButton(func: _addExericse, text: Text("Add Exercise", style: const TextStyle(color: Colors.white))),
+                  GymButton(
+                      func: _addExericse,
+                      text: Text("Add Exercise",
+                          style: const TextStyle(color: Colors.white))),
                   Padding(
                       padding: EdgeInsets.only(top: 300.0),
                       child: Center(
-                          child: Text("You don't have any Exercises, try creating one!")
-                      )
-                  )
+                          child: Text(
+                              "You don't have any Exercises, try creating one!")))
                 ],
               );
-
-            }
-            else
+            } else
               return _exercises(context, snapshot);
         }
       },
     );
 
     return Scaffold(
-        body: Center(
-          child: fut,
-        ),
+      body: Center(
+        child: fut,
+      ),
     );
   }
 
-  Widget _exercises(BuildContext context, AsyncSnapshot snapshot){
+  Widget _exercises(BuildContext context, AsyncSnapshot snapshot) {
     var exe = snapshot.data;
     var _length = exe.length;
     return ListView.builder(
         padding: const EdgeInsets.all(8.0),
-        itemCount: _length+2,
+        itemCount: _length + 2,
         itemBuilder: (context, i) {
-          if(i == _length){
-            return GymButton(func: _addExericse, text: Text("Add Exercise", style: const TextStyle(color: Colors.white)));
-          }
-          else if(i == _length+1){
-            if(Platform.isAndroid) {
+          if (i == _length) {
+            return GymButton(
+                func: _addExericse,
+                text: Text("Add Exercise",
+                    style: const TextStyle(color: Colors.white)));
+          } else if (i == _length + 1) {
+            if (Platform.isAndroid) {
               return Container(
                 padding: EdgeInsets.all(50.0),
               );
-            }
-            else{
+            } else {
               return Container(
                 padding: EdgeInsets.all(60.0),
               );
             }
           }
           return _exercise(exe[i]);
-        }
-    );
+        });
   }
 
-  Widget _exercise(Exercise e){
+  Widget _exercise(Exercise e) {
     return Card(
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(20.0)),
@@ -116,14 +115,11 @@ class ExercisesListState extends State<ExercisesList>{
             setState(() {
               Navigator.push(
                 context,
-                GymPageRoute(
-                    builder: (context) => ExerciseDetail(exercise: e)
-                ),
+                GymPageRoute(builder: (context) => ExerciseDetail(exercise: e)),
               );
             });
           },
-        )
-    );
+        ));
   }
 
   void _addExericse() {
@@ -147,20 +143,19 @@ class ExercisesListState extends State<ExercisesList>{
 //    Scaffold.of(context).showSnackBar(SnackBar(content: Text("$result")));
 //    _exerciseArr.add(
 //    new Exercise(name: result["name"], id: _exerciseArr.length+2, notes: result["notes"]));
-    db.get().updateExercise(new Exercise(name: result["name"], notes: result["notes"], flag: result["flag"]));
+    db.get().updateExercise(new Exercise(
+        name: result["name"], notes: result["notes"], flag: result["flag"]));
+
     /// Here I should add this to the DB or whatever storage this uses
   }
 
-  data() async{
+  data() async {
     var list;
     try {
       list = await db.get().getExercises();
-    }
-    catch(e){
+    } catch (e) {
       print(e.toString());
     }
     return list;
   }
 }
-
-

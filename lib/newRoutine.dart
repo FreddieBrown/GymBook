@@ -3,7 +3,6 @@ import 'FormMaker.dart';
 import 'Models/Routine.dart';
 import 'database/db.dart';
 
-
 class newRoutine extends StatefulWidget {
   var id;
   newRoutine(this.id);
@@ -28,54 +27,45 @@ class newRoutineState extends State<newRoutine> {
       ),
       body: Form(
         key: _formKey,
-        child: form.form(
-            [
-              "Routine Name",
-            ],
-            [
-              controller1,
-            ],
-            [
-              1,
-            ],
-            [
-              30,
-            ],
-            [
-              _valid,
-            ],
-            [
-              true
-            ]
-
-        ),
+        child: form.form([
+          "Routine Name",
+        ], [
+          controller1,
+        ], [
+          1,
+        ], [
+          30,
+        ], [
+          _valid,
+        ], [
+          true
+        ]),
       ),
       floatingActionButton: FloatingActionButton(
         heroTag: "Routine1",
-          onPressed: () {
-            // Navigate back to the first screen by popping the current route
-            // off the stack
-            if (_formKey.currentState.validate()) {
-              var routine;
-              try {
-                routine = Routine(name: controller1.text, user: id);
-              }
-              catch(e){
-                print(e.toString());
-              }
-              db.get().updateRoutine(routine);
-              setState(() {
-                Navigator.pop(context);
-              });
+        onPressed: () {
+          // Navigate back to the first screen by popping the current route
+          // off the stack
+          if (_formKey.currentState.validate()) {
+            var routine;
+            try {
+              routine = Routine(name: controller1.text, user: id);
+            } catch (e) {
+              print(e.toString());
             }
-          },
-          child: Icon(Icons.save, color: Colors.white),
-        ),
+            db.get().updateRoutine(routine);
+            setState(() {
+              Navigator.pop(context);
+            });
+          }
+        },
+        child: Icon(Icons.save, color: Colors.white),
+      ),
     );
   }
 }
 
-String _valid(value){
+String _valid(value) {
   if (value.isEmpty) {
     return 'Please enter some text';
   }

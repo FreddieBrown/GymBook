@@ -23,51 +23,45 @@ class newWorkoutState extends State<newWorkout> {
         centerTitle: true,
       ),
       body: Container(
-        child:
-          Form(
-            key: _formKey,
-            child: form.form(
-                [
-                  "Workout Name",
-                ],
-                [
-                  controller1,
-                ],
-                [
-                  1,
-                ],
-                [
-                  30,
-                ],
-                [
-                  _valid,
-                ],
-                [
-                  true
-                ]
-            ),
-          ),
-      ),
-      floatingActionButton:FloatingActionButton(
-        heroTag: "Workout1",
-          onPressed: () async{
-            // Navigate back to the first screen by popping the current route
-            // off the stack
-            if (_formKey.currentState.validate()) {
-//              Navigator.pop(context, controller1.text);
-              await Navigator.push(
-                context,
-                GymPageRoute(builder: (context) => WorkoutRoutineSelector(controller1.text)),
-              );
-            }
-          },
-          child: Icon(Icons.save, color: Colors.white),
+        child: Form(
+          key: _formKey,
+          child: form.form([
+            "Workout Name",
+          ], [
+            controller1,
+          ], [
+            1,
+          ], [
+            30,
+          ], [
+            _valid,
+          ], [
+            true
+          ]),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        heroTag: "Workout1",
+        onPressed: () async {
+          // Navigate back to the first screen by popping the current route
+          // off the stack
+          if (_formKey.currentState.validate()) {
+//              Navigator.pop(context, controller1.text);
+            await Navigator.push(
+              context,
+              GymPageRoute(
+                  builder: (context) =>
+                      WorkoutRoutineSelector(controller1.text)),
+            );
+          }
+        },
+        child: Icon(Icons.save, color: Colors.white),
+      ),
     );
   }
 }
 
-String _valid(value){
+String _valid(value) {
   if (value.isEmpty) {
     return 'Please enter some text';
   }

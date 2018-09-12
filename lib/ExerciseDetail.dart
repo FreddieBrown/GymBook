@@ -11,10 +11,9 @@ class ExerciseDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var flag;
-    if(exercise.flag == 1){
+    if (exercise.flag == 1) {
       flag = "Cardio";
-    }
-    else{
+    } else {
       flag = "Weights";
     }
     return Scaffold(
@@ -28,27 +27,30 @@ class ExerciseDetail extends StatelessWidget {
           Center(
             child: Text(
               '${exercise.name}',
-              style: const TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700),
+              style:
+                  const TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700),
             ),
           ),
           Container(
-          padding: EdgeInsets.only(top: 8.0),
-          child: Text(
-                  'Notes',
-                  style: const TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600),
-                ),
+            padding: EdgeInsets.only(top: 8.0),
+            child: Text(
+              'Notes',
+              style:
+                  const TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600),
+            ),
           ),
           Container(
             padding: EdgeInsets.only(bottom: 16.0),
             child: Text(
-                '${exercise.notes}',
-                style: const TextStyle(fontSize: 16.0),
+              '${exercise.notes}',
+              style: const TextStyle(fontSize: 16.0),
             ),
           ),
           Container(
             child: Text(
               'Exercise Type',
-              style: const TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600),
+              style:
+                  const TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600),
             ),
           ),
           Container(
@@ -59,12 +61,12 @@ class ExerciseDetail extends StatelessWidget {
             ),
           ),
           GymButton(
-              func:() {
+              func: () {
                 db.get().removeExercise(exercise.id);
                 Navigator.pop(context);
               },
-              text: Text("Delete Exercise", style: const TextStyle(color: Colors.white))
-          ),
+              text: Text("Delete Exercise",
+                  style: const TextStyle(color: Colors.white))),
         ],
       ),
     );
