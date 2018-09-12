@@ -7,8 +7,9 @@ class Workout {
   static final db_date = "date";
   static final db_routine = "routine_id";
   static final db_user = "user_id";
+  static final db_status = "status";
 
-  int id, routine, user;
+  int id, routine, user, status;
   String name;
   String date;
 
@@ -18,6 +19,7 @@ class Workout {
     @required this.user,
     @required this.name,
     @required this.date,
+    this.status = 0,
   });
 
   Workout.fromMap(Map<String, dynamic> map): this(
@@ -26,6 +28,7 @@ class Workout {
     name: map[db_name],
     date: map[db_date],
     routine: map[db_routine],
+    status: map[db_status],
   );
 
   Map<String, dynamic> toMap() {
@@ -35,6 +38,7 @@ class Workout {
       db_name: name,
       db_date: date,
       db_routine: routine,
+      db_status: status,
     };
   }
 

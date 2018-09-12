@@ -25,6 +25,7 @@ class db {
   Database data;
 
   bool didInit = false;
+  bool addedAlter = false;
 
   static db get() {
     return _db;
@@ -34,6 +35,7 @@ class db {
 
   Future<Database> _getDb() async {
     if (!didInit) await _init();
+    if(!addedAlter) await updateDB();
     return data;
   }
 
@@ -100,10 +102,27 @@ class db {
           "${Status.db_id} INTEGER,"
           "FOREIGN KEY (${Status.db_id}) REFERENCES ${tableNameU}(${User.db_id})"
           ")");
+      await db.execute("ALTER TABLE $tableNameW "
+          "ADD COLUMN ${Workout.db_status} INTEGER"
+      );
+      await db.execute("ALTER TABLE $tableNameE "
+          "ADD COLUMN ${Exercise.db_user} INTEGER"
+      );
 
       /// This is where all DB creation happens.
     });
+    addedAlter = true;
     didInit = true;
+  }
+
+  updateDB() async{
+    await data.execute("ALTER TABLE $tableNameW "
+        "ADD COLUMN ${Workout.db_status} INTEGER"
+    );
+    await data.execute("ALTER TABLE $tableNameE "
+        "ADD COLUMN ${Exercise.db_user} INTEGER"
+    );
+    addedAlter = true;
   }
 
   Future<List<Exercise>> getExercises([List<String> ids = null]) async {
@@ -233,6 +252,27 @@ class db {
     }
   }
 
+  Future<List<Exercise>> getExercisesByUser([List<String> ids = null]) async {
+    var db = await _getDb();
+    // Building SELECT * FROM TABLE WHERE ID IN (id1, id2, ..., idn)
+    List<Exercise> exercises = [];
+    if (ids == null) {
+      var result = await db.rawQuery('SELECT * FROM $tableNameE');
+      for (Map<String, dynamic> item in result) {
+        exercises.add(new Exercise.fromMap(item));
+      }
+      return exercises;
+    } else {
+      var idsString = ids.map((it) => '"$it"').join(',');
+      var result = await db.rawQuery(
+          'SELECT * FROM $tableNameE WHERE ${Exercise.db_user} IN ($idsString)');
+      for (Map<String, dynamic> item in result) {
+        exercises.add(new Exercise.fromMap(item));
+      }
+      return exercises;
+    }
+  }
+
   Future<List<Workout>> getWorkoutsByUser([List<String> ids = null]) async {
     var db = await _getDb();
     // Building SELECT * FROM TABLE WHERE ID IN (id1, id2, ..., idn)
@@ -357,18 +397,18 @@ class db {
     var db = await _getDb();
     await db.rawInsert(
         'INSERT OR REPLACE INTO '
-        '$tableNameE(${Exercise.db_id}, ${Exercise.db_name}, ${Exercise.db_notes}, ${Exercise.db_flag})'
-        ' VALUES(?, ?, ?, ?)',
-        [exercise.id, exercise.name, exercise.notes, exercise.flag]);
+        '$tableNameE(${Exercise.db_id}, ${Exercise.db_name}, ${Exercise.db_notes}, ${Exercise.db_flag}, ${Exercise.db_user})'
+        ' VALUES(?, ?, ?, ?, ?)',
+        [exercise.id, exercise.name, exercise.notes, exercise.flag, exercise.user]);
   }
 
   Future updateWorkout(Workout work) async {
     var db = await _getDb();
     await db.rawInsert(
         'INSERT OR REPLACE INTO '
-        '$tableNameW(${Workout.db_id}, ${Workout.db_name}, ${Workout.db_date}, ${Workout.db_routine}, ${Workout.db_user})'
-        ' VALUES(?, ?, ?, ?, ?)',
-        [work.id, work.name, work.date, work.routine, work.user]);
+        '$tableNameW(${Workout.db_id}, ${Workout.db_name}, ${Workout.db_date}, ${Workout.db_routine}, ${Workout.db_user}, ${Workout.db_status})'
+        ' VALUES(?, ?, ?, ?, ?, ?)',
+        [work.id, work.name, work.date, work.routine, work.user, work.status]);
   }
 
   Future updateRoutineExercise(RoutineExercise exercise) async {

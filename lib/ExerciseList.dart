@@ -6,6 +6,7 @@ import 'database/db.dart';
 import 'GymButton.dart';
 import 'dart:io' show Platform;
 import 'GymPageRoute.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final _biggerFont = const TextStyle(fontSize: 18.0);
 
@@ -134,6 +135,7 @@ class ExercisesListState extends State<ExercisesList> {
   _navigateAndDisplaySelection(BuildContext context) async {
     // Navigator.push returns a Future that will complete after we call
     // Navigator.pop on the Selection Screen!
+    final prefs = await SharedPreferences.getInstance();
     final result = await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => newExercise()),
@@ -144,7 +146,7 @@ class ExercisesListState extends State<ExercisesList> {
 //    _exerciseArr.add(
 //    new Exercise(name: result["name"], id: _exerciseArr.length+2, notes: result["notes"]));
     db.get().updateExercise(new Exercise(
-        name: result["name"], notes: result["notes"], flag: result["flag"]));
+        name: result["name"], notes: result["notes"], flag: result["flag"], user: prefs.get('id')));
 
     /// Here I should add this to the DB or whatever storage this uses
   }
@@ -152,7 +154,8 @@ class ExercisesListState extends State<ExercisesList> {
   data() async {
     var list;
     try {
-      list = await db.get().getExercises();
+      var stat = await db.get().getStatus();
+      list = await db.get().getExercisesByUser(['0', '${stat.id}']);
     } catch (e) {
       print(e.toString());
     }

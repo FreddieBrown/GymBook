@@ -9,16 +9,31 @@ import 'ExerciseDataSelector.dart';
 import 'GymPageRoute.dart';
 import 'GymButton.dart';
 
-class WorkoutDetail extends StatelessWidget {
+class WorkoutDetail extends StatefulWidget{
+  Workout workout;
+  WorkoutDetail({@required this.workout});
+  @override
+  WorkoutDetailState createState() => WorkoutDetailState(this.workout);
+}
+
+class WorkoutDetailState extends State<WorkoutDetail> {
   final Workout workout;
   String formatted;
   String formatted1;
+  bool b;
   var formatter = new DateFormat('dd/MM/yyyy');
   var formatter1 = new DateFormat('jm');
-  WorkoutDetail({@required this.workout}) {
+  WorkoutDetailState(this.workout) {
     formatted = formatter.format(DateTime.parse(workout.date));
     formatted1 = formatter1.format(DateTime.parse(workout.date));
+    if(workout.status == 0){
+      b = false;
+    }
+    else{
+      b = true;
+    }
   }
+
   @override
   Widget build(BuildContext context) {
     var fut = FutureBuilder(
@@ -44,7 +59,6 @@ class WorkoutDetail extends StatelessWidget {
         }
       },
     );
-
     return Scaffold(
         appBar: AppBar(
           title: Text("Workout"),
@@ -73,6 +87,22 @@ class WorkoutDetail extends StatelessWidget {
                 style: const TextStyle(fontSize: 18.0),
               )),
               fut,
+              SwitchListTile(
+                  title: Text("Workout done?"),
+                  value: b,
+                  onChanged: (bool v) async{
+                    if(b == false){
+                      workout.status = 1;
+                      await db.get().updateWorkout(workout);
+                    }
+                    else{
+                      workout.status = 0;
+                      await db.get().updateWorkout(workout);
+                    }
+                    setState((){
+                      b = v;
+                    });
+                  }),
               GymButton(
                   func: () {
                     db.get().removeWorkout(workout.id);

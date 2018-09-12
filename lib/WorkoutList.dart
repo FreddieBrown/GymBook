@@ -97,6 +97,14 @@ class WorkoutListState extends State<WorkoutList> {
 
   /// Returns a single ListTile Widget
   Widget _workout(Workout workout) {
+    String status;
+    print(workout.status);
+    if(workout.status == 0){
+      status = 'Unfinshed';
+    }
+    else{
+      status = 'Finished';
+    }
     var formatter = new DateFormat('dd/MM/yyyy');
     var formatter1 = new DateFormat('jm');
     String formatted = formatter.format(DateTime.parse(workout.date));
@@ -110,7 +118,7 @@ class WorkoutListState extends State<WorkoutList> {
             "${workout.name}",
             style: _biggerFont,
           ),
-          subtitle: Text("$formatted at $formatted1"),
+          subtitle: Text("$formatted at $formatted1\nStatus: ${status}"),
           trailing: new Icon(Icons.keyboard_arrow_right, color: Colors.blue),
           onTap: () {
             setState(() {
