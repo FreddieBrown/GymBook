@@ -98,7 +98,6 @@ class WorkoutListState extends State<WorkoutList> {
   /// Returns a single ListTile Widget
   Widget _workout(Workout workout) {
     String status;
-    print(workout.status);
     if (workout.status == 0) {
       status = 'Unfinshed';
     } else {

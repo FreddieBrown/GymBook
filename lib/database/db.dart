@@ -35,7 +35,6 @@ class db {
 
   Future<Database> _getDb() async {
     if (!didInit) await _init();
-    if (!addedAlter) await updateDB();
     return data;
   }
 
@@ -106,19 +105,10 @@ class db {
           "ADD COLUMN ${Workout.db_status} INTEGER");
       await db.execute("ALTER TABLE $tableNameE "
           "ADD COLUMN ${Exercise.db_user} INTEGER");
-
       /// This is where all DB creation happens.
     });
-    addedAlter = true;
-    didInit = true;
-  }
 
-  updateDB() async {
-    await data.execute("ALTER TABLE $tableNameW "
-        "ADD COLUMN ${Workout.db_status} INTEGER");
-    await data.execute("ALTER TABLE $tableNameE "
-        "ADD COLUMN ${Exercise.db_user} INTEGER");
-    addedAlter = true;
+    didInit = true;
   }
 
   Future<List<Exercise>> getExercises([List<String> ids = null]) async {

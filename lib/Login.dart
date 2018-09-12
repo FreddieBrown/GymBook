@@ -31,13 +31,15 @@ class LoginState extends State<Login> {
     return Material(
       type: MaterialType.transparency,
       child: Container(
-        color: Colors.grey[700],
-        child: Column(
+        color: Colors.grey[800],
+        child: ListView(
           children: <Widget>[
             Padding(
               padding: EdgeInsets.only(top: 80.0, bottom: 40.0),
-              child: Text('GymBook',
-                  style: TextStyle(color: Colors.white, fontSize: 60.0)),
+              child: Center(
+                child: Text('GymBook',
+                    style: TextStyle(color: Colors.white, fontSize: 60.0)),
+              )
             ),
             Container(
               padding:
@@ -133,6 +135,9 @@ class LoginState extends State<Login> {
               text: Center(
                 child: Text('Register'),
               ),
+            ),
+            Container(
+              padding: EdgeInsets.only(top: 170.0, bottom: 170.0),
             ),
           ],
         ),

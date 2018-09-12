@@ -19,9 +19,9 @@ class RegisterState extends State<Register> {
     return Material(
         type: MaterialType.transparency,
         child: Container(
-          color: Colors.grey[700],
+          color: Colors.grey[800],
           child: SafeArea(
-            child: Column(
+            child: ListView(
               children: <Widget>[
                 Align(
                     alignment: Alignment.topLeft,
@@ -149,6 +149,9 @@ class RegisterState extends State<Register> {
                   text: Center(
                     child: Text('Register'),
                   ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(top: 170.0, bottom: 170.0),
                 ),
               ],
             ),

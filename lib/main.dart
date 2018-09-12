@@ -7,7 +7,6 @@ import 'Models/User.dart';
 import 'package:crypto/crypto.dart';
 import 'dart:convert';
 import 'Register.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'Auth.dart';
 
 void main() async {
@@ -52,9 +51,9 @@ void main() async {
   User u = User(
       id: 1,
       salt: salth.toString(),
-      name: 'Freddie',
+      name: 'Admin',
       hashp: passh.toString(),
-      email: 'fred@noser.net',
+      email: 'freddieabrown@gmail.com',
       dev: 1);
 
   db data = db.get();
