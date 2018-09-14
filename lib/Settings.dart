@@ -104,7 +104,7 @@ class SettingsState extends State<Settings> {
                   ),
                   onTap: () async {
                     await Auth.logoutUser();
-                    Navigator.pushNamed(context, '/login');
+                    Navigator.pushNamed(context, '/user');
                   },
                 ),
                 fut,

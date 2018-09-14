@@ -156,9 +156,9 @@ class ExercisesListState extends State<ExercisesList> {
 
   data() async {
     var list;
+    final prefs = await SharedPreferences.getInstance();
     try {
-      var stat = await db.get().getStatus();
-      list = await db.get().getExercisesByUser(['0', '${stat.id}']);
+      list = await db.get().getExercisesByUser(['0', '${prefs.get('id')}']);
     } catch (e) {
       print(e.toString());
     }

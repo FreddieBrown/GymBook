@@ -8,6 +8,7 @@ import 'package:crypto/crypto.dart';
 import 'dart:convert';
 import 'Register.dart';
 import 'Auth.dart';
+import 'UserEnter.dart';
 
 void main() async {
   List exe = [
@@ -96,6 +97,7 @@ class GymBook1 extends StatelessWidget {
         initialRoute: '/',
         routes: {
           '/home': (context) => Home(),
+          '/user': (context) => UserEnter(),
           '/login': (context) => Login(),
           '/register': (context) => Register(),
         },
@@ -122,7 +124,7 @@ class GymBook1 extends StatelessWidget {
           accentIconTheme: IconThemeData(color: Colors.white),
           fontFamily: 'Nunito',
         ),
-        home: Login()
+        home: UserEnter()
 //      home: Home()
         );
   }
@@ -140,6 +142,7 @@ class GymBook2 extends StatelessWidget {
         initialRoute: '/',
         routes: {
           '/home': (context) => Home(),
+          '/user': (context) => UserEnter(),
           '/login': (context) => Login(),
           '/register': (context) => Register(),
         },
@@ -167,7 +170,6 @@ class GymBook2 extends StatelessWidget {
           fontFamily: 'Nunito',
         ),
         home: Home()
-//      home: Home()
         );
   }
 }
