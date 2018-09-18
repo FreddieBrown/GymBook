@@ -264,7 +264,7 @@ packages:
       name: petitparser
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0"
+    version: "2.0.1"
   plugin:
     dependency: transitive
     description:
@@ -360,7 +360,7 @@ packages:
       name: sqflite
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.11.2+2"
+    version: "0.12.0"
   stack_trace:
     dependency: transitive
     description:
@@ -388,7 +388,7 @@ packages:
       name: synchronized
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.5.1+1"
+    version: "1.5.2"
   term_glyph:
     dependency: transitive
     description:
@@ -451,7 +451,7 @@ packages:
       name: xml
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.2.0"
+    version: "3.2.1"
   yaml:
     dependency: transitive
     description:
@@ -460,5 +460,5 @@ packages:
     source: hosted
     version: "2.1.15"
 sdks:
-  dart: ">=2.0.0-dev.69.0 <=2.1.0-dev.3.1.flutter-760a9690c2"
+  dart: ">=2.0.0 <=2.1.0-dev.4.0.flutter-bb56d4592f"
   flutter: ">=0.1.4 <2.0.0"

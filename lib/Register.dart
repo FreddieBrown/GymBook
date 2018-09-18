@@ -65,10 +65,10 @@ class RegisterState extends State<Register> {
                   Center(child: widget.error),
                   GymButton(
                     func: () async {
-                      var reg1 = RegExp(r'#[0-9]+#');
-                      var reg2 = RegExp(r'#[A-Z]+#');
-                      var reg3 = RegExp(r'#[a-z]+#');
-                      var reg4 = RegExp(r'#[\W_]+#');
+                      var reg1 = RegExp(r'[0-9]+');
+                      var reg2 = RegExp(r'[A-Z]+');
+                      var reg3 = RegExp(r'[a-z]+');
+                      var reg4 = RegExp(r'[\W_]+');
                       if (email.text.isEmpty) {
                         setState(() {
                           widget.error = Text("You have to enter an email",
@@ -105,21 +105,21 @@ class RegisterState extends State<Register> {
                             });
 
                           }
-                          else if(reg1.allMatches(password.text).length == 0){
+                          else if(reg2.allMatches(password.text).length == 0){
                             setState(() {
                               widget.error = Text(
                                   "Your password needs to have atleast 1 uppercase, 1 lowercase, 1 number and one non-alphanumeric character (e.g !, ? or |)",
                                   style: TextStyle(color: Colors.red, fontSize: 18.0));
                             });
                           }
-                          else if(reg1.allMatches(password.text).length == 0){
+                          else if(reg3.allMatches(password.text).length == 0){
                             setState(() {
                               widget.error = Text(
                                   "Your password needs to have atleast 1 uppercase, 1 lowercase, 1 number and one non-alphanumeric character (e.g !, ? or |)",
                                   style: TextStyle(color: Colors.red, fontSize: 18.0));
                             });
                           }
-                          else if(reg1.allMatches(password.text).length == 0){
+                          else if(reg4.allMatches(password.text).length == 0){
                             setState(() {
                               widget.error = Text(
                                   "Your password needs to have atleast 1 uppercase, 1 lowercase, 1 number and one non-alphanumeric character (e.g !, ? or |)",

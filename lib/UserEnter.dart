@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'Register.dart';
 import 'Login.dart';
-import 'GymPageRoute.dart';
 class UserEnter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
