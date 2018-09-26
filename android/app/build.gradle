@@ -39,7 +39,7 @@ android {
         applicationId "net.noser.gymbook"
         minSdkVersion 16
         targetSdkVersion 27
-        versionCode 11
+        versionCode 13
         versionName flutterVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
