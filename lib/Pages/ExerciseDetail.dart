@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'Models/Exercise.dart';
-import 'database/db.dart';
-import 'GymButton.dart';
+import '../Models/Exercise.dart';
+import '../database/db.dart';
+import '../Utilities/GymButton.dart';
 
 class ExerciseDetail extends StatelessWidget {
   final Exercise exercise;

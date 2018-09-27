@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'Models/Exercise.dart';
-import 'database/db.dart';
-import 'Models/RoutineExercise.dart';
+import '../Models/Exercise.dart';
+import '../database/db.dart';
+import '../Models/RoutineExercise.dart';
 
 class ExerciseSelector extends StatefulWidget {
   var routine;

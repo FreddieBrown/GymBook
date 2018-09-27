@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'Models/Routine.dart';
-import 'database/db.dart';
+import '../Models/Routine.dart';
+import '../database/db.dart';
 import 'dart:async';
-import 'Models/Workout.dart';
-import 'Models/ExerciseData.dart';
+import '../Models/Workout.dart';
+import '../Models/ExerciseData.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final _biggerFont = const TextStyle(fontSize: 18.0);

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'Models/Workout.dart';
-import 'database/db.dart';
-import 'Models/Exercise.dart';
-import 'Models/ExerciseData.dart';
+import '../Models/Workout.dart';
+import '../database/db.dart';
+import '../Models/Exercise.dart';
+import '../Models/ExerciseData.dart';
 
 class ExerciseDataSelector extends StatefulWidget {
   Exercise ex;

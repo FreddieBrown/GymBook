@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'GymButton.dart';
-import 'Auth.dart';
+import '../Utilities/GymButton.dart';
+import '../Utilities/Auth.dart';
 
 class Login extends StatefulWidget {
   Login({Key key}) : super(key: key);

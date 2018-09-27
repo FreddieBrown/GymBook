@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'FormMaker.dart';
+import '../Utilities/FormMaker.dart';
 import 'WorkoutRoutineSelector.dart';
-import 'GymPageRoute.dart';
+import '../Utilities/GymPageRoute.dart';
 
 class newWorkout extends StatefulWidget {
   @override

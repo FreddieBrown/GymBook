@@ -1,9 +1,9 @@
-import 'database/db.dart';
+import '../database/db.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'Models/User.dart';
+import '../Models/User.dart';
 import 'package:crypto/crypto.dart';
 import 'dart:convert';
-import 'Models/Status.dart';
+import '../Models/Status.dart';
 
 class Auth {
   static newUser(String email, String name, String salt, String pass) async {

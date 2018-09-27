@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'Home.dart';
+import 'package:gym_book/Pages/Home.dart';
 import 'database/db.dart';
 import 'Models/Exercise.dart';
-import 'Login.dart';
+import 'package:gym_book/Pages/Login.dart';
 import 'Models/User.dart';
 import 'package:crypto/crypto.dart';
 import 'dart:convert';
-import 'Register.dart';
-import 'Auth.dart';
-import 'UserEnter.dart';
+import 'package:gym_book/Pages/Register.dart';
+import 'package:gym_book/Utilities/Auth.dart';
+import 'package:gym_book/Pages/UserEnter.dart';
 
 void main() async {
   List exe = [

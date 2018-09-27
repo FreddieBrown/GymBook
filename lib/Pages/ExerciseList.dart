@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'newExercise.dart';
-import 'ExerciseDetail.dart';
-import 'Models/Exercise.dart';
-import 'database/db.dart';
-import 'GymButton.dart';
+import 'package:gym_book/Pages/ExerciseDetail.dart';
+import '../Models/Exercise.dart';
+import '../database/db.dart';
+import '../Utilities/GymButton.dart';
 import 'dart:io' show Platform;
-import 'GymPageRoute.dart';
+import '../Utilities/GymPageRoute.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final _biggerFont = const TextStyle(fontSize: 18.0);

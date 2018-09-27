@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'Models/Workout.dart';
-import 'database/db.dart';
-import 'Models/ExerciseData.dart';
-import 'Models/Exercise.dart';
+import '../Models/Workout.dart';
+import '../database/db.dart';
+import '../Models/ExerciseData.dart';
+import '../Models/Exercise.dart';
 import 'dart:async';
-import 'ExerciseDataSelector.dart';
-import 'GymPageRoute.dart';
-import 'GymButton.dart';
+import 'package:gym_book/Pages/ExerciseDataSelector.dart';
+import '../Utilities/GymPageRoute.dart';
+import '../Utilities/GymButton.dart';
 
 class WorkoutDetail extends StatefulWidget {
   Workout workout;

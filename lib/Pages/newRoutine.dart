@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'FormMaker.dart';
-import 'Models/Routine.dart';
-import 'database/db.dart';
+import '../Utilities/FormMaker.dart';
+import '../Models/Routine.dart';
+import '../database/db.dart';
 
 class newRoutine extends StatefulWidget {
   var id;

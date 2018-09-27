@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'database/db.dart';
-import 'Models/Exercise.dart';
-import 'Help.dart';
+import '../database/db.dart';
+import '../Models/Exercise.dart';
+import 'package:gym_book/Pages/Help.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'Auth.dart';
-import 'Models/User.dart';
+import '../Utilities/Auth.dart';
+import '../Models/User.dart';
 import 'package:crypto/crypto.dart';
 import 'dart:convert';
 

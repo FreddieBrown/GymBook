@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'newRoutine.dart';
-import 'RoutineDetail.dart';
-import 'Models/Routine.dart';
-import 'database/db.dart';
+import 'package:gym_book/Pages/newRoutine.dart';
+import 'package:gym_book/Pages/RoutineDetail.dart';
+import '../Models/Routine.dart';
+import '../database/db.dart';
 import 'dart:async';
-import 'GymButton.dart';
+import '../Utilities/GymButton.dart';
 import 'dart:io' show Platform;
-import 'GymPageRoute.dart';
+import '../Utilities/GymPageRoute.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final _biggerFont = const TextStyle(fontSize: 18.0);

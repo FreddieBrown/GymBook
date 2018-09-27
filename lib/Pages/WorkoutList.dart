@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'newWorkout.dart';
-import 'WorkoutDetail.dart';
-import 'Models/Workout.dart';
-import 'database/db.dart';
-import 'GymButton.dart';
+import 'package:gym_book/Pages/newWorkout.dart';
+import 'package:gym_book/Pages/WorkoutDetail.dart';
+import '../Models/Workout.dart';
+import '../database/db.dart';
+import '../Utilities/GymButton.dart';
 import 'dart:io' show Platform;
-import 'GymPageRoute.dart';
+import '../Utilities/GymPageRoute.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final _biggerFont = const TextStyle(fontSize: 18.0);

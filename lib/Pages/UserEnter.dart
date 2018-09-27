@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'WorkoutList.dart';
-import 'RoutineList.dart';
-import 'ExerciseList.dart';
-import 'Settings.dart';
-import 'GymPageRoute.dart';
-
-class Home extends StatelessWidget {
+import 'package:gym_book/Pages/Register.dart';
+import 'package:gym_book/Pages/Login.dart';
+class UserEnter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -29,41 +25,34 @@ class Home extends StatelessWidget {
                         indicatorColor: Colors.blue,
                         tabs: [
                           Tab(
-                              child: Text("Workouts",
+                              child: Text("Login",
                                   style: const TextStyle(fontSize: 17.0))),
                           Tab(
-                              child: Text("Routines",
-                                  style: const TextStyle(fontSize: 18.0))),
-                          Tab(
-                              child: Text("Exercises",
+                              child: Text("Register",
                                   style: const TextStyle(fontSize: 18.0))),
                         ],
                       ))),
             ),
           ),
           appBar: AppBar(
-            automaticallyImplyLeading: false,
-            title: Text('GymBook'),
-            actions: <Widget>[
-              // Add 3 lines from here...
-              new IconButton(
-                  icon: Icon(Icons.list),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      GymPageRoute(builder: (context) => Settings()),
-                    );
-                  },
-                  color: Colors.white),
-            ],
+            elevation: 0.0,
+            title: Text("GymBook", style: TextStyle(fontSize: 50.0),),
             centerTitle: true,
+            automaticallyImplyLeading: false,
+            backgroundColor: Colors.grey[800],
           ),
-          body: TabBarView(
-            children: [
-              WorkoutList(),
-              RoutineList(),
-              ExercisesList(),
-            ],
+          body: Container(
+            child: Padding(
+              padding: EdgeInsets.only(top: 40.0),
+              child: Card(
+                child: TabBarView(
+                  children: [
+                    Login(),
+                    Register(),
+                  ],
+                ),
+              ),
+            ),
           ),
         ));
   }
